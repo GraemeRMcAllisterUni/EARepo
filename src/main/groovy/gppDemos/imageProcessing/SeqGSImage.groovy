@@ -1,0 +1,77 @@
+package gppDemos.imageProcessing
+
+import gppLibrary.functionals.matrix.Matrix
+import gppDemos.imageProcessing.CompositeGSImage as img
+import gppDemos.imageProcessing.CompositeGSResult as imgRslt
+ 
+
+int nodes = 1
+ 
+String inFile = "src\\demos\\imageProcessing\\DSC_0120-001.jpg"
+String outFile = "src\\demos\\imageProcessing\\DSC_0120-001_GS_${nodes}_seq.jpg"
+ 
+//edge
+Matrix kernel1 = new Matrix(rows: 3, columns: 3)
+kernel1.entries = new int[3][3]
+kernel1.setByRow([-1, -1, -1], 0)
+kernel1.setByRow([-1,  8, -1], 1)
+kernel1.setByRow([-1, -1, -1], 2)
+//edge
+Matrix kernel2 = new Matrix(rows: 3, columns: 3)
+kernel2.entries = new int[3][3]
+kernel2.setByRow([ 0, -1,  0], 0)
+kernel2.setByRow([-1,  4, -1], 1)
+kernel2.setByRow([ 0, -1,  0], 2)
+//edge
+Matrix kernel3 = new Matrix(rows: 5, columns: 5)
+kernel3.entries = new int[5][5]
+kernel3.setByRow([ -1, -1, -1,  -1, -1], 0)
+kernel3.setByRow([ -1, -1, -1,  -1, -1], 1)
+kernel3.setByRow([ -1, -1, 24,  -1, -1], 2)
+kernel3.setByRow([ -1, -1, -1,  -1, -1], 3)
+kernel3.setByRow([ -1, -1, -1,  -1, -1], 4)
+//blur
+Matrix kernel4 = new Matrix(rows: 5, columns: 5)
+kernel4.entries = new int[5][5]
+kernel4.setByRow([ 0, 0,  1,  0, 0], 0)
+kernel4.setByRow([ 0, 1,  1,  1, 0], 1)
+kernel4.setByRow([ 1, 1,  1,  1, 1], 2)
+kernel4.setByRow([ 0, 1,  1,  1, 0], 3)
+kernel4.setByRow([ 0, 0,  1,  0, 0], 4)
+//box blur
+Matrix kernel5 = new Matrix(rows: 3, columns: 3)
+kernel5.entries = new int[3][3]
+kernel5.setByRow([1, 1, 1], 0)
+kernel5.setByRow([1, 1, 1], 1)
+kernel5.setByRow([1, 1, 1], 2)
+ 
+  
+System.gc()
+print "Image Engine $nodes ->"
+long startTime = System.currentTimeMillis()
+ 
+def image = new img()
+image.init(null)
+image.create([inFile, outFile])
+// greyscale
+image.partition(nodes)
+image.greyScale([0])
+// blur 1
+image.convolutionGreyScale([0, kernel4, 13, 0])
+image.updateImageIndex()
+//blur 2
+image.convolutionGreyScale([0, kernel4, 13, 0])
+image.updateImageIndex()
+//edge detect
+image.convolutionGreyScale([0, kernel1, 1, 0])
+image.updateImageIndex()
+//get result 
+def imageRslt = new imgRslt()
+imageRslt.init(null)
+imageRslt.collect(image)
+imageRslt.finalise(null) 
+ 
+long endTime = System.currentTimeMillis()
+println " ${endTime - startTime}"
+ 
+ 
