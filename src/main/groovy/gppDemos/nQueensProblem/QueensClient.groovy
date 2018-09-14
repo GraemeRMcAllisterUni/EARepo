@@ -45,9 +45,9 @@ class QueensClient extends DataClass {
     
     void permute () {
         board = new ArrayList(N+1)
-        for ( i in 1.. N) board[i] = i
+        for ( int i in 1.. N) board[i] = i
 //        println "QC-permute: Client: $clientId board = $board"
-        for (i in 1 .. N) {
+        for (int i in 1 .. N) {
 //            println "QC-permute: Client: $clientId i: $i"
             int j = rng.nextInt(N) + 1  //range is 1..N
             board.swap(i,j)
@@ -59,15 +59,16 @@ class QueensClient extends DataClass {
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
         
-        for ( i in 1 .. 2*N) {
+        for ( int i in 1 .. 2*N) {
             leftDiagonal[i] = 0
             rightDiagonal[i] = 0
         }
-        for ( i in 1 .. N) {
+        for ( int i in 1 .. N) {
             leftDiagonal[i+board[i]-1]++
-            rightDiagonal[N-i+board[i]]++
+            int idx = N-i+board[i]
+            rightDiagonal[idx]++
         }
-        for ( i in 1 .. ((2*N) - 1)) {
+        for ( int i in 1 .. ((2*N) - 1)) {
             int counter = 0
             if ( leftDiagonal[i] > 1)
                 counter += leftDiagonal[i] - 1
@@ -99,7 +100,7 @@ class QueensClient extends DataClass {
         // this leaves values in mb1 that need to be inserted into result
         // to maintain board consistency as a permutation
         int mb2Size = mb2.size()
-        for ( i in 0 ..< mb2Size) {
+        for ( int i in 0 ..< mb2Size) {
             int v = mb2[i]
             int j = 0
             boolean notFound = true
@@ -114,7 +115,7 @@ class QueensClient extends DataClass {
         }
         // now iterate through mb2 looking for matches in sb1
         // replace any with values from mb1
-        for ( i in 0..< mb2Size) {
+        for ( int i in 0..< mb2Size) {
             if (sb1.contains(mb2[i])) {
                 int v = mb2[i]
                 int j = 0
@@ -132,7 +133,7 @@ class QueensClient extends DataClass {
             
         // now iterate through mb2 looking for matches in eb1
         // replace any with values from mb1
-        for ( i in 0..< mb2Size) {
+        for ( int i in 0..< mb2Size) {
             if (eb1.contains(mb2[i])) {
                 int v = mb2[i]
                 int j = 0
@@ -191,7 +192,7 @@ class QueensClient extends DataClass {
         List p2b = p2.board.getAt(cPoint+1 .. N) 
         // find values in common between p1a and p2a 
         List common = []  
-        for ( i in 0 ..< cPoint) {
+        for ( int i in 0 ..< cPoint) {
             if ( p2a.contains(p1a[i])) {
                 common << p1a[i]
             }
@@ -201,14 +202,14 @@ class QueensClient extends DataClass {
 //        println "$p1a, $p1b, $p2a, $p2b, $p1aRem, $p2aRem, $common"   
         child1.board << null
         child2.board << null
-        for ( i in 0 ..< cPoint) {
+        for ( int i in 0 ..< cPoint) {
             child1.board[i+1] = p1a[i]
             child2.board[i+1] = p2a[i]
         }
 //        println "C1: $child1 C2: $child2"
         int p1P = 0
         int p2P = 0
-        for ( i in 0 ..< p2b.size())  {
+        for ( int i in 0 ..< p2b.size())  {
             int v1 = p2b[i]
             if ( p1aRem.contains(v1)) { 
                 child1.board << p2aRem[p2P]

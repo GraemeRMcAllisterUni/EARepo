@@ -6,36 +6,33 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
-def groovyJCSPDir = "D:\\IJGradle\\groovyJCSP\\build\\libs"
-def groovyJCSPJarFile = "groovyJCSP-2.4.12-1.1.0.jar"
-
-def gppLibraryDir = "D:\\IJGradle\\gppLibrary\\build\\libs"
+def jcspLib = "C:/jcspLib"
 def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-1.jar"
 
-def gppBuilderDir = "D:\\IJGradle\\gppBuilder\\build\\libs"
 def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-1.jar"
 
-println "using groovyJCSP library $groovyJCSPDir\\$groovyJCSPJarFile"
-println "using gppLibrary library $gppLibraryDir\\$gppLibraryJarFile"
-println "using gppBuilder library $gppBuilderDir\\$gppBuilderJarFile"
+println "using gppLibrary library $jcspLib\\$gppLibraryJarFile"
+println "using gppBuilder library $jcspLib\\$gppBuilderJarFile"
 
 
 repositories {
   mavenCentral()
   jcenter()
+  maven {
+    url "https://dl.bintray.com/jonkerridge/jcsp"
+  }
 }
-// bintray location https://dl.bintray.com/jonkerridge/jcsp
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy:2.4.12'
+  compile 'org.codehaus.groovy:groovy:3.0.0-alpha-3'
   compile 'cspforjava:jcsp:1.1.0'
-  compile fileTree(dir: "$groovyJCSPDir", include: ["$groovyJCSPJarFile"])
-  compile fileTree(dir: "$gppLibraryDir", include: ["$gppLibraryJarFile"])
-  compile fileTree(dir: "$gppBuilderDir", include: ["$gppBuilderJarFile"])
-  testCompile 'org.codehaus.groovy:groovy:2.4.12'
+  compile 'groovyJCSP:groovyJCSP:1.1.1'
+  compile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
+  compile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
+  testCompile 'org.codehaus.groovy:groovy:3.0.0-alpha-3'
   testCompile group: 'junit', name: 'junit', version: '4.12'
   testCompile 'cspforjava:jcsp:1.1.0'
-  testCompile fileTree(dir: "$groovyJCSPDir", include: ["$groovyJCSPJarFile"])
-  testCompile fileTree(dir: "$gppLibraryDir", include: ["$gppLibraryJarFile"])
-  testCompile fileTree(dir: "$gppBuilderDir", include: ["$gppBuilderJarFile"])
+  testCompile 'groovyJCSP:groovyJCSP:1.1.1'
+  testCompile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
+  testCompile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
 }
