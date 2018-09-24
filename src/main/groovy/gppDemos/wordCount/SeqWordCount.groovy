@@ -3,7 +3,7 @@ package gppDemos.wordCount
 import gppLibrary.DataClassInterface as Constants
 
 String title = "ACMmr"
-String fileName = "src\\demos\\wordCount\\${title}.txt"
+String fileName = "./${title}.txt"
 
 def partitionData = new PartitionData()
 partitionData.&"${partitionData.initClass}"([ 3, " " .. "f", "g" .. "n", "o" .. "~" ])

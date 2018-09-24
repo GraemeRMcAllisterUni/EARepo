@@ -17,8 +17,8 @@ else {
 }
 
 
-String inFile = "src\\demos\\imageProcessing\\DSC_0120-001.jpg"
-String outFile = "src\\demos\\imageProcessing\\DSC_0120-001_GS_${nodes}_K4_K4_K1.jpg"
+String inFile = "./DSC_0120-001.jpg"
+String outFile = "./DSC_0120-001_GS_${nodes}_K4_K4_K1.jpg"
 
 //edge
 Matrix kernel1 = new Matrix(rows: 3, columns: 3)

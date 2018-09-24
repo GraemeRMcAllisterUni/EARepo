@@ -26,8 +26,8 @@ else {
 //    iterations = Integer.parseInt(args[2])
 }
 
- String readPath = "src/demos/nbody/planets_list.txt"
- String writePath = "src/demos/nbody/${N}_planets_${nodes}_Par.txt"
+ String readPath = "./planets_list.txt"
+ String writePath = "./${N}_planets_${nodes}_Par.txt"
 
 System.gc()
 print "ParNbody (matrix of Planet data), $N , $nodes, "

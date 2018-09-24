@@ -12,8 +12,8 @@ import gppDemos.concordance.ConcordanceData as cd
 import gppDemos.concordance.ConcordanceResults as cr
 
 String title = "bible"
-String fileName = "src\\demos\\concordance\\${title}.txt"
-String outFileName = "src\\demos\\concordance\\${title}GoP"
+String fileName = "./${title}.txt"
+String outFileName = "./${title}GoP"
 
 int N = 6
 int minSeqLen = 2

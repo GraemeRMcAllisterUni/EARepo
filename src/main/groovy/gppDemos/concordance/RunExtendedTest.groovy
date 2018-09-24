@@ -42,8 +42,8 @@ blockSize = Integer.parseInt(args[3])
 }
  
 // eclipse versions
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}PoG"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}PoG"
  
 def dDetails = new DataDetails( dName: cw.getName(),
 dInitMethod: cw.init,

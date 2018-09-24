@@ -18,8 +18,8 @@ int minSeqLen = 2
 //int groups = Integer.parseInt(args[0])
 
 // eclipse versions
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}GoP"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}GoP"
 int groups = 2
 
 // launcher version
@@ -62,7 +62,7 @@ def poG = new GroupOfPipelineCollects( inputAny: toGoP.in(),
                      groups: groups,
                      logPhaseNames: ["value", "indeces", "words"],
                      logPropertyName: "strLen",
-                     logFileName: "D:\\GPPLog\\concordance")
+                     logFileName: "./GPPLog/concordance.txt")
 
 def startime = System.currentTimeMillis()
 new PAR([emitter, fanOut, poG]).run()

@@ -5,8 +5,8 @@ int N = Integer.parseInt(args[0])
 int iterations = 100
 double dt = 1e11
 
-String readPath = "src/demos/nbody/planets_list.txt"
-String writePath = "src/demos/nbody/${N}_planets_Seq.txt"
+String readPath = "./planets_list.txt"
+String writePath = "./${N}_planets_Seq.txt"
 
 System.gc()
 print "SeqNbody, $N, "

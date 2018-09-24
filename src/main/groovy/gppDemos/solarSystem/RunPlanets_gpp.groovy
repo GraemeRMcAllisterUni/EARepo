@@ -27,8 +27,8 @@ else {
 }
 
 
- String readPath = "src/demos/solarSystem/planets_list.txt"
- String writePath = "src/demos/solarSystem/result_${iterations}_${N}_planets_${nodes}_Par.txt"
+ String readPath = "./planets_list.txt"
+ String writePath = "./result_${iterations}_${N}_planets_${nodes}_Par.txt"
 
 System.gc()
 print "RunPlanets (arrayList of plants) $iterations, $N , $nodes ->"

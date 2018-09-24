@@ -14,8 +14,8 @@ if (args.size() > 0){
 
 
 // eclipse versions
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}seq"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}seq"
 
 //usage runDemo concordance/SeqConcordance resultsFile
 

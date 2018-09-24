@@ -21,7 +21,7 @@ String title = "bible"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
-int runNo = 1
+int runNo = 2
  
 if (args.size() > 0){
 groups = Integer.parseInt(args[0])
@@ -31,8 +31,8 @@ runNo = Integer.parseInt(args[3])
 }
  
  
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}GoPLog"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}GoPLog"
  
 def dDetails = new DataDetails( dName: cd.getName(),
 dInitMethod: cd.init,
@@ -83,7 +83,7 @@ def poG = new GroupOfPipelineCollects(
     groups: groups,
     logPhaseNames: ["1-value", "2-indeces", "3-words"],
     logPropertyName: "strLen",
-    logFileName: "src\\demos\\concordance\\GPPLogs\\LogFile-$runNo-")
+    logFileName: "./GPPLogs/LogFile-$runNo-")
 
 PAR network = new PAR()
  network = new PAR([emitter , fanOut , poG ])

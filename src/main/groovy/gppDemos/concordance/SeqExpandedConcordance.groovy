@@ -8,8 +8,8 @@ int minSeqLen = 2
 boolean doFileOutput = false
 
 // eclipse versions
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}Xseq"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}Xseq"
 
 //usage runDemo concordance/SeqExpandedConcordance
 

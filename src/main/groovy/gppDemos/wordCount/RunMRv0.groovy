@@ -9,8 +9,8 @@ import gppDemos.wordCount.WordBuffer as wb
 
 int blockSize = 500
 def title = "ACMmr"
-def fileName = "src\\demos\\wordCount\\${title}.txt"
-def fileName2 = "src\\demos\\wordCount\\${title}2.txt"
+def fileName = "./${title}.txt"
+def fileName2 = "./${title}2.txt"
 
 def chan1 = Channel.one2one()
 def chan2 = Channel.one2one()

@@ -17,8 +17,8 @@ import gppDemos.concordance.ConcordanceResults as cr
 //usage runDemo concordance/RunCollectConcordance resultsFile
  
 def title = "bible"
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}Collect"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}Collect"
  
 int N = 8
 int minSeqLen = 2

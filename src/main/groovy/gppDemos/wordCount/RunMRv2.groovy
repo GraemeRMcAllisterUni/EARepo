@@ -15,7 +15,7 @@ import gppDemos.wordCount.PartitionData as pd
 int blockSize = 500
 def partitions = 3
 def title = "ACMmr"
-def fileName = "src\\demos\\wordCount\\${title}.txt"
+def fileName = "./${title}.txt"
 
 def chan1 = Channel.one2one()
 def chan2 = Channel.one2one()

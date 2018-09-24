@@ -27,8 +27,8 @@ N = Integer.parseInt(args[2])
  
  
 // eclipse versions
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}PoG"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}PoG"
  
 def dDetails = new DataDetails( dName: cd.getName(),
 dInitMethod: cd.init,

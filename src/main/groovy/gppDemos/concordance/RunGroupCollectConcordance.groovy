@@ -18,8 +18,8 @@ import gppDemos.concordance.ConcordanceResults as cr
 //usage runDemo concordance/RunGroupCollectConcordance resultsFile
  
 String title = "bible"
-String fileName = "src\\demos\\concordance\\${title}.txt"
-String outFileName = "src\\demos\\concordance\\${title}GC"
+String fileName = "./${title}.txt"
+String outFileName = "./${title}GC"
  
 int N = 8
 int minSeqLen = 2

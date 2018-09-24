@@ -35,7 +35,7 @@ nodes = Integer.parseInt(args[1])
 title = args[0]
 }
  
-def fileName = "src\\demos\\jacobi\\${title}.txt"
+def fileName = "./${title}.txt"
  
 double margin = 1.0E-16
  

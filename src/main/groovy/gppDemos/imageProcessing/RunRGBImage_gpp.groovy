@@ -16,8 +16,8 @@ else {
     nodes = Integer.parseInt(args[0])
 }
 
-String inFile = "src\\demos\\imageProcessing\\DSC_0120-001.jpg"
-String outFile = "src\\demos\\imageProcessing\\DSC_0120-001_RGB_${nodes}_K6_K6.jpg"
+String inFile = "./DSC_0120-001.jpg"
+String outFile = "./DSC_0120-001_RGB_${nodes}_K6_K6.jpg"
 
 Matrix kernel1 = new Matrix(rows: 3, columns: 3)
 kernel1.entries = new int[3][3]

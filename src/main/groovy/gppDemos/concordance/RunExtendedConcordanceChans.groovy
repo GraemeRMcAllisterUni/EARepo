@@ -25,8 +25,8 @@ int minSeqLen = 2
 def blockWorkers = 2
 def pogWorkers = 2
 def blockSize = 4000
-def fileName = "src\\demos\\concordance\\${title}.txt"
-def outFileName = "src\\demos\\concordance\\${title}par_Ex"
+def fileName = "./${title}.txt"
+def outFileName = "./${title}par_Ex"
 
 //int workers = Integer.parseInt(args[0])
 //def pogWorkers = Integer.parseInt(args[1])

@@ -41,8 +41,8 @@ pogWorkers = Integer.parseInt(args[3])
 }
  
  
-String fileName = "src\\demos\\concordance\\${title}.txt"
-String outFileName = "src\\demos\\concordance\\${title}Ext"
+String fileName = "./${title}.txt"
+String outFileName = "./${title}Ext"
  
 int N = 8
 int minSeqLen = 2

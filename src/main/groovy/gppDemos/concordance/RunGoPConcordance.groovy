@@ -28,8 +28,8 @@ title = args[1]
 N = Integer.parseInt(args[2])
 }
  
-String fileName = "src\\demos\\concordance\\${title}.txt"
-String outFileName = "src\\demos\\concordance\\${title}GoP"
+String fileName = "./${title}.txt"
+String outFileName = "./${title}GoP"
  
 def dDetails = new DataDetails( dName: cd.getName(),
 dInitMethod: cd.init,
