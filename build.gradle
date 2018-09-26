@@ -1,15 +1,15 @@
 group 'gppDemos'
-version '1.0.0-alpha-1'
+version '1.0.0-alpha-3'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
 
 def jcspLib = "C:/jcspLib"
-def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-1.jar"
+def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-3.jar"
 
-def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-1.jar"
+def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-3.jar"
 
 println "using gppLibrary library $jcspLib\\$gppLibraryJarFile"
 println "using gppBuilder library $jcspLib\\$gppBuilderJarFile"
@@ -20,7 +20,10 @@ repositories {
   jcenter()
   maven {
     url "https://dl.bintray.com/jonkerridge/jcsp"
-  }
+  } 
+    maven {
+       url "https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all" 
+    }
 }
 
 dependencies {
