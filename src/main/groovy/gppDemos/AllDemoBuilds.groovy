@@ -4,8 +4,7 @@ import gppBuilder.*
 
 
 def build = new GPPbuilder()
-//String rootPath = "D:\\IJGradle\\gppDemos\\src\\main\\groovy\\gppDemos\\"
-String rootPath = "./"
+String rootPath = "./"  // as required for use in Intellij
 // concordance
 build.runBuilder(rootPath + "concordance\\RunCollectConcordance")
 build.runBuilder(rootPath + "concordance\\RunConcordancePoG")
