@@ -9,6 +9,7 @@ String rootPath = "./"  // as required for use in Intellij
 build.runBuilder(rootPath + "concordance\\RunCollectConcordance")
 build.runBuilder(rootPath + "concordance\\RunConcordancePoG")
 build.runBuilder(rootPath + "concordance\\RunExtendedConcordance")
+build.runBuilder(rootPath + "concordance\\RunExtendedConcordanceLog")
 build.runBuilder(rootPath + "concordance\\RunGoPConcordance")
 build.runBuilder(rootPath + "concordance\\RunGoPConcordanceLog")
 build.runBuilder(rootPath + "concordance\\RunGroupCollectConcordance")

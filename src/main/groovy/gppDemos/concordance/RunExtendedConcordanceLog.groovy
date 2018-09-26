@@ -43,11 +43,12 @@ pogWorkers = Integer.parseInt(args[3])
  
  
 String fileName = "./${title}.txt"
-String outFileName = "./${title}Ext"
+String outFileName = "./${title}ExtLog"
  
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
+int runNo = 1
  
  
 def dDetails = new DataDetails( dName: cw.getName(),
@@ -100,7 +101,9 @@ def chan7 = Channel.one2any()
 def emit = new Emit (
     // input channel not required
     output: chan1.out(),
-    eDetails: dDetails)
+    eDetails: dDetails,
+    logPhaseName: "0-emit",
+    logPropertyName: "wordsInBuffer")
  
 def fos = new OneFanList(
     input: chan1.in(),
@@ -141,7 +144,10 @@ def poG = new GroupOfPipelineCollects(
     stages: 3,
     rDetails: resultDetails,
     stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
-    groups: pogWorkers)
+    groups: pogWorkers,
+    logPhaseNames: ["1-value", "2-indeces", "3-words"],
+    logPropertyName: "strLen",
+    logFileName: "./GPPLogs/LogFileExt-$runNo-")
 
 PAR network = new PAR()
  network = new PAR([emit , fos , group , fis , combine , emitInstances , fanOut , poG ])

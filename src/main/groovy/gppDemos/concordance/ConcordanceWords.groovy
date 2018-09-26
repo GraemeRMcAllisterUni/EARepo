@@ -20,6 +20,7 @@ class ConcordanceWords extends DataClass {
   static final String init = "initClass"
   static final String create = "createInstance"
   static final String finalise = "finalise"
+  static int wordsInBuffer = 0
 
 
   /**
@@ -60,7 +61,7 @@ class ConcordanceWords extends DataClass {
   def static createBuffer (FileReader fileReader, int maxWords){
     def buffer = []
     def line
-    def wordCount = 0
+    int wordCount = 0
     boolean notFull = true
     while ((line = fileReader.readLine())!=null && notFull) {
          def words = 	processLine(line)
@@ -68,6 +69,7 @@ class ConcordanceWords extends DataClass {
          wordCount = wordCount + words.size()
          if (wordCount >= maxWords) notFull = false
     }
+    wordsInBuffer = wordCount
 //		println "CW: ${buffer.flatten()}"
     if (line == null) return null
     else return buffer.flatten()
