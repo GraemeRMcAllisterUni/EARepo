@@ -20,7 +20,8 @@ class ConcordanceWords extends DataClass {
   static final String init = "initClass"
   static final String create = "createInstance"
   static final String finalise = "finalise"
-  static int wordsInBuffer = 0
+  int bufferInstance
+  static int bufferId = 100
 
 
   /**
@@ -69,8 +70,7 @@ class ConcordanceWords extends DataClass {
          wordCount = wordCount + words.size()
          if (wordCount >= maxWords) notFull = false
     }
-    wordsInBuffer = wordCount
-//		println "CW: ${buffer.flatten()}"
+    //		println "CW: ${buffer.flatten()}"
     if (line == null) return null
     else return buffer.flatten()
   }
@@ -82,8 +82,11 @@ class ConcordanceWords extends DataClass {
     punctuatedWords = createBuffer(fileReader, maxBufferSize)
     if (punctuatedWords == null)
       return normalTermination
-    else
+    else {
+      bufferInstance = bufferId
+      bufferId = bufferId + 1 // simply to identify each block
       return normalContinuation
+    }
   }
 
   /**

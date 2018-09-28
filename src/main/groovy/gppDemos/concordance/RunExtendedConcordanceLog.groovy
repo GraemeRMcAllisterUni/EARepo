@@ -6,7 +6,7 @@ import groovyJCSP.*
 import gppLibrary.DataDetails
 import gppLibrary.LocalDetails
 import gppLibrary.ResultDetails
-import gppLibrary.connectors.reducers.ListFanOne
+import gppLibrary.connectors.reducers.ListMergeOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.connectors.spreaders.OneFanList
 import gppLibrary.functionals.composites.GroupOfPipelineCollects
@@ -48,7 +48,7 @@ String outFileName = "./${title}ExtLog"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
-int runNo = 1
+int runNo = 3
  
  
 def dDetails = new DataDetails( dName: cw.getName(),
@@ -103,7 +103,7 @@ def emit = new Emit (
     output: chan1.out(),
     eDetails: dDetails,
     logPhaseName: "0-emit",
-    logPropertyName: "wordsInBuffer")
+    logPropertyName: "bufferInstance")
  
 def fos = new OneFanList(
     input: chan1.in(),
@@ -113,9 +113,11 @@ def group = new ListGroupList(
     inputList: chan2InList,
     outputList: chan3OutList,
     function: cw.processBuffer,
-    workers: blockWorkers)
+    workers: blockWorkers,
+    logPhaseName: "1-split",
+    logPropertyName: "bufferInstance")
  
-def fis = new ListFanOne(
+def fis = new ListMergeOne(
     inputList: chan3InList,
     output: chan4.out(),
     )
@@ -126,12 +128,17 @@ def combine = new CombineNto1(
     output: chan5.out(),
     localDetails: localData,
     outDetails: outData,
-    combineMethod: cc.appendBuff )
+    combineMethod: cc.appendBuff,
+    logPhaseName: "2-combine",
+    inputLogPropertyName: "bufferInstance",
+    outputLogPropertyName: "strLen")
  
 def emitInstances = new EmitFromInput(
     input: chan5.in(),
     output: chan6.out(),
-    eDetails: outData)
+    eDetails: outData,
+    logPhaseName: "3-emit",
+    logPropertyName: "strLen" )
  
 def fanOut = new OneFanAny(
     input: chan6.in(),
@@ -145,7 +152,7 @@ def poG = new GroupOfPipelineCollects(
     rDetails: resultDetails,
     stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
     groups: pogWorkers,
-    logPhaseNames: ["1-value", "2-indeces", "3-words"],
+    logPhaseNames: ["4-value", "5-indeces", "6-words"],
     logPropertyName: "strLen",
     logFileName: "./GPPLogs/LogFileExt-$runNo-")
 

@@ -1,5 +1,5 @@
 group 'gppDemos'
-version '1.0.0-alpha-3'
+version '1.0.0-alpha-4'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
@@ -7,9 +7,9 @@ apply plugin: 'java'
 //sourceCompatibility = 1.8
 
 def jcspLib = "C:/jcspLib"
-def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-3.jar"
+def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-4.jar"
 
-def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-3.jar"
+def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-4.jar"
 
 println "using gppLibrary library $jcspLib\\$gppLibraryJarFile"
 println "using gppBuilder library $jcspLib\\$gppBuilderJarFile"

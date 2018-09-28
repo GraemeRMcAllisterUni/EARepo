@@ -3,7 +3,7 @@ package gppDemos.concordance
 import gppLibrary.DataDetails
 import gppLibrary.LocalDetails
 import gppLibrary.ResultDetails
-import gppLibrary.connectors.reducers.ListFanOne
+import gppLibrary.connectors.reducers.ListMergeOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.connectors.spreaders.OneFanList
 import gppLibrary.functionals.composites.GroupOfPipelineCollects
@@ -44,7 +44,7 @@ String outFileName = "./${title}ExtLog"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
-int runNo = 1
+int runNo = 3
 
 
 def dDetails = new DataDetails( dName: cw.getName(),
@@ -81,21 +81,28 @@ def startime = System.currentTimeMillis()
 
 def emit = new Emit (eDetails: dDetails,
         logPhaseName: "0-emit",
-        logPropertyName: "wordsInBuffer")
+        logPropertyName: "bufferInstance")
 
 def fos = new OneFanList()
 
 def group = new ListGroupList(function: cw.processBuffer,
-            workers: blockWorkers)
+            workers: blockWorkers,
+        logPhaseName: "1-split",
+        logPropertyName: "bufferInstance")
 
-def fis = new ListFanOne()
+def fis = new ListMergeOne()
 
 
 def combine = new CombineNto1(localDetails: localData,
                 outDetails: outData,
-                combineMethod: cc.appendBuff )
+                combineMethod: cc.appendBuff,
+        logPhaseName: "2-combine",
+        inputLogPropertyName: "bufferInstance",
+        outputLogPropertyName: "strLen")
 
-def emitInstances = new EmitFromInput( eDetails: outData)
+def emitInstances = new EmitFromInput( eDetails: outData,
+        logPhaseName: "3-emit",
+        logPropertyName: "strLen" )
 
 def fanOut = new OneFanAny( destinations: pogWorkers)
 
@@ -103,7 +110,7 @@ def poG = new GroupOfPipelineCollects( stages: 3,
                 rDetails: resultDetails,
                 stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
                 groups: pogWorkers,
-                logPhaseNames: ["1-value", "2-indeces", "3-words"],
+                logPhaseNames: ["4-value", "5-indeces", "6-words"],
                 logPropertyName: "strLen",
                 logFileName: "./GPPLogs/LogFileExt-$runNo-")
 
