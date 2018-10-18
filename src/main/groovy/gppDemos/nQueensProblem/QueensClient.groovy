@@ -59,7 +59,7 @@ class QueensClient extends DataClass {
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
         
-        for ( int i in 1 .. 2*N) {
+        for ( i in 1 .. 2*N) {
             leftDiagonal[i] = 0
             rightDiagonal[i] = 0
         }
@@ -67,8 +67,9 @@ class QueensClient extends DataClass {
             leftDiagonal[i+board[i]-1]++
             int idx = N-i+board[i]
             rightDiagonal[idx]++
+//            rightDiagonal[N-i+board[i]]++
         }
-        for ( int i in 1 .. ((2*N) - 1)) {
+        for ( i in 1 .. ((2*N) - 1)) {
             int counter = 0
             if ( leftDiagonal[i] > 1)
                 counter += leftDiagonal[i] - 1
@@ -100,7 +101,7 @@ class QueensClient extends DataClass {
         // this leaves values in mb1 that need to be inserted into result
         // to maintain board consistency as a permutation
         int mb2Size = mb2.size()
-        for ( int i in 0 ..< mb2Size) {
+        for ( i in 0 ..< mb2Size) {
             int v = mb2[i]
             int j = 0
             boolean notFound = true
@@ -115,7 +116,7 @@ class QueensClient extends DataClass {
         }
         // now iterate through mb2 looking for matches in sb1
         // replace any with values from mb1
-        for ( int i in 0..< mb2Size) {
+        for ( i in 0..< mb2Size) {
             if (sb1.contains(mb2[i])) {
                 int v = mb2[i]
                 int j = 0
@@ -133,7 +134,7 @@ class QueensClient extends DataClass {
             
         // now iterate through mb2 looking for matches in eb1
         // replace any with values from mb1
-        for ( int i in 0..< mb2Size) {
+        for ( i in 0..< mb2Size) {
             if (eb1.contains(mb2[i])) {
                 int v = mb2[i]
                 int j = 0

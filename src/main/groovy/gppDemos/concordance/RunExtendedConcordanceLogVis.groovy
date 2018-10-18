@@ -18,7 +18,10 @@ import gppDemos.concordance.ConcordanceWords as cw
 import gppDemos.concordance.ConcordanceCombine as cc
 import gppDemos.concordance.ConcordanceResults as cr
 import gppDemos.concordance.ConcordanceData as cd
- 
+
+// added as part of the logging visualiser
+import gppLibrary.Logger
+import gppLibrary.LoggingVisualiser
 
 //usage runDemo concordance/RunExtendedConcordance resultsFile title blockWorkers blocksize pogWorkers
  
@@ -48,7 +51,7 @@ String outFileName = "./${title}ExtLog"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
-int runNo = 3
+int runNo = 51
  
  
 def dDetails = new DataDetails( dName: cw.getName(),
@@ -79,12 +82,18 @@ List <ResultDetails>  resultDetails = []
  
 for ( g in 0..< pogWorkers) resultDetails << rDetails
  
-print "RunExtendedConcordanceLog $doFileOutput, $blockWorkers, $pogWorkers, $blockSize, "
+println "RunExtendedConcordanceLog $doFileOutput, $blockWorkers, $pogWorkers, $blockSize, "
 System.gc()
 def startime = System.currentTimeMillis()
  
-
+//logging visualisation added by hand
+def logChan = Channel.any2one()
+Logger.initLogChannel(logChan.out())
+def logVis = new LoggingVisualiser(logInput: logChan.in(),
+                                    collectors: pogWorkers,
+                                    logFileName: "./GPPLogs/LogFileExt-$runNo-")
 //NETWORK
+
 
 def chan1 = Channel.one2one()
 def chan2 = Channel.one2oneArray(blockWorkers)
@@ -152,17 +161,17 @@ def poG = new GroupOfPipelineCollects(
     rDetails: resultDetails,
     stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
     groups: pogWorkers,
-    logPhaseNames: ["4-value", "5-indeces", "6-words"],
+    logPhaseNames: ["4-value", "5-indices", "6-words", "7-collect"],
     logPropertyName: "strLen",
-    logFileName: "./GPPLogs/LogFileExt-$runNo-")
+    visLogChan: logChan.out())
 
 PAR network = new PAR()
- network = new PAR([emit , fos , group , fis , combine , emitInstances , fanOut , poG ])
+ network = new PAR([emit , fos , group , fis , combine , emitInstances , fanOut , poG, logVis ])
  network.run()
  network.removeAllProcesses()
 //END
 
  
 def endtime = System.currentTimeMillis()
-println " ${endtime - startime} "
+println "Elapsed ${endtime - startime} "
  
