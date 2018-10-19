@@ -79,6 +79,8 @@ print "RunExtendedConcordanceLog $doFileOutput, $blockWorkers, $pogWorkers, $blo
 System.gc()
 def startime = System.currentTimeMillis()
 
+//@log pogWorkers "./GPPLogs/LogFileExt-53-"
+
 def emit = new Emit (eDetails: dDetails,
         logPhaseName: "0-emit",
         logPropertyName: "bufferInstance")
@@ -110,9 +112,8 @@ def poG = new GroupOfPipelineCollects( stages: 3,
                 rDetails: resultDetails,
                 stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
                 groups: pogWorkers,
-                logPhaseNames: ["4-value", "5-indeces", "6-words"],
-                logPropertyName: "strLen",
-                logFileName: "./GPPLogs/LogFileExt-$runNo-")
+                logPhaseNames: ["4-value", "5-indeces", "6-words", "7-collect"],
+                logPropertyName: "strLen" )
 
 def endtime = System.currentTimeMillis()
 println " ${endtime - startime} "

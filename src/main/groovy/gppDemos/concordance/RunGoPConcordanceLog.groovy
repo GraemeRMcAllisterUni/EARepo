@@ -16,8 +16,10 @@ import gppDemos.concordance.ConcordanceResults as cr
 
 //usage runDemo concordance/RunGoPConcordanceLog resultFile groups title N runNo
  
-int groups = 2
-String title = "bible"
+int groups
+groups = 2
+String title
+title = "bible"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
@@ -56,6 +58,18 @@ print "RunGoPConcordanceLog $doFileOutput,  $groups, "
  
 def startime = System.currentTimeMillis()
  
+//@log groups "./GPPLogs/LogFile-54-"
+
+import gppLibrary.Logger
+import gppLibrary.LoggingVisualiser
+
+def logChan = Channel.any2one()
+Logger.initLogChannel(logChan.out())
+def logVis = new LoggingVisualiser ( logInput: logChan.in(), 
+                     collectors: groups,
+                     logFileName: "./GPPLogs/LogFile-54-" )
+
+ 
 
 //NETWORK
 
@@ -76,17 +90,17 @@ def fanOut = new OneFanAny(
  
 def poG = new GroupOfPipelineCollects(
     inputAny: chan2.in(),
+    visLogChan : logChan.out(),
     // no output channel required
     stages: 3,
     rDetails: resultDetails,
     stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
     groups: groups,
-    logPhaseNames: ["1-value", "2-indeces", "3-words"],
-    logPropertyName: "strLen",
-    logFileName: "./GPPLogs/LogFile-$runNo-")
+    logPhaseNames: ["1-value", "2-indeces", "3-words", "4-collect"],
+    logPropertyName: "strLen" )
 
 PAR network = new PAR()
- network = new PAR([emitter , fanOut , poG ])
+ network = new PAR([logVis, emitter , fanOut , poG ])
  network.run()
  network.removeAllProcesses()
 //END

@@ -12,8 +12,10 @@ import gppDemos.concordance.ConcordanceResults as cr
 
 //usage runDemo concordance/RunGoPConcordanceLog resultFile groups title N runNo
 
-int groups = 2
-String title = "bible"
+int groups
+groups = 2
+String title
+title = "bible"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
@@ -52,6 +54,8 @@ print "RunGoPConcordanceLog $doFileOutput,  $groups, "
 
 def startime = System.currentTimeMillis()
 
+//@log groups "./GPPLogs/LogFile-54-"
+
 def emitter = new Emit( eDetails: dDetails,
             logPhaseName: "0-emit",
             logPropertyName: "strLen")
@@ -62,9 +66,8 @@ def poG = new GroupOfPipelineCollects( stages: 3,
                      rDetails: resultDetails,
                      stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
                      groups: groups,
-                     logPhaseNames: ["1-value", "2-indeces", "3-words"],
-                     logPropertyName: "strLen",
-                     logFileName: "./GPPLogs/LogFile-$runNo-")
+                     logPhaseNames: ["1-value", "2-indeces", "3-words", "4-collect"],
+                     logPropertyName: "strLen" )
 
 def endtime = System.currentTimeMillis()
 println " ${endtime - startime}"

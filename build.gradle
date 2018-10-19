@@ -9,7 +9,7 @@ apply plugin: 'java'
 def jcspLib = "C:/jcspLib"
 def gppLibraryJarFile = "gppLibrary-1.0.0-alpha-6.jar"
 
-def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-4.jar"
+def gppBuilderJarFile = "gppBuilder-1.0.0-alpha-5.jar"
 
 println "using gppLibrary library $jcspLib\\$gppLibraryJarFile"
 println "using gppBuilder library $jcspLib\\$gppBuilderJarFile"
