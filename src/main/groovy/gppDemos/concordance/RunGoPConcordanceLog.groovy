@@ -58,7 +58,7 @@ print "RunGoPConcordanceLog $doFileOutput,  $groups, "
  
 def startime = System.currentTimeMillis()
  
-//@log groups "./GPPLogs/LogFile-54-"
+//@log groups "./GPPLogs/LogFile-2-"
 
 import gppLibrary.Logger
 import gppLibrary.LoggingVisualiser
@@ -67,7 +67,7 @@ def logChan = Channel.any2one()
 Logger.initLogChannel(logChan.out())
 def logVis = new LoggingVisualiser ( logInput: logChan.in(), 
                      collectors: groups,
-                     logFileName: "./GPPLogs/LogFile-54-" )
+                     logFileName: "./GPPLogs/LogFile-2-" )
 
  
 

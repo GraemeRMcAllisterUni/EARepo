@@ -79,7 +79,7 @@ print "RunExtendedConcordanceLog $doFileOutput, $blockWorkers, $pogWorkers, $blo
 System.gc()
 def startime = System.currentTimeMillis()
 
-//@log pogWorkers "./GPPLogs/LogFileExt-53-"
+//@log pogWorkers "./GPPLogs/LogFileExt-1-"
 
 def emit = new Emit (eDetails: dDetails,
         logPhaseName: "0-emit",

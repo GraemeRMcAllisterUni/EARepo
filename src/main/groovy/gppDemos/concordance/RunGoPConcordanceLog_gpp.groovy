@@ -54,7 +54,7 @@ print "RunGoPConcordanceLog $doFileOutput,  $groups, "
 
 def startime = System.currentTimeMillis()
 
-//@log groups "./GPPLogs/LogFile-54-"
+//@log groups "./GPPLogs/LogFile-2-"
 
 def emitter = new Emit( eDetails: dDetails,
             logPhaseName: "0-emit",
