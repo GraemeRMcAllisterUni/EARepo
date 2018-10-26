@@ -27,24 +27,37 @@ int iterations = 100000
  
 println "run feedback pi workers = $workers, max instances = $instances, iterations = $iterations, error = $errorMargin"
 System.gc()
-def emitData = new DataDetails( dName: piData.getName(),
+def emitData = new DataDetails(dName: piData.getName(),
 dInitMethod: piData.init,
 dInitData: [instances],
 dCreateMethod: piData.create,
 dCreateData: [iterations])
  
  
-def resultDetails = new ResultDetails( rName: piResults.getName(),
+def resultDetails = new ResultDetails(rName: piResults.getName(),
 rInitMethod: piResults.init,
 rCollectMethod: piResults.collector,
 rFinaliseMethod: piResults.finalise)
  
-def feedbackDetails = new FeedbackDetails( fName: piFBack.getName(),
-fInitMethod:  piFBack.initClass ,
+def feedbackDetails = new FeedbackDetails(fName: piFBack.getName(),
+fInitMethod: piFBack.initClass,
 fInitData: [errorMargin],
 fMethod: piFBack.feedbackBool)
  
 def startime = System.currentTimeMillis()
+ 
+//@log 1 "./PiLog-"
+
+import gppLibrary.Logger
+import gppLibrary.LoggingVisualiser
+
+def logChan = Channel.any2one()
+Logger.initLogChannel(logChan.out())
+def logVis = new LoggingVisualiser ( logInput: logChan.in(), 
+                     collectors: 1,
+                     logFileName: "./PiLog-" )
+
+ 
 
 //NETWORK
 
@@ -58,18 +71,22 @@ def chan5 = Channel.one2one()
 def emitter = new EmitWithFeedback(
     feedback: feedbackChan.in(),
     output: chan1.out(),
-    eDetails: emitData)
+    eDetails: emitData,
+    logPhaseName: "emit",
+    logPropertyName: "instance")
  
 def fanOut = new OneFanAny(
     input: chan1.in(),
     outputAny: chan2.out(),
     destinations: workers)
  
-def farmer = new AnyGroupAny (
+def farmer = new AnyGroupAny(
     inputAny: chan2.in(),
     outputAny: chan3.out(),
     workers: workers,
-    function: piData.getWithinOp())
+    function: piData.getWithinOp(),
+    logPhaseName: "work",
+    logPropertyName: "instance")
  
 def fanIn = new AnyFanOne(
     inputAny: chan3.in(),
@@ -80,15 +97,20 @@ def feedBack = new FeedbackBool(
     input: chan4.in(),
     output: chan5.out(),
     feedback: feedbackChan.out(),
-    fDetails: feedbackDetails )
+    fDetails: feedbackDetails,
+    logPhaseName: "fback",
+    logPropertyName: "instance")
  
 def collector = new Collect(
     input: chan5.in(),
+    visLogChan : logChan.out(),
     // no output channel required
-    rDetails: resultDetails )
+    rDetails: resultDetails,
+    logPhaseName: "collect",
+    logPropertyName: "instance")
 
 PAR network = new PAR()
- network = new PAR([emitter , fanOut , farmer , fanIn , feedBack , collector ])
+ network = new PAR([logVis, emitter , fanOut , farmer , fanIn , feedBack , collector ])
  network.run()
  network.removeAllProcesses()
 //END

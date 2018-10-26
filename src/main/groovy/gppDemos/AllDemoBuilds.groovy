@@ -43,6 +43,8 @@ build.runBuilder(rootPath + "QuickSort\\RunGroupQuickSort")
 build.runBuilder(rootPath + "MCpi\\RunSkelMCpi")
 build.runBuilder(rootPath + "MCpi\\RunMCpiDPCPattern")
 build.runBuilder(rootPath + "MCpi\\RunMCpiWorkerDPCPattern")
+build.runBuilder(rootPath + "MCpi\\RunFeedbackPi")
+build.runBuilder(rootPath + "MCpi\\RunFeedbackPiLog")
 // evolutionary
 //build.runBuilder(rootPath + "nQueensProblem\\TestQueens")
 build.runBuilder(rootPath + "maxOneProblem\\TestMaxOne")

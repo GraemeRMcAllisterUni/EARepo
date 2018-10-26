@@ -3,32 +3,33 @@ package gppDemos.MCpi
 import jcsp.lang.ChannelOutput
 
 class MCpiFeedback extends gppLibrary.DataClass {
-  static int previousIterations = 0
-  static int previousWithin = 0
-  static float errorMargin = 0.1
-  static float previousPi = 0.0
-  static boolean sentFeedback = false
-  static final String initClass = "initClass"
-  static final String feedbackBool = "feedbackBool"
+    static int previousIterations = 0
+    static int previousWithin = 0
+    static double errorMargin = 0.1
+    static double previousPi = 0.0
+    static boolean sentFeedback = false
+    static final String initClass = "initClass"
+    static final String feedbackBool = "feedbackBool"
 
-  public int initClass(List p){
-    errorMargin = p[0]
-    return completedOK
-  }
-
-  public int feedbackBool (def obj, ChannelOutput out){
-    if ( !sentFeedback) {
-      previousIterations = previousIterations + obj.iterations
-      previousWithin = previousWithin + obj.within
-      def currentPi = 4.0 * ((float) previousWithin / (float) previousIterations)
-      if ( Math.abs(currentPi - previousPi) < errorMargin){
-        out.write(false)
-        println " Feedback has pi = $currentPi with previous = $previousPi"
-        sentFeedback = true
-      }
-      else
-        previousPi = currentPi
+    int initClass(List p) {
+        errorMargin = p[0]
+        return completedOK
     }
-    return completedOK
-  }
+
+    int feedbackBool(List p) {
+        MCpiData val = p[0]
+        previousIterations = previousIterations + val.iterations
+        previousWithin = previousWithin + val.within
+        double currentPi = 4.0 * ((double) previousWithin / (double) previousIterations)
+        if (Math.abs(currentPi - previousPi) < errorMargin) {
+//            println "MCpiFbck: $previousPi: $currentPi = ${Math.abs(currentPi - previousPi)}"
+            return normalTermination
+        }
+        else {
+//            println "MCpiFbck: $previousPi: $currentPi \t\t\t= ${Math.abs(currentPi - previousPi)}"
+            previousPi = currentPi
+            return normalContinuation
+        }
+
+    }
 }

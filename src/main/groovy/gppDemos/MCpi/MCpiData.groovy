@@ -20,7 +20,7 @@ package gppDemos.MCpi
 class MCpiData extends gppLibrary.DataClass {
   int iterations = 0
   int within = 0
-  static int instance = 1
+  static int instance = 0
   static int  instances
   static String withinOp = "getWithin"
   static String init = "initClass"
