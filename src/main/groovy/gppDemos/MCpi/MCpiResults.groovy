@@ -23,8 +23,9 @@ class MCpiResults extends gppLibrary.DataClass {
    */
   int finalise(List p) {
     double pi = 4.0 * ((double) withinSum / (double) iterationSum)
-    println """Total Iterations: $iterationSum Points Within : $withinSum pi Value :$pi"""
-    println "Math value of pi is ${Math.PI}"
+//    println """Total Iterations: $iterationSum Points Within : $withinSum pi Value :$pi"""
+//    println "Math value of pi is ${Math.PI}"
+    print "$pi, "
     return completedOK
   }
   /**
