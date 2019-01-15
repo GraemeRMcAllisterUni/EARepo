@@ -4,9 +4,13 @@ Contact J.Kerridge@napier.ac.uk
 
 It is a work in progress and not all demos will work.
 
-Please not that currently the latest version of Groovy that can be used is 2.4.12 
-as a problem has been found with later version for which there is a JIRA 
-notification (Groovy-8549).
+It should be noted that some problems were found with some of the Groovy releases, 
+in particular versions after 2.4.12 and some of the early versions of 2.5.x and
+3.0.0-alpha-1 did not work.
 
-The .iml file indicates the other required components, 
-until a build.gradle file is available.
+It is known that the demos do work with the current release of groovy 2.5.x and 
+3.0.0-alpha-3 onwards.
+
+The gradle build file for the project does load the required components depending on the
+version of groovy used.
+
