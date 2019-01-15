@@ -1,12 +1,14 @@
 package gppDemos.jacobi
 
 import gppLibrary.functionals.matrix.*
+// before running bat files you need to create two additional Jacobi files for
+// system sizes of 4096 and 8192  equations
 
-int n = 64
-int range = 9		// range of values for non-daigonal elements
+int n = 8192  // need to run with 4096 and 8192
+int range = 9		// range of values for non-diagonal elements
 int diagRange = n * 10	//range of values for diagonal elements
 String title = "Jacobi$n"
-String fileName = "src\\demos\\jacobi\\${title}.txt"
+String fileName = "./${title}.txt"
 def file = new File(fileName)
 def writer = file.newPrintWriter()
 
@@ -120,7 +122,7 @@ def rng = new Random()
       }
     } // while running
     long endTime = System.currentTimeMillis()
-    println "Result for $n x $n matrix after $iterations iterations in ${endTime - startTime} miliSeconds"
+    println "Result for $n x $n matrix after $iterations iterations in ${endTime - startTime} milliSeconds"
     println "Vector x = ${x.getEntries()}"
     n = n * 2
     diagRange = n * 10
