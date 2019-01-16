@@ -7,7 +7,7 @@ import gppDemos.nQueensProblem.QueensServerGenerational as qs
 import gppDemos.nQueensProblem.QueensClient as qc
 
 
-//usage runDemo nQueensProblem\TestQueens2 resultsFile N clients initialPopulation
+//usage runDemo nQueensProblem\TestQueensOverwrite resultsFile N clients initialPopulation
 
 int clients = 3
 int N = 8

@@ -7,6 +7,7 @@ import gppLibrary.DataDetails
 import gppLibrary.LocalDetails
 import gppLibrary.ResultDetails
 import gppLibrary.connectors.reducers.ListFanOne
+import gppLibrary.connectors.reducers.ListMergeOne
 import gppLibrary.connectors.spreaders.OneFanList
 import gppLibrary.functionals.groups.ListGroupList
 import gppLibrary.functionals.transformers.CombineNto1
@@ -103,7 +104,7 @@ def group = new ListGroupList(
     function: cw.processBuffer,
     workers: blockWorkers)
  
-def fis = new ListFanOne(
+def fis = new ListMergeOne(
     inputList: chan3InList,
     output: chan4.out(),
     )

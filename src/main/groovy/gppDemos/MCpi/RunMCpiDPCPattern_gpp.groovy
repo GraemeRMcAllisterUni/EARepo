@@ -6,6 +6,8 @@ import gppLibrary.DataDetails
 import gppLibrary.ResultDetails
 import gppLibrary.patterns.DataParallelCollect
 
+//usage runDemo MCpi/RunMCpiDPCPattern resultsFile workers instances iterations
+
 int workers = 0
 int instances = 0
 int iterations = 0

@@ -2,7 +2,7 @@
  * A solution to the N-body problem that ustilses a Matrix based representation of the planets using the
  * MultiCoreEngine process, which itself comprises a MultiCoreRoot process and a number of MultiCoreNode processes
  * over which the Matrix is partitioned for processing.  The solution undertakes a fixed number of iterations.
- * The architecture used is the same as the Jacobi demonstration excpet that in its case the algorithm iterates until
+ * The architecture used is the same as the Jacobi demonstration except that in its case the algorithm iterates until
  * the solution satisfies a terminal condition.  The solution can deal with systems up to 10000 planets.
  * <p>
  *<pre>

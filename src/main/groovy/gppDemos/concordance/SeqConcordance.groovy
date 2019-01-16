@@ -1,6 +1,6 @@
 package gppDemos.concordance
 
-//usage runDemo concordance/SeqConcordance resultFile workers title N
+//usage runDemo concordance/SeqConcordance resultFile title N
 
 String title = "bible"
 int N = 8

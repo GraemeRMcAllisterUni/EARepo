@@ -12,7 +12,7 @@ import gppLibrary.terminals.Emit
 import gppDemos.solarSystem.PlanetryResult as pr
  
 
-// usage runDemo nbody/ParNbody NbodyB56 N nodes iterations
+// usage runDemo nbody/ParNbody resultFile N nodes iterations
  
 int nodes = 0
 int N = 0

@@ -12,7 +12,7 @@ import gppDemos.nbody.NbodyData as nd
 import gppDemos.nbody.NbodyResults as nr
  
 
-// usage runDemo nbody/ParNbody NbodyB56 N nodes iterations
+// usage runDemo nbody/ParNbody outFile N nodes iterations
  
 int nodes = 0
 int N = 0

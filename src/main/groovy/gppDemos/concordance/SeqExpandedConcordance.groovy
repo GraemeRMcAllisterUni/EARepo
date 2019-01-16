@@ -2,16 +2,21 @@ package gppDemos.concordance
 
 import gppLibrary.DataClass as dc
 
-def title = "bible"
+String title = "bible"
 int N = 8
 int minSeqLen = 2
 boolean doFileOutput = false
+
+if (args.size() > 0){
+  title = args[0]
+  N = Integer.parseInt(args[1])
+}
 
 // eclipse versions
 def fileName = "./${title}.txt"
 def outFileName = "./${title}Xseq"
 
-//usage runDemo concordance/SeqExpandedConcordance
+//usage runDemo concordance/SeqExpandedConcordance resultFile  title N
 
 print "SeqExpanded $doFileOutput, $N, $minSeqLen, "
 System.gc()

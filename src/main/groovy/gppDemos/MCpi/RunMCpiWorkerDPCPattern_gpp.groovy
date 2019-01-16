@@ -9,7 +9,7 @@ import gppDemos.MCpi.MCpiPartData as piPartData
 import gppDemos.MCpi.MCpiPartResults as piPartResults
 import gppDemos.MCpi.MCpiPartWorker as piPartWorker
 
-//usage runDemo MCpi/RunSkelMCpi resultsFile workers instances iterations
+//usage runDemo MCpi/RunMCpiWorkerDPCPattern resultsFile workers instances iterations
 
 int workers = 0
 int instances = 0

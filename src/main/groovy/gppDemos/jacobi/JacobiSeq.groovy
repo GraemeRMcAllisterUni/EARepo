@@ -5,10 +5,19 @@ package gppDemos.jacobi
 import gppDemos.jacobi.JacobiDataMC as jd
 import gppDemos.jacobi.JacobiResultMC as jr
 
-def title = args[0]
-//def title = "Jacobi"
+String title = ""
 
-def fileName = "src\\demos\\jacobi\\${title}.txt"
+//usage runDemo jacobi/RunJacobiMC JacobiB56 title
+
+if (args.size() == 0){
+    title = "Jacobi1024"
+}
+else {
+    nodes = Integer.parseInt(args[1])
+}
+
+
+def fileName = ".\\${title}.txt"
 
 double margin = 1.0E-16
 

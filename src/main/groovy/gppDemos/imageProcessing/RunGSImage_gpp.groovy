@@ -8,6 +8,8 @@ import gppLibrary.terminals.*
 import gppDemos.imageProcessing.CompositeGSImage as img
 import gppDemos.imageProcessing.CompositeGSResult as imgRslt
 
+//usage runDemo imageProcessing/RunGSImage resultsFile nodes
+
 int nodes = 1
 if (args.size() == 0){
     nodes = 4

@@ -12,6 +12,8 @@ import gppDemos.imageProcessing.CompositeARGBImage as img
 import gppDemos.imageProcessing.CompositeARGBResult as imgRslt
  
 
+//usage runDemo imageProcessing/RunRGBImage resultsFile nodes
+ 
 int nodes = 1
 if (args.size() == 0){
 nodes = 4
