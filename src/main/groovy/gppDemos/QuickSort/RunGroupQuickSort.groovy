@@ -16,24 +16,21 @@ import gppDemos.QuickSort.QSResult as qsr
 import gppDemos.QuickSort.QSWorker as qsw
  
 
-//usage runDemo QuickSort/RunGroupQickSort QuickB56 workers instances
+//usage runDemo QuickSort RunGroupQuickSort resultsFile workers instances
  
  
-int workers = 0
-int instances = 0
+int workers
+int instances
 if (args.size() == 0){
 workers = 4
 instances = 5000
 }
 else {
-workers = Integer.parseInt(args[0])
-instances = Integer.parseInt(args[1])
+//    String folder = args[0] not used
+workers = Integer.parseInt(args[1])
+instances = Integer.parseInt(args[2])
 }
- 
-//int workers = 4
-//int instances = 5000
- 
-print "QuickSort $workers, $instances -> "
+print "QuickSort $workers, $instances, "
  
 System.gc()
 def startime = System.currentTimeMillis()

@@ -3,13 +3,27 @@ package gppDemos.imageProcessing
 import gppLibrary.functionals.matrix.Matrix
 import gppDemos.imageProcessing.CompositeGSImage as img
 import gppDemos.imageProcessing.CompositeGSResult as imgRslt
- 
 
-int nodes = 1
- 
-String inFile = "./DSC_0120-001.jpg"
-String outFile = "./DSC_0120-001_GS_${nodes}_seq.jpg"
- 
+//usage runDemo imageProcessing SeqGSImage resultsFile
+
+int nodes
+String workingDirectory = System.getProperty('user.dir')
+String inFileName = "DSC_0120-001.jpg"
+String outFileName = "DSC_0120-001_GS_${nodes}_seq.jpg"
+String inFile
+String outFile
+if (args.size() == 0){
+    nodes = 1
+    inFile = "./$inFileName"
+    outFile = "./$outFileName"
+}
+else {
+    nodes = 1
+    String folder = args[0]
+    inFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$inFileName"
+    outFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$outFileName"
+}
+
 //edge
 Matrix kernel1 = new Matrix(rows: 3, columns: 3)
 kernel1.entries = new int[3][3]
@@ -47,7 +61,7 @@ kernel5.setByRow([1, 1, 1], 2)
  
   
 System.gc()
-print "Image Engine $nodes ->"
+print "GSImage Seq, $nodes, "
 long startTime = System.currentTimeMillis()
  
 def image = new img()

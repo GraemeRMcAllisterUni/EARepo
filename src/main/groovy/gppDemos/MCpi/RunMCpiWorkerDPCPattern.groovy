@@ -13,11 +13,11 @@ import gppDemos.MCpi.MCpiPartResults as piPartResults
 import gppDemos.MCpi.MCpiPartWorker as piPartWorker
  
 
-//usage runDemo MCpi/RunMCpiWorkerDPCPattern resultsFile workers instances iterations
+//usage runDemo MCpi RunMCpiWorkerDPCPattern resultsFile workers instances iterations
  
-int workers = 0
-int instances = 0
-int iterations = 0
+int workers
+int instances
+int iterations
  
 if (args.size() == 0 ) {
 workers = 4
@@ -25,11 +25,11 @@ instances =1024
 iterations = 100000
 }
 else {
-workers = Integer.parseInt(args[0])
-instances = Integer.parseInt(args[1])
-iterations = Integer.parseInt(args[2])
+//    String folder = args[0] not required
+workers = Integer.parseInt(args[1])
+instances = Integer.parseInt(args[2])
+iterations = Integer.parseInt(args[3])
 }
- 
  
 print "Run MCpi Worker DPC Pattern $workers, $instances, $iterations, "
 System.gc()

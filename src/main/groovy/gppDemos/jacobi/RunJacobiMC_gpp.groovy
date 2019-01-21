@@ -16,22 +16,24 @@ import gppDemos.jacobi.JacobiResultMC as jr
  * are provided to create the required input file.
  */
 
+//usage runDemo jacobi RunJacobiMC resultsFile title nodes
 
-int nodes = 0
-String title = ""
-
-//usage runDemo jacobi/RunJacobiMC JacobiB56 title nodes
+int nodes
+String title
+String workingDirectory = System.getProperty('user.dir')
+String fileName
 
 if (args.size() == 0){
     nodes = 4
     title = "Jacobi1024"
+    fileName = "./${title}.txt"
 }
 else {
-    nodes = Integer.parseInt(args[1])
-    title = args[0]
+    nodes = Integer.parseInt(args[2])
+    String folder = args[0]
+    title = args[1]
+    fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
 }
-
-def fileName = "./${title}.txt"
 
 double margin = 1.0E-16
 

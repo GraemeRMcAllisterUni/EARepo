@@ -8,30 +8,35 @@ import gppLibrary.terminals.Collect
 import gppLibrary.terminals.Emit
 import gppDemos.solarSystem.PlanetryResult as pr
 
-// usage runDemo nbody/ParNbody resultFile N nodes iterations
+// usage runDemo solarSystem RunPlanets resultFile N nodes iterations
 
-int nodes = 0
-int N = 0
-int iterations = 0
+int nodes
+int N
+String workingDirectory = System.getProperty('user.dir')
+int iterations
 double dt = 1e11
+String readPath, writePath
 
 if (args.size() == 0){
-    N = 100
-    nodes = 2
+    // assumed to be running form within Intellij
+    N = 128
+    nodes = 4
+    readPath = "./planets_list.txt"
+    writePath = "./${N}_solar_${nodes}_Par.txt"
     iterations = 100
 }
 else {
-    N = Integer.parseInt(args[0])
-    nodes = Integer.parseInt(args[1])
-    iterations = Integer.parseInt(args[2])
+    // assumed to be running via runDemo
+    String folder = args[0]
+    N = Integer.parseInt(args[1])
+    nodes = Integer.parseInt(args[2])
+    iterations  = Integer.parseInt(args[3])
+    writePath = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${N}_solar_${nodes}_Par.txt"
+    readPath = workingDirectory + "/src/main/groovy/gppDemos/${folder}/planets_list.txt"
 }
 
-
- String readPath = "./planets_list.txt"
- String writePath = "./result_${iterations}_${N}_planets_${nodes}_Par.txt"
-
 System.gc()
-print "RunPlanets (arrayList of plants) $iterations, $N , $nodes ->"
+print "RunPlanets (arrayList of planets solarSystem) $iterations, $N , $nodes, "
 long startTime = System.currentTimeMillis()
 
 

@@ -7,16 +7,25 @@ import gppDemos.nQueensProblem.QueensServerGenerational as qs
 import gppDemos.nQueensProblem.QueensClient as qc
 
 
-//usage runDemo nQueensProblem\TestQueensOverwrite resultsFile N clients initialPopulation
+//usage runDemo nQueensProblem TestQueensOverwrite resultsFile N clients initialPopulation
 
-int clients = 3
-int N = 8
-int initialPopulation = 10
+int clients
+int N
+int initialPopulation
 
-if (args.size() != 0){
-    N = Integer.parseInt(args[0])
-    clients = Integer.parseInt(args[1])
-    initialPopulation = Integer.parseInt(args[2])
+int nodes
+if (args.size() == 0){
+    // assumed to be running form within Intellij
+    clients = 3
+    N = 8
+    initialPopulation = 10
+}
+else {
+    // assumed to be running via runDemo
+    // assumed working directory folder = args[0]
+    N = Integer.parseInt(args[1])
+    clients = Integer.parseInt(args[2])
+    initialPopulation = Integer.parseInt(args[3])
 }
 
 int crossoverProb = 95

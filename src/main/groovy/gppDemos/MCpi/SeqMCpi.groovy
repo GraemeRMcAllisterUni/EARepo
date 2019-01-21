@@ -1,20 +1,21 @@
 package gppDemos.MCpi
 
-//usage runDemo MCpi/SeqMCpi resultsFile instances iterations
+//usage runDemo MCpi SeqMCpi resultsFile instances iterations
 
 import gppDemos.MCpi.MCpiData as piData
 import gppDemos.MCpi.MCpiResults as piResults
 
-int instances = 0
-int iterations = 0
+int instances
+int iterations
 
 if (args.size() == 0 ) {
     instances =1024
     iterations = 100000
 }
 else {
-    instances = Integer.parseInt(args[0])
-    iterations = Integer.parseInt(args[1])
+//    String folder = args[0] not required
+    instances = Integer.parseInt(args[1])
+    iterations = Integer.parseInt(args[2])
 }
 
 print "SeqMCpi  $instances, $iterations, "

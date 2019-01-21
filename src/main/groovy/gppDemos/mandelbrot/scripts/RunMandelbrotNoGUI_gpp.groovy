@@ -10,13 +10,13 @@ import gppLibrary.*
 import gppDemos.mandelbrot.data.MandelbrotPixel as mp
 import gppDemos.mandelbrot.data.MandelbrotCollect as mc
 
-// usage runDemo mandelbrot/scripts/RunMandelBrotNoGUI workers maxInterations
+// usage runDemo mandelbrot/scripts RunMandelBrotNoGUI workers maxIterations width height delta
 
-int workers = 0
-int maxIterations = 0
-int width = 700                 //1400   700        350
-int height = 400                //800    400        200
-double pixelDelta = 0.005       //0.0025 0.005      0.01
+int workers
+int maxIterations
+int width                  //1400   700        350
+int height                 //800    400        200
+double pixelDelta         //0.0025 0.005      0.01
 
 
 if (args.size() == 0){
@@ -27,16 +27,18 @@ if (args.size() == 0){
     pixelDelta = 0.005
 }
 else {
-    workers = Integer.parseInt(args[0])
-    maxIterations = Integer.parseInt(args[1])
-    width = Integer.parseInt(args[2])
-    height = Integer.parseInt(args[3])
-    pixelDelta = Double.parseDouble(args[4])
+    // assumed to be running via runDemo
+//    String folder = args[0] not required
+    workers = Integer.parseInt(args[1])
+    maxIterations = Integer.parseInt(args[2])
+    width = Integer.parseInt(args[3])
+    height = Integer.parseInt(args[4])
+    pixelDelta = Double.parseDouble(args[5])
 }
 
 System.gc()
 
-print "Pixel noGUI $width, $height, $maxIterations, $workers -> "
+print "Pixel noGUI, $width, $height, $maxIterations, $workers, "
 long startTime = System.currentTimeMillis()
 
 def emitDetails = new DataDetails(dName: mp.getName(),

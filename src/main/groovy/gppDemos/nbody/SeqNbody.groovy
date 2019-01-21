@@ -1,12 +1,28 @@
 package gppDemos.nbody
 
-int N = Integer.parseInt(args[0])
-//int N = 100
-int iterations = 100
-double dt = 1e11
+// usage runDemo nbody SeqNbody outFile N iterations
 
-String readPath = "./planets_list.txt"
-String writePath = "./${N}_planets_Seq.txt"
+int N
+String workingDirectory = System.getProperty('user.dir')
+int iterations
+double dt = 1e11
+String readPath, writePath
+
+if (args.size() == 0){
+    // assumed to be running form within Intellij
+    N = 128
+    readPath = "./planets_list.txt"
+    writePath = "./${N}_planets_Seq.txt"
+    iterations = 100
+}
+else {
+    // assumed to be running via runDemo
+    String folder = args[0]
+    N = Integer.parseInt(args[1])
+    iterations  = Integer.parseInt(args[2])
+    writePath = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${N}_planets_Seq.txt"
+    readPath = workingDirectory + "/src/main/groovy/gppDemos/${folder}/planets_list.txt"
+}
 
 System.gc()
 print "SeqNbody, $N, "

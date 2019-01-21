@@ -1,23 +1,25 @@
 package gppDemos.jacobi
 
-//usage runDemo jacobi/JacobiSeq JacobiB56 title
+//usage runDemo jacobi JacobiSeq resultsFile title
 
 import gppDemos.jacobi.JacobiDataMC as jd
 import gppDemos.jacobi.JacobiResultMC as jr
 
-String title = ""
-
-//usage runDemo jacobi/RunJacobiMC JacobiB56 title
+String title
+String workingDirectory = System.getProperty('user.dir')
+String fileName
 
 if (args.size() == 0){
+    // running from within Intellij
     title = "Jacobi1024"
+    fileName = "./${title}.txt"
 }
 else {
-    nodes = Integer.parseInt(args[1])
+    // running through runDemo bat file
+    String folder = args[0]
+    title = args[1]
+    fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
 }
-
-
-def fileName = ".\\${title}.txt"
 
 double margin = 1.0E-16
 

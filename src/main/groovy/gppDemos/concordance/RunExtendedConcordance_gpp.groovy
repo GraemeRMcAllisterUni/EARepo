@@ -17,35 +17,40 @@ import gppDemos.concordance.ConcordanceCombine as cc
 import gppDemos.concordance.ConcordanceResults as cr
 import gppDemos.concordance.ConcordanceData as cd
 
-//usage runDemo concordance/RunExtendedConcordance resultsFile title blockWorkers blocksize pogWorkers 
+//usage runDemo concordance RunExtendedConcordance resultsFile title blockWorkers blocksize pogWorkers N
 
 int blockWorkers
 int pogWorkers
 int blockSize
-String title 
-
+String title
+int N
+int minSeqLen = 2
+boolean doFileOutput = false
+String workingDirectory = System.getProperty('user.dir')
+String fileName
+String outFileName
 
 if (args.size() == 0){
+    // assumed to be running form within Intellij
     blockWorkers = 4
     pogWorkers = 2
     blockSize = 64000
     title = "bible"
+    N = 8
+    fileName = "./${title}.txt"
+    outFileName = "./${title}Ext"
 }
 else {
-    title = args[0]
-    blockWorkers = Integer.parseInt(args[1])
-    blockSize = Integer.parseInt(args[2])
-    pogWorkers = Integer.parseInt(args[3])
+    // assumed to be running via runDemo
+    String folder = args[0]
+    title = args[1]
+    fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
+    outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}Ext"
+    blockWorkers = Integer.parseInt(args[2])
+    blockSize = Integer.parseInt(args[3])
+    pogWorkers = Integer.parseInt(args[4])
+    N = Integer.parseInt(args[5])
 }
-
-
-String fileName = "./${title}.txt"
-String outFileName = "./${title}Ext"
-
-int N = 8
-int minSeqLen = 2
-boolean doFileOutput = false
-
 
 def dDetails = new DataDetails( dName: cw.getName(),
                 dInitMethod: cw.init,

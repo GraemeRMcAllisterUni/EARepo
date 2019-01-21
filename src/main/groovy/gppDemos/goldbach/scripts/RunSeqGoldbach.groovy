@@ -22,15 +22,15 @@ import gppDemos.goldbach.data.PartitionedPrimeList as ppl
 import gppDemos.goldbach.data.GoldbachCollect as gc
  
 
-//usage runDemo goldbach/scripts/RunSeqGoldbach GoldB56 maxN
+//usage runDemo goldbach/scriptsRunSeqGoldbach resultFile maxN
  
-int maxN = 0
+int maxN
  
 if (args.size() == 0){
 maxN = 20000
 }
 else {
-maxN = Integer.parseInt(args[0])
+maxN = Integer.parseInt(args[1])
 }
 int pWorkers = 1	// pWorkers
  

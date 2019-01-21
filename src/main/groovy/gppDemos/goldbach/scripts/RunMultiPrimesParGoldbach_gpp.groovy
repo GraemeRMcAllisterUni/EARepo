@@ -20,9 +20,32 @@ import gppDemos.goldbach.data.PartitionedPrimeList as ppl
 import gppDemos.goldbach.data.GoldbachRange as gr
 import gppDemos.goldbach.data.GoldbachParCollect as gpc
 
-int maxN = 200000
-int pWorkers = 4	// pWorkers must divide maxN exactly but not checked!
-int gWorkers = 4	// number of Goldbach partitions
+//usage runDemo goldbach/scripts RunMultiPrimesParGoldbach resultsFile maxN gWorkers pWorkers
+
+int maxN
+int pWorkers	// pWorkers must divide maxN exactly checked by assertion!
+                    // number of parallel prime sieves
+int gWorkers	// number of Goldbach partitions
+
+if (args.size() == 0){
+    // assumed to be running form within Intellij
+    maxN = 20000
+    gWorkers = 4
+}
+else {
+    // assumed to be running via runDemo
+    // working directory folder assumed to be in args[0]
+    maxN = Integer.parseInt(args[1])
+    gWorkers = Integer.parseInt(args[2])
+    pWorkers = Integer.parseInt(args[3])
+}
+
+System.gc()
+print "MultiParGB $maxN, $pWorkers, $gWorkers, "
+def startime = System.currentTimeMillis()
+
+assert((maxN % pWorkers) == 0 )
+
 int N = maxN / pWorkers
 int filter = Math.sqrt(maxN) + 1
 def primeInitData = []
@@ -33,9 +56,6 @@ for ( i in 1.. pWorkers){
   primeInitData << [ N, start, end]
   start = end + 1
 }
-//println "Worker = $pWorkers and Prime Boundaries: $primeInitData"
-println "Prime workers = $pWorkers, \nGoldbach Partitions = $gWorkers \nFiltering up to $filter for primes up to $maxN"
-def startime = System.currentTimeMillis()
 
 def eDetails = new DataDetails( dName:  p.getName(),
                 dInitMethod: p.init,
@@ -114,4 +134,4 @@ def collector = new Collect (
 
 def endtime = System.currentTimeMillis()
 def elapsedTime = endtime - startime
-println "Time taken = ${elapsedTime} milliseconds"
+println " ${elapsedTime}"

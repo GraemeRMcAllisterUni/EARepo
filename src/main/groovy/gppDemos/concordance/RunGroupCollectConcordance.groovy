@@ -15,16 +15,34 @@ import gppDemos.concordance.ConcordanceResults as cr
  
  
 
-//usage runDemo concordance/RunGroupCollectConcordance resultsFile
+//usage runDemo concordance RunGroupCollectConcordance resultsFile collectors title N
  
-String title = "bible"
-String fileName = "./${title}.txt"
-String outFileName = "./${title}GC"
- 
-int N = 8
+int collectors
+String title
+int N
 int minSeqLen = 2
-int collectors = N
 boolean doFileOutput = false
+String workingDirectory = System.getProperty('user.dir')
+String fileName
+String outFileName
+ 
+if (args.size() == 0){
+// assumed to be running form within Intellij
+collectors = 4
+title = "bible"
+N = 8
+fileName = "./${title}.txt"
+outFileName = "./${title}GCol"
+}
+else {
+// assumed to be running via runDemo
+String folder = args[0]
+title = args[2]
+fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
+outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}GCol"
+collectors = Integer.parseInt(args[1])
+N = Integer.parseInt(args[3])
+}
  
 def dDetails = new DataDetails( dName: cd.getName(),
 dInitMethod: cd.init,
@@ -71,7 +89,8 @@ def pipe = new OnePipelineOne(
 def oil = new OneIndexedList(
     input: chan2.in(),
     outputList: chan3OutList,
-    indexFunction : cd.indexer)
+    indexFunction : cd.indexer,
+    indexBounds: [0, collectors])
  
 def lgc = new ListGroupCollect(
     inputList: chan3InList,

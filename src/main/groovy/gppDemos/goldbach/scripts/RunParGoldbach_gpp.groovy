@@ -17,18 +17,21 @@ import gppDemos.goldbach.data.CollectedPrimes as cp
 import gppDemos.goldbach.data.GoldbachRange as gr
 import gppDemos.goldbach.data.GoldbachParCollect as gpc
 
-//usage runDemo goldbach/scripts/RunParGoldbach resultsFile maxN gWorkers
+//usage runDemo goldbach/scripts RunParGoldbach resultsFile maxN gWorkers
 
-int maxN = 0
-int gWorkers = 0	// number of Goldbach workers
+int maxN
+int gWorkers 	// number of Goldbach workers
 
 if (args.size() == 0){
+    // assumed to be running form within Intellij
     maxN = 20000
-    gWorkers = 16
+    gWorkers = 4
 }
 else {
-    maxN = Integer.parseInt(args[0])
-    gWorkers = Integer.parseInt(args[1])
+    // assumed to be running via runDemo
+    // working directory folder assumed to be in args[0]
+    maxN = Integer.parseInt(args[1])
+    gWorkers = Integer.parseInt(args[2])
 }
 
 

@@ -132,7 +132,7 @@ class MaxOneServer extends DataClass{
     int finalise(List d) {
 //        println "Best ${population[bestLocation]}"
 //        println "$requestedParents parents requested; creating $improvements improvements"
-        print "$requestedParents, $improvements, $modifications, ->,"
+        print "$requestedParents, $improvements, $modifications, "
         return completedOK
     }
 

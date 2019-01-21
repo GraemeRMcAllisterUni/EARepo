@@ -12,18 +12,25 @@ import gppDemos.imageProcessing.CompositeARGBImage as img
 import gppDemos.imageProcessing.CompositeARGBResult as imgRslt
  
 
-//usage runDemo imageProcessing/RunRGBImage resultsFile nodes
+//usage runDemo imageProcessing RunRGBImage resultsFile nodes
  
-int nodes = 1
+int nodes
+String workingDirectory = System.getProperty('user.dir')
+String inFileName = "DSC_0120-001.jpg"
+String outFileName = "DSC_0120-001_RGB_${nodes}_K6_K6.jpg.jpg"
+String inFile
+String outFile
 if (args.size() == 0){
 nodes = 4
+inFile = "./$inFileName"
+outFile = "./$outFileName"
 }
 else {
-nodes = Integer.parseInt(args[0])
+nodes = Integer.parseInt(args[1])
+String folder = args[0]
+inFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$inFileName"
+outFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$outFileName"
 }
- 
-String inFile = "./DSC_0120-001.jpg"
-String outFile = "./DSC_0120-001_RGB_${nodes}_K6_K6.jpg"
  
 Matrix kernel1 = new Matrix(rows: 3, columns: 3)
 kernel1.entries = new int[3][3]
@@ -85,7 +92,7 @@ rFinaliseMethod: imgRslt.finaliseMethod )
  
  
 System.gc()
-print "Image Engine $nodes ->"
+print "RGBImage $nodes, "
 long startTime = System.currentTimeMillis()
  
 

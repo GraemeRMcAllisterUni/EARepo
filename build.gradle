@@ -16,30 +16,30 @@ println "using gppBuilder library $jcspLib\\$gppBuilderJarFile"
 
 
 repositories {
-  mavenCentral()
-  jcenter()
-  maven {
-    url "https://dl.bintray.com/jonkerridge/jcsp"
-  } 
+    mavenCentral()
+    jcenter()
     maven {
-       url "https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all" 
+        url "https://dl.bintray.com/jonkerridge/jcsp"
+    }
+    maven {
+        url "https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all"
     }
 }
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:3.0.0-alpha-3'
+    compile 'org.codehaus.groovy:groovy-all:3.0.0-alpha-3'
 //  compile 'org.codehaus.groovy:groovy-all:2.5.3'
-  compile 'cspforjava:jcsp:1.1.0'
+    compile 'cspforjava:jcsp:1.1.0'
 //  compile 'groovyJCSP:groovyJCSP:1.1.2'
-  compile 'groovyJCSP:groovyJCSP:1.1.3'
-  compile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
-  compile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
-  testCompile 'org.codehaus.groovy:groovy-all:3.0.0-alpha-3'
+    compile 'groovyJCSP:groovyJCSP:1.1.3'
+    compile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
+    compile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
+    testCompile 'org.codehaus.groovy:groovy-all:3.0.0-alpha-3'
 //  testCompile 'org.codehaus.groovy:groovy-all:2.5.3'
-  testCompile group: 'junit', name: 'junit', version: '4.12'
-  testCompile 'cspforjava:jcsp:1.1.0'
-  testCompile 'groovyJCSP:groovyJCSP:1.1.3'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'cspforjava:jcsp:1.1.0'
+    testCompile 'groovyJCSP:groovyJCSP:1.1.3'
 //  testCompile 'groovyJCSP:groovyJCSP:1.1.2'
-  testCompile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
-  testCompile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
+    testCompile fileTree(dir: "$jcspLib", include: ["$gppLibraryJarFile"])
+    testCompile fileTree(dir: "$jcspLib", include: ["$gppBuilderJarFile"])
 }

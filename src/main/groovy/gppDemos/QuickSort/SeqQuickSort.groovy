@@ -1,14 +1,19 @@
 package gppDemos.QuickSort
 
 
-//usage runDemo QuickSort/SeqQickSort QuickB56 instances
-
-//int instances = Integer.parseInt(args[1])
-int instances = 500000
+//usage runDemo QuickSort SeqQickSort resultsFile instances
 
 int workers = 1
+int instances
+if (args.size() == 0){
+    instances = 5000
+}
+else {
+//    String folder = args[0] not used
+    instances = Integer.parseInt(args[1])
+}
 
-print "SeqSort $workers, $instances -> "
+print "SeqSort $instances, "
 
 System.gc()
 def startime = System.currentTimeMillis()

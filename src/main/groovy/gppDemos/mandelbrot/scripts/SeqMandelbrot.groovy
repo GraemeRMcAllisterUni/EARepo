@@ -4,25 +4,35 @@ import gppDemos.mandelbrot.data.MandelbrotLine
 import gppDemos.mandelbrot.data.MandelbrotLineCollect
 import gppLibrary.DataClass as Constants
 
-// usage runDemo mandelbrot/scripts/SeqMbrot MbrotB56 maxInterations width height pixeldelta
+// usage runDemo mandelbrot/scripts SeqMbrot resultsFile maxInterations width height pixeldelta
+
+int workers
+int maxIterations
+int width                  //1400   700        350
+int height                 //800    400        200
+double pixelDelta         //0.0025 0.005      0.01
 
 
-
-int maxIterations = Integer.parseInt(args[0])
-
-int width = Integer.parseInt(args[1])               //700       350     1400
-int height = Integer.parseInt(args[2])              //400       200      800
-double pixelDelta = Double.parseDouble(args[3])     //0.005     0.01    0.0025
-
-
-//int width = 350                 // 700  1400
-//int height = 200                //400   800
-//double pixelDelta = 0.01        //0.005 0.0025
-//int maxIterations = 1024        //1024   2048
+if (args.size() == 0){
+    workers = 4
+    maxIterations = 100
+    width = 700
+    height = 400
+    pixelDelta = 0.005
+}
+else {
+    // assumed to be running via runDemo
+//    String folder = args[0] not required
+    workers = Integer.parseInt(args[1])
+    maxIterations = Integer.parseInt(args[2])
+    width = Integer.parseInt(args[3])
+    height = Integer.parseInt(args[4])
+    pixelDelta = Double.parseDouble(args[5])
+}
 
 System.gc()
 
-print "Seq Mbrot $width, $height, $maxIterations -> "
+print "Seq Mbrot, $width, $height, $maxIterations, "
 long startTime = System.currentTimeMillis()
 
 def ml = new MandelbrotLine()

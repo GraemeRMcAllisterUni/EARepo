@@ -1,22 +1,30 @@
 package gppDemos.concordance
 
-import gppLibrary.DataClass as dc
+//usage runDemo concordance SeqExpandedConcordance resultFile  title N
 
-String title = "bible"
-int N = 8
+String title
+int N
 int minSeqLen = 2
 boolean doFileOutput = false
+String workingDirectory = System.getProperty('user.dir')
+String fileName
+String outFileName
 
-if (args.size() > 0){
-  title = args[0]
-  N = Integer.parseInt(args[1])
+if (args.size() == 0){
+  // assumed to be running form within Intellij
+  title = "bible"
+  N = 8
+  fileName = "./${title}.txt"
+  outFileName = "./${title}ExtSeq"
 }
-
-// eclipse versions
-def fileName = "./${title}.txt"
-def outFileName = "./${title}Xseq"
-
-//usage runDemo concordance/SeqExpandedConcordance resultFile  title N
+else {
+  // assumed to be running via runDemo
+  String folder = args[0]
+  title = args[1]
+  fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
+  outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}ExtSeq"
+  N = Integer.parseInt(args[2])
+}
 
 print "SeqExpanded $doFileOutput, $N, $minSeqLen, "
 System.gc()
@@ -25,7 +33,7 @@ def startime = System.currentTimeMillis()
 def cw = new ConcordanceWords()
 def cc = new ConcordanceCombine()
 def cd = new ConcordanceData()
-int retCode = -1
+int retCode
 retCode = cc.initClass([N, outFileName])
 retCode = cw.initClass([fileName, 15])
 retCode = cw.createInstance(null)

@@ -14,22 +14,35 @@ import gppDemos.concordance.ConcordanceResults as cr
  
  
 
-//usage runDemo concordance/RunGoPConcordance resultFile workers title N
+//usage runDemo concordance RunGoPConcordance resultFile workers title N
  
-int groups = 2
-String title = "bible"
-int N = 8
+int workers
+String title
+int N
 int minSeqLen = 2
 boolean doFileOutput = false
+String workingDirectory = System.getProperty('user.dir')
+String fileName
+String outFileName
  
-if (args.size() > 0){
-groups = Integer.parseInt(args[0])
-title = args[1]
-N = Integer.parseInt(args[2])
+if (args.size() == 0){
+// assumed to be running form within Intellij
+workers = 4
+title = "bible"
+N = 8
+fileName = "./${title}.txt"
+outFileName = "./${title}GoP"
+}
+else {
+// assumed to be running via runDemo
+String folder = args[0]
+title = args[2]
+fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
+outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}GoP"
+workers = Integer.parseInt(args[1])
+N = Integer.parseInt(args[3])
 }
  
-String fileName = "./${title}.txt"
-String outFileName = "./${title}GoP"
  
 def dDetails = new DataDetails( dName: cd.getName(),
 dInitMethod: cd.init,

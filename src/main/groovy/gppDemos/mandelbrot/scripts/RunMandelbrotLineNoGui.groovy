@@ -14,13 +14,13 @@ import gppDemos.mandelbrot.data.MandelbrotLine as ml
 import gppDemos.mandelbrot.data.MandelbrotLineCollect as mlc
  
 
-// usage runDemo mandelbrot/scripts/RunMandelBrotLineNoGUI workers maxInterations width height pixeldelta
+// usage runDemo mandelbrot/scripts RunMandelBrotLineNoGUI workers maxInterations width height pixeldelta
  
-int workers = 0
-int maxIterations = 0
-int width = 700                 //1400   700        350
-int height = 400                //800    400        200
-double pixelDelta = 0.005       //0.0025 0.005      0.01
+int workers
+int maxIterations
+int width                  //1400   700        350
+int height                 //800    400        200
+double pixelDelta         //0.0025 0.005      0.01
  
  
 if (args.size() == 0){
@@ -31,16 +31,18 @@ height = 400
 pixelDelta = 0.005
 }
 else {
-workers = Integer.parseInt(args[0])
-maxIterations = Integer.parseInt(args[1])
-width = Integer.parseInt(args[2])
-height = Integer.parseInt(args[3])
-pixelDelta = Double.parseDouble(args[4])
+// assumed to be running via runDemo
+//    String folder = args[0] not required
+workers = Integer.parseInt(args[1])
+maxIterations = Integer.parseInt(args[2])
+width = Integer.parseInt(args[3])
+height = Integer.parseInt(args[4])
+pixelDelta = Double.parseDouble(args[5])
 }
  
 System.gc()
  
-print "Line noGUI $width, $height, $maxIterations, $workers -> "
+print "Line noGUI $width, $height, $maxIterations, $workers, "
 long startTime = System.currentTimeMillis()
  
 def emitDetails = new DataDetails(dName: ml.getName(),

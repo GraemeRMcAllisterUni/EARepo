@@ -13,15 +13,29 @@ import gppDemos.MCpi.MCpiData as piData
 import gppDemos.MCpi.MCpiResults as piResults
 import gppDemos.MCpi.MCpiFeedback as piFBack
 
+//usage runDemo MCpi RunFeedbackPi resultsFile workers instances iterations errorMargin
 
-//double errorMargin = 0.000001   // will end with less than 2048 instances
-double errorMargin = 0.000000001   // will end after 2048 instances
+int workers
+int instances
+int iterations
+double errorMargin
 
-int workers = 4
-int instances = 2048
-int iterations = 100000
+if (args.size() == 0 ) {
+  workers = 4
+  instances =1024
+  iterations = 100000
+  errorMargin = 0.000000001
+}
+else {
+//    String folder = args[0] not required
+  workers = Integer.parseInt(args[1])
+  instances = Integer.parseInt(args[2])
+  iterations = Integer.parseInt(args[3])
+  errorMargin = Double.parseDouble(args[4])
+}
 
-println "run feedback pi workers = $workers, max instances = $instances, iterations = $iterations, error = $errorMargin"
+
+print "feedbackPi, $workers, $instances, $iterations, $errorMargin, "
 System.gc()
 def emitData = new DataDetails( dName: piData.getName(),
                 dInitMethod: piData.init,
@@ -62,4 +76,4 @@ def startime = System.currentTimeMillis()
 
 def endtime = System.currentTimeMillis()
 def elapsedTime = endtime - startime
-println "Time taken = ${elapsedTime} milliseconds"
+println "${elapsedTime}"

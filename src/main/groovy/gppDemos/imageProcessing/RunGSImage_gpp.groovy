@@ -8,19 +8,25 @@ import gppLibrary.terminals.*
 import gppDemos.imageProcessing.CompositeGSImage as img
 import gppDemos.imageProcessing.CompositeGSResult as imgRslt
 
-//usage runDemo imageProcessing/RunGSImage resultsFile nodes
+//usage runDemo imageProcessing RunGSImage resultsFile nodes
 
-int nodes = 1
+int nodes
+String workingDirectory = System.getProperty('user.dir')
+String inFileName = "DSC_0120-001.jpg"
+String outFileName = "DSC_0120-001_GS_${nodes}_K4_K4_K1.jpg"
+String inFile
+String outFile
 if (args.size() == 0){
     nodes = 4
+    inFile = "./$inFileName"
+    outFile = "./$outFileName"
 }
 else {
-    nodes = Integer.parseInt(args[0])
+    nodes = Integer.parseInt(args[1])
+    String folder = args[0]
+    inFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$inFileName"
+    outFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$outFileName"
 }
-
-
-String inFile = "./DSC_0120-001.jpg"
-String outFile = "./DSC_0120-001_GS_${nodes}_K4_K4_K1.jpg"
 
 //edge
 Matrix kernel1 = new Matrix(rows: 3, columns: 3)
@@ -69,7 +75,7 @@ def resultDetails = new ResultDetails( rName: imgRslt.getName(),
                                        rFinaliseMethod: imgRslt.finaliseMethod )
 
 System.gc()
-print "Image Engine $nodes ->"
+print "GS Image, $nodes, "
 long startTime = System.currentTimeMillis()
 
 def emit = new Emit(eDetails: emitDetails)
