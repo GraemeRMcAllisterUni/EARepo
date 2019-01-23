@@ -22,7 +22,7 @@ import gppDemos.goldbach.data.PartitionedPrimeList as ppl
 import gppDemos.goldbach.data.GoldbachCollect as gc
  
 
-//usage runDemo goldbach/scriptsRunSeqGoldbach resultFile maxN
+//usage runDemo goldbach/scripts RunSeqGoldbach resultFile maxN
  
 int maxN
  
@@ -35,7 +35,7 @@ maxN = Integer.parseInt(args[1])
 int pWorkers = 1	// pWorkers
  
 System.gc()
-print "SeqGB $maxN, $pWorkers ->"
+print "SeqGB $maxN, $pWorkers, "
 def startime = System.currentTimeMillis()
  
 assert((maxN % pWorkers) == 0 )

@@ -37,13 +37,13 @@ class GoldbachParCollect extends gppLibrary.DataClass {
 //          println "$k -> ${rangeMap.get(k)}"
 //      }
       int keySize = keys.size()
-      int current = keys[0]
+      int current = (int)keys[0]
       int i = 1
       while (((int)keys[i] - current) == 2) {
-          current = keys[i]
+          current = (int)keys[i]
           i = i + 1
       }   
-      println "last Goldbach number is $current"   
+//      println "last Goldbach number is $current"
       return completedOK
   }
 
@@ -78,7 +78,7 @@ class GoldbachParCollect extends gppLibrary.DataClass {
         gMax = ((List) rangeMap.get(r+1))[1]
       }
     }
-    print " $gMin to $gMax "
+    print " $gMin to $gMax, "
     return completedOK
   }
   

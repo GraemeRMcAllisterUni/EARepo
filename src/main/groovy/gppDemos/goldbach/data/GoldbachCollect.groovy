@@ -76,7 +76,7 @@ class GoldbachCollect extends gppLibrary.DataClass {
   }
 
   int finalise (List p) {
-    print " $minGoldbach to $maxGoldbach "
+    print " $minGoldbach to $maxGoldbach, "
     return completedOK
   }
 
