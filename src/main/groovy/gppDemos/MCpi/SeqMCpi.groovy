@@ -18,7 +18,7 @@ else {
     iterations = Integer.parseInt(args[2])
 }
 
-print "SeqMCpi  $instances, $iterations, "
+print "SeqMCpi,  $instances, $iterations, "
 
   System.gc()
   def startime = System.currentTimeMillis()

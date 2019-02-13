@@ -262,11 +262,41 @@ class QueensClient extends DataClass {
             return false
     }
 
+    boolean CheckSolution() {
+        boolean [] test = new boolean[N + 1]
+        for ( i in 1 .. N) test[i] = false
+        for ( j in 1 .. N ) test[board[j]] = true
+        int t = 1
+        while ( t <= N){
+            if (test[t])
+                t = t + 1
+            else
+                break
+        }
+        if ( t == N + 1 )
+            return true
+        else
+            return  false
+    }
+
+
     
     
     String toString(){
         String s = ""
-        s = s + "Board: $board, Fit: $fitness"
+//        s = s + "Board: $board, Fit: $fitness"
+        s = s + "Board: \n"
+        int p = 1
+        int rows
+        rows = (int)(N / 8)
+        for ( r in 1 .. rows) {
+            for ( c in 1 .. 8) {
+                 s = s + " ${board[(int)p]}, "
+                 p = p + 1
+            }
+            s = s + "\n"
+        }
+        s = s + "Fit: $fitness,  Check: ${CheckSolution()}"
     }
     
 }

@@ -12,13 +12,6 @@ call runDemo nbody ParNbody nBody 1024 2 100
 call runDemo nbody ParNbody nBody 2048 2 100
 call runDemo nbody ParNbody nBody 4096 2 100
 call runDemo nbody ParNbody nBody 8192 2 100
-call runDemo nbody ParNbody nBody 128  3 100
-call runDemo nbody ParNbody nBody 256  3 100
-call runDemo nbody ParNbody nBody 512  3 100
-call runDemo nbody ParNbody nBody 1024 3 100
-call runDemo nbody ParNbody nBody 2048 3 100
-call runDemo nbody ParNbody nBody 4096 3 100
-call runDemo nbody ParNbody nBody 8192 3 100
 call runDemo nbody ParNbody nBody 128  4 100
 call runDemo nbody ParNbody nBody 256  4 100
 call runDemo nbody ParNbody nBody 512  4 100
@@ -47,13 +40,20 @@ call runDemo nbody ParNbody nBody 1024 32 100
 call runDemo nbody ParNbody nBody 2048 32 100
 call runDemo nbody ParNbody nBody 4096 32 100
 call runDemo nbody ParNbody nBody 8192 32 100
-call runDemo nbody SeqNbody nBody 128
-call runDemo nbody SeqNbody nBody 256
-call runDemo nbody SeqNbody nBody 512
-call runDemo nbody SeqNbody nBody 1024
-call runDemo nbody SeqNbody nBody 2048
-call runDemo nbody SeqNbody nBody 4096
-call runDemo nbody SeqNbody nBody 8192
+call runDemo nbody ParNbody nBody 128  64 100
+call runDemo nbody ParNbody nBody 256  64 100
+call runDemo nbody ParNbody nBody 512  64 100
+call runDemo nbody ParNbody nBody 1024 64 100
+call runDemo nbody ParNbody nBody 2048 64 100
+call runDemo nbody ParNbody nBody 4096 64 100
+call runDemo nbody ParNbody nBody 8192 64 100
+call runDemo nbody SeqNbody nBody 128 100
+call runDemo nbody SeqNbody nBody 256 100
+call runDemo nbody SeqNbody nBody 512 100
+call runDemo nbody SeqNbody nBody 1024 100
+call runDemo nbody SeqNbody nBody 2048 100
+call runDemo nbody SeqNbody nBody 4096 100
+call runDemo nbody SeqNbody nBody 8192 100
 
 
 

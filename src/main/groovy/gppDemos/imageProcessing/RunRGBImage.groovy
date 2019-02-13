@@ -16,18 +16,22 @@ import gppDemos.imageProcessing.CompositeARGBResult as imgRslt
  
 int nodes
 String workingDirectory = System.getProperty('user.dir')
-String inFileName = "DSC_0120-001.jpg"
-String outFileName = "DSC_0120-001_RGB_${nodes}_K6_K6.jpg.jpg"
+String inFileName
+String outFileName
 String inFile
 String outFile
 if (args.size() == 0){
-nodes = 4
+nodes = 16
+inFileName = "DSC_0120.jpg"
+outFileName = "DSC_0120_RGB_${nodes}_K6_K6.jpg.jpg"
 inFile = "./$inFileName"
 outFile = "./$outFileName"
 }
 else {
 nodes = Integer.parseInt(args[1])
 String folder = args[0]
+inFileName = "DSC_0120.jpg"
+outFileName = "DSC_0120_RGB_${nodes}_K6_K6.jpg.jpg"
 inFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$inFileName"
 outFile = workingDirectory + "/src/main/groovy/gppDemos/${folder}/$outFileName"
 }
@@ -92,7 +96,7 @@ rFinaliseMethod: imgRslt.finaliseMethod )
  
  
 System.gc()
-print "RGBImage $nodes, "
+print "RGBImage, $nodes, "
 long startTime = System.currentTimeMillis()
  
 

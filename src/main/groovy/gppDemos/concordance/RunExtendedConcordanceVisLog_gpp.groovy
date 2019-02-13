@@ -79,7 +79,7 @@ List <ResultDetails>  resultDetails = []
 
 for ( g in 0..< pogWorkers) resultDetails << rDetails
 
-print "RunExtendedConcordanceLog $doFileOutput, $blockWorkers, $pogWorkers, $blockSize, "
+print "RunExtendedConcordanceLog, $doFileOutput, $title, $blockWorkers, $pogWorkers, $blockSize, "
 System.gc()
 def startime = System.currentTimeMillis()
 

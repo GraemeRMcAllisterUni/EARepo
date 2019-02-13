@@ -62,7 +62,7 @@ List <ResultDetails>  resultDetails = []
 for ( g in 0..< collectors) resultDetails << rDetails
  
 System.gc()
-print "GroupCollect $doFileOutput, $collectors, "
+print "GroupCollect, $doFileOutput, $title, $collectors, "
 def startime = System.currentTimeMillis()
  
  

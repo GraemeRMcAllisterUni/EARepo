@@ -31,7 +31,7 @@ else {
 int pWorkers = 1	// pWorkers
 
 System.gc()
-print "SeqGB $maxN, $pWorkers, "
+print "SeqGB, $maxN, $pWorkers, "
 def startime = System.currentTimeMillis()
 
 assert((maxN % pWorkers) == 0 )

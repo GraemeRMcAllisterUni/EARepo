@@ -26,7 +26,7 @@ else {
     N = Integer.parseInt(args[2])
 }
 
-print "Seq $doFileOutput, $N, $minSeqLen, "
+print "Seq, $doFileOutput, $title, $N, $minSeqLen, "
 System.gc()
 def startime = System.currentTimeMillis()
 

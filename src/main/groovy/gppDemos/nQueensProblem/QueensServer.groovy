@@ -135,8 +135,8 @@ class QueensServer extends DataClass{
 
     int finalise(List d) {
 //        population.each{println "$it"}
-        println "${requestedParents/2}, $improvements"
-        println "${population[bestLocation]}"
+//        println "${requestedParents/2}, $improvements"
+//        println "${population[bestLocation]}"
         return completedOK
     }
 

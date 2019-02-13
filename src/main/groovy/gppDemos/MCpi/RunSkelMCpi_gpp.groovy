@@ -40,7 +40,7 @@ ResultDetails resultDetails = new ResultDetails(rName: piResults.getName(),
 
 System.gc()
 
-print """SkelMCpi $workers, $instances, $iterations, """
+print """SkelMCpi, $workers, $instances, $iterations, """
 def startime = System.currentTimeMillis()
 
 def emit = new Emit (eDetails: emitData)

@@ -55,7 +55,7 @@ def rDetails = new ResultDetails( rName: cr.getName(),
 
 
 System.gc()
-print "Many Collect $doFileOutput, $collectors, "
+print "Many Collect, $doFileOutput, $title, $collectors, "
 
 def startime = System.currentTimeMillis()
 

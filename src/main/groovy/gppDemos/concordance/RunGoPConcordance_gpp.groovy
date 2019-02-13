@@ -12,7 +12,7 @@ import gppDemos.concordance.ConcordanceResults as cr
 
 //usage runDemo concordance RunGoPConcordance resultFile workers title N
 
-int workers
+int groups
 String title
 int N
 int minSeqLen = 2
@@ -23,7 +23,7 @@ String outFileName
 
 if (args.size() == 0){
     // assumed to be running form within Intellij
-    workers = 4
+    groups = 4
     title = "bible"
     N = 8
     fileName = "./${title}.txt"
@@ -35,7 +35,7 @@ else {
     title = args[2]
     fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
     outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}GoP"
-    workers = Integer.parseInt(args[1])
+    groups = Integer.parseInt(args[1])
     N = Integer.parseInt(args[3])
 }
 
@@ -58,7 +58,7 @@ List <ResultDetails>  resultDetails = []
 for ( g in 0..< groups) resultDetails << rDetails
 
 System.gc()
-print "GoP, $doFileOutput, $groups, "
+print "GoP, $doFileOutput, $title, $groups, $N, "
 
 def startime = System.currentTimeMillis()
 

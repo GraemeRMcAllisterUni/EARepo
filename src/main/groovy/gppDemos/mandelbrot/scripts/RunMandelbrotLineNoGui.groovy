@@ -42,7 +42,7 @@ pixelDelta = Double.parseDouble(args[5])
  
 System.gc()
  
-print "Line noGUI $width, $height, $maxIterations, $workers, "
+print "Line noGUI, $width, $height, $maxIterations, $workers, "
 long startTime = System.currentTimeMillis()
  
 def emitDetails = new DataDetails(dName: ml.getName(),

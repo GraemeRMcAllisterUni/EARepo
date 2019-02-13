@@ -59,7 +59,7 @@ rFinaliseData: [null])
  
  
 System.gc()
-print "Many Collect $doFileOutput, $collectors, "
+print "Many Collect, $doFileOutput, $title, $collectors, "
  
 def startime = System.currentTimeMillis()
  

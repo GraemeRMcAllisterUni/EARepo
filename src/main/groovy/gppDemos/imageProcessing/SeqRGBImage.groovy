@@ -8,8 +8,8 @@ import gppDemos.imageProcessing.CompositeARGBResult as imgRslt
 
 int nodes
 String workingDirectory = System.getProperty('user.dir')
-String inFileName = "DSC_0120-001.jpg"
-String outFileName = "DSC_0120-001_RGB_${nodes}_seq.jpg"
+String inFileName = "DSC_0120.jpg"
+String outFileName = "DSC_0120_RGB_${nodes}_seq.jpg"
 String inFile
 String outFile
 if (args.size() == 0){

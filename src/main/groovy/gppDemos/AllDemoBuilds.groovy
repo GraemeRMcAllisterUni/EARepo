@@ -43,7 +43,7 @@ build.runBuilder(rootPath + "MCpi\\RunMCpiWorkerDPCPattern")
 //build.runBuilder(rootPath + "MCpi\\RunFeedbackPi")
 //build.runBuilder(rootPath + "MCpi\\RunFeedbackPiLog")
 // evolutionary
-//build.runBuilder(rootPath + "nQueensProblem\\TestQueens")
+build.runBuilder(rootPath + "nQueensProblem\\TestQueens")
 build.runBuilder(rootPath + "maxOneProblem\\TestMaxOne")
 //build.runBuilder(rootPath + "nQueensProblem\\TestQueensOverwrite")
 //build.runBuilder(rootPath + "nQueensProblem\\TestQueensTournament")

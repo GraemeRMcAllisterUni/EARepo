@@ -1,5 +1,8 @@
 package gppDemos.concordance
 
+import gppLibrary.DataClass
+import gppLibrary.DataClassInterface
+
 //usage runDemo concordance SeqExpandedConcordance resultFile  title N
 
 String title
@@ -26,13 +29,14 @@ else {
   N = Integer.parseInt(args[2])
 }
 
-print "SeqExpanded $doFileOutput, $N, $minSeqLen, "
+print "SeqExpanded, $doFileOutput, $title, $N, $minSeqLen, "
 System.gc()
 def startime = System.currentTimeMillis()
 
 def cw = new ConcordanceWords()
 def cc = new ConcordanceCombine()
 def cd = new ConcordanceData()
+def dc = new DataClass()
 int retCode
 retCode = cc.initClass([N, outFileName])
 retCode = cw.initClass([fileName, 15])

@@ -58,7 +58,7 @@ List <ResultDetails>  resultDetails = []
 for ( g in 0..< workers) resultDetails << rDetails
  
 System.gc()
-print "PoG, $doFileOutput, $workers, "
+print "PoG, $doFileOutput, $title, $workers, $N, "
 def startime = System.currentTimeMillis()
  
 

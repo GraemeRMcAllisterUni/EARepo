@@ -36,7 +36,7 @@ else {
 
 
 System.gc()
-print "ParGB $maxN, $gWorkers, "
+print "ParGB, $maxN, $gWorkers, "
 def startime = System.currentTimeMillis()
 
 int N = maxN 

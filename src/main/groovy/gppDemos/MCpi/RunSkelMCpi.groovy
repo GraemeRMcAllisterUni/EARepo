@@ -44,7 +44,7 @@ rFinaliseMethod: piResults.finalise)
  
 System.gc()
  
-print """SkelMCpi $workers, $instances, $iterations, """
+print """SkelMCpi, $workers, $instances, $iterations, """
 def startime = System.currentTimeMillis()
  
 
