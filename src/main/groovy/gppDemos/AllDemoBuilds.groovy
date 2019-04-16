@@ -38,6 +38,7 @@ build.runBuilder(rootPath + "imageProcessing\\RunRGBImage")
 build.runBuilder(rootPath + "QuickSort\\RunGroupQuickSort")
 //mcpi
 build.runBuilder(rootPath + "MCpi\\RunSkelMCpi")
+build.runBuilder(rootPath + "MCpi\\RunSkelMCpiVisLog")
 build.runBuilder(rootPath + "MCpi\\RunMCpiDPCPattern")
 build.runBuilder(rootPath + "MCpi\\RunMCpiWorkerDPCPattern")
 //build.runBuilder(rootPath + "MCpi\\RunFeedbackPi")

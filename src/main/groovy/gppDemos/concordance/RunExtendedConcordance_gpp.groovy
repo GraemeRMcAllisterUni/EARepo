@@ -31,50 +31,50 @@ String fileName
 String outFileName
 
 if (args.size() == 0){
-    // assumed to be running form within Intellij
-    blockWorkers = 4
-    pogWorkers = 2
-    blockSize = 64000
-    title = "bible"
-    N = 8
-    fileName = "./${title}.txt"
-    outFileName = "./${title}Ext"
+  // assumed to be running form within Intellij
+  blockWorkers = 4
+  pogWorkers = 2
+  blockSize = 64000
+  title = "bible"
+  N = 8
+  fileName = "./${title}.txt"
+  outFileName = "./${title}Ext"
 }
 else {
-    // assumed to be running via runDemo
-    String folder = args[0]
-    title = args[1]
-    fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
-    outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}Ext"
-    blockWorkers = Integer.parseInt(args[2])
-    blockSize = Integer.parseInt(args[3])
-    pogWorkers = Integer.parseInt(args[4])
-    N = Integer.parseInt(args[5])
+  // assumed to be running via runDemo
+  String folder = args[0]
+  title = args[1]
+  fileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}.txt"
+  outFileName = workingDirectory + "/src/main/groovy/gppDemos/${folder}/${title}Ext"
+  blockWorkers = Integer.parseInt(args[2])
+  blockSize = Integer.parseInt(args[3])
+  pogWorkers = Integer.parseInt(args[4])
+  N = Integer.parseInt(args[5])
 }
 
 def dDetails = new DataDetails( dName: cw.getName(),
-                dInitMethod: cw.init,
-                dInitData: [fileName, blockSize],
-                dCreateMethod: cw.create,
-                dCreateData: [null])
+        dInitMethod: cw.init,
+        dInitData: [fileName, blockSize],
+        dCreateMethod: cw.create,
+        dCreateData: [null])
 
 def localData = new LocalDetails(lName: cc.getName(),
-  lInitData: [N, outFileName],
-  lInitMethod: cc.init,
-  lFinaliseMethod: cc.finalise)
+        lInitData: [N, outFileName],
+        lInitMethod: cc.init,
+        lFinaliseMethod: cc.finalise)
 
 def outData = new LocalDetails( lName:cd.getName(),
-   lInitMethod: cd.initLocal,
-   lInitData: null,
-   lCreateMethod: cd.create,
-   lFinaliseMethod: cd.finalise)
+        lInitMethod: cd.initLocal,
+        lInitData: null,
+        lCreateMethod: cd.create,
+        lFinaliseMethod: cd.finalise)
 
 def rDetails = new ResultDetails( rName: cr.getName(),
-    rInitMethod: cr.init,
-    rInitData: [minSeqLen, doFileOutput],
-    rCollectMethod: cr.collector,
-    rFinaliseMethod: cr.finalise,
-    rFinaliseData: [null])
+        rInitMethod: cr.init,
+        rInitData: [minSeqLen, doFileOutput],
+        rCollectMethod: cr.collector,
+        rFinaliseMethod: cr.finalise,
+        rFinaliseData: [null])
 
 List <ResultDetails>  resultDetails = []
 
@@ -89,23 +89,23 @@ def emit = new Emit (eDetails: dDetails)
 def fos = new OneFanList()
 
 def group = new ListGroupList(function: cw.processBuffer,
-            workers: blockWorkers)
+        workers: blockWorkers)
 
 def fis = new ListMergeOne()
 
 
 def combine = new CombineNto1(localDetails: localData,
-                outDetails: outData,
-                combineMethod: cc.appendBuff )
+        outDetails: outData,
+        combineMethod: cc.appendBuff )
 
 def emitInstances = new EmitFromInput( eDetails: outData)
 
 def fanOut = new OneFanAny( destinations: pogWorkers)
 
 def poG = new GroupOfPipelineCollects( stages: 3,
-                rDetails: resultDetails,
-                stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
-                groups: pogWorkers)
+        rDetails: resultDetails,
+        stageOp: [cd.valueList, cd.indicesMap, cd.wordsMap],
+        groups: pogWorkers)
 
 def endtime = System.currentTimeMillis()
 println " ${endtime - startime} "

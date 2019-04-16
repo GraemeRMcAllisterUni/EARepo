@@ -13,15 +13,15 @@ int instances
 int iterations
 
 if (args.size() == 0 ) {
-    workers = 4
-    instances =1024
-    iterations = 100000
+  workers = 4
+  instances =1024
+  iterations = 100000
 }
 else {
 //    String folder = args[0] not required
-    workers = Integer.parseInt(args[1])
-    instances = Integer.parseInt(args[2])
-    iterations = Integer.parseInt(args[3])
+  workers = Integer.parseInt(args[1])
+  instances = Integer.parseInt(args[2])
+  iterations = Integer.parseInt(args[3])
 }
 
 System.gc()
@@ -29,24 +29,22 @@ print "MCpi DPC pattern, $workers, $instances, $iterations, "
 def startime = System.currentTimeMillis()
 
 
-DataDetails emitData = new DataDetails( dName: piData.getName(),
-                    dInitMethod: piData.init,
-                    dInitData: [instances],
-                    dCreateMethod: piData.create,
-                    dCreateData: [iterations])
+def emitData = new DataDetails( dName: piData.getName(),
+        dInitMethod: piData.init,
+        dInitData: [instances],
+        dCreateMethod: piData.create,
+        dCreateData: [iterations])
 
-
-ResultDetails resultDetails = new ResultDetails(rName: piResults.getName(),
-                        rInitMethod: piResults.init,
-                        rCollectMethod: piResults.collector,
-                        rFinaliseMethod: piResults.finalise)
-
+def resultDetails = new ResultDetails(rName: piResults.getName(),
+        rInitMethod: piResults.init,
+        rCollectMethod: piResults.collector,
+        rFinaliseMethod: piResults.finalise)
 
 def piFarm = new DataParallelCollect (
-          eDetails: emitData,
-          rDetails: resultDetails,
-          workers: workers,
-          function: piData.withinOp )
+        eDetails: emitData,
+        rDetails: resultDetails,
+        workers: workers,
+        function: piData.withinOp )
 
 
 

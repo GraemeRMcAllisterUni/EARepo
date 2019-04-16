@@ -91,6 +91,9 @@ def startime = System.currentTimeMillis()
 
 import gppLibrary.Logger
 import gppLibrary.LoggingVisualiser
+import gppLibrary.gppVis.Visualiser
+import gppLibrary.gppVis.Connector
+import javafx.application.Platform
 
 def logChan = Channel.any2one()
 Logger.initLogChannel(logChan.out())
@@ -98,6 +101,13 @@ def logVis = new LoggingVisualiser ( logInput: logChan.in(),
                      collectors: pogWorkers,
                      logFileName: "./GPPLogs/LogFileExt-1-" )
 
+//gppVis command
+new Thread() {
+	@Override
+	public void run() {
+		Visualiser.main();
+	}
+}.start();
  
 
 //NETWORK
@@ -120,10 +130,16 @@ def emit = new Emit (
     eDetails: dDetails,
     logPhaseName: "0-emit",
     logPropertyName: "bufferInstance")
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.populateMap("0-emit"));
  
 def fos = new OneFanList(
     input: chan1.in(),
     outputList: chan2OutList )
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(new Connector(Connector.TYPE.SPREADER));
  
 def group = new ListGroupList(
     inputList: chan2InList,
@@ -132,11 +148,17 @@ def group = new ListGroupList(
     workers: blockWorkers,
     logPhaseName: "1-split",
     logPropertyName: "bufferInstance")
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.addWorkers(blockWorkers, "1-split"));
  
 def fis = new ListMergeOne(
     inputList: chan3InList,
     output: chan4.out(),
     )
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(new Connector(Connector.TYPE.REDUCER));
  
  
 def combine = new CombineNto1(
@@ -148,6 +170,9 @@ def combine = new CombineNto1(
     logPhaseName: "2-combine",
     inputLogPropertyName: "bufferInstance",
     outputLogPropertyName: "strLen")
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.populateMap("2-combine"));
  
 def emitInstances = new EmitFromInput(
     input: chan5.in(),
@@ -155,11 +180,17 @@ def emitInstances = new EmitFromInput(
     eDetails: outData,
     logPhaseName: "3-emit",
     logPropertyName: "strLen" )
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.populateMap("3-emit"));
  
 def fanOut = new OneFanAny(
     input: chan6.in(),
     outputAny: chan7.out(),
     destinations: pogWorkers)
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(new Connector(Connector.TYPE.SPREADER));
  
 def poG = new GroupOfPipelineCollects(
     inputAny: chan7.in(),
@@ -172,12 +203,37 @@ def poG = new GroupOfPipelineCollects(
     logPhaseNames: ["4-value", "5-indeces", "6-words", "7-collect"],
     logPropertyName: "strLen" )
 
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.addGoP(pogWorkers, "4-value", "5-indeces", "6-words", "7-collect"));
+
+//gppVis command
+//short delay to give JavaFx time to start up.
+sleep(2000)
+Platform.runLater(new Runnable() {
+	@Override
+	void run() {
+		Visualiser.networkScene()
+	}
+});
+
+//short delay to give JavaFx time to display.
+sleep(3000);
+
 PAR network = new PAR()
  network = new PAR([logVis, emit , fos , group , fis , combine , emitInstances , fanOut , poG ])
  network.run()
  network.removeAllProcesses()
 //END
 
+//gppVis command
+//Now that the network has completed, tell the vis where the log file is so it
+//can access the data so it can replay it.
+Platform.runLater(new Runnable() {
+	@Override
+	void run() {
+		Visualiser.readLog("./GPPLogs/LogFileExt-1-log.csv")
+	}
+});
  
 def endtime = System.currentTimeMillis()
 println " ${endtime - startime} "

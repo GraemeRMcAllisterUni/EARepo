@@ -33,18 +33,16 @@ print "MCpi DPC pattern, $workers, $instances, $iterations, "
 def startime = System.currentTimeMillis()
  
  
-DataDetails emitData = new DataDetails( dName: piData.getName(),
+def emitData = new DataDetails( dName: piData.getName(),
 dInitMethod: piData.init,
 dInitData: [instances],
 dCreateMethod: piData.create,
 dCreateData: [iterations])
  
- 
-ResultDetails resultDetails = new ResultDetails(rName: piResults.getName(),
+def resultDetails = new ResultDetails(rName: piResults.getName(),
 rInitMethod: piResults.init,
 rCollectMethod: piResults.collector,
 rFinaliseMethod: piResults.finalise)
- 
  
 
 //NETWORK

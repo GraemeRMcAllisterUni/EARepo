@@ -70,6 +70,9 @@ def startime = System.currentTimeMillis()
 
 import gppLibrary.Logger
 import gppLibrary.LoggingVisualiser
+import gppLibrary.gppVis.Visualiser
+import gppLibrary.gppVis.Connector
+import javafx.application.Platform
 
 def logChan = Channel.any2one()
 Logger.initLogChannel(logChan.out())
@@ -77,6 +80,13 @@ def logVis = new LoggingVisualiser ( logInput: logChan.in(),
                      collectors: groups,
                      logFileName: "./GPPLogs/LogFile-2-" )
 
+//gppVis command
+new Thread() {
+	@Override
+	public void run() {
+		Visualiser.main();
+	}
+}.start();
  
 
 //NETWORK
@@ -90,11 +100,17 @@ def emitter = new Emit(
     eDetails: dDetails,
     logPhaseName: "0-emit",
     logPropertyName: "strLen")
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.populateMap("0-emit"));
  
 def fanOut = new OneFanAny(
     input: chan1.in(),
     outputAny: chan2.out(),
     destinations: groups)
+
+    //gppVis command
+    Visualiser.hb.getChildren().add(new Connector(Connector.TYPE.SPREADER));
  
 def poG = new GroupOfPipelineCollects(
     inputAny: chan2.in(),
@@ -107,12 +123,37 @@ def poG = new GroupOfPipelineCollects(
     logPhaseNames: ["1-value", "2-indeces", "3-words", "4-collect"],
     logPropertyName: "strLen" )
 
+    //gppVis command
+    Visualiser.hb.getChildren().add(Visualiser.p.addGoP(groups, "1-value", "2-indeces", "3-words", "4-collect"));
+
+//gppVis command
+//short delay to give JavaFx time to start up.
+sleep(2000)
+Platform.runLater(new Runnable() {
+	@Override
+	void run() {
+		Visualiser.networkScene()
+	}
+});
+
+//short delay to give JavaFx time to display.
+sleep(3000);
+
 PAR network = new PAR()
  network = new PAR([logVis, emitter , fanOut , poG ])
  network.run()
  network.removeAllProcesses()
 //END
 
+//gppVis command
+//Now that the network has completed, tell the vis where the log file is so it
+//can access the data so it can replay it.
+Platform.runLater(new Runnable() {
+	@Override
+	void run() {
+		Visualiser.readLog("./GPPLogs/LogFile-2-log.csv")
+	}
+});
  
 def endtime = System.currentTimeMillis()
 println " ${endtime - startime}"

@@ -20,8 +20,8 @@ int initialPopulation
 if (args.size() == 0){
 // assumed to be running form within Intellij
 clients = 2     // max 16
-N = 8
-initialPopulation = 12
+N = 16
+initialPopulation = 8
 }
 else {
 // assumed to be running via runDemo
@@ -59,8 +59,7 @@ for (c in 0 ..< clients) {
 clientDetails.groupDetails[c] = new LocalDetails(
 lName: qc.getName(),
 lInitMethod: qc.initialiseMethod,
-        lInitData:[N, crossoverProb, mutateProb, null])
-//    lInitData:[N, crossoverProb, mutateProb, clientSeeds[c]])
+lInitData:[N, crossoverProb, mutateProb, clientSeeds[c]])
 }
  
 //println """Queens: using any channels
