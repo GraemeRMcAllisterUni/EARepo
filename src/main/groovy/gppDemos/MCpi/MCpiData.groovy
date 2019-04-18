@@ -32,7 +32,7 @@ class MCpiData extends gppLibrary.DataClass {
    * @param p a list containing one element with the number of instances
    * @return completedOK
    */
-  public int initClass (List p) {
+  int initClass (List p) {
     instances = p[0]
     return completedOK
   }
@@ -59,7 +59,7 @@ class MCpiData extends gppLibrary.DataClass {
    *
    * @return completedOK
    */
-  def getWithin(List d){
+  int getWithin(List d){
     def rng = new Random()
     float x, y
     for ( i in 1 ..iterations){

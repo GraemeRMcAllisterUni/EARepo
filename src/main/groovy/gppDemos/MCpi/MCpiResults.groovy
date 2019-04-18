@@ -34,7 +34,7 @@ class MCpiResults extends gppLibrary.DataClass {
    * @param o this parameter will be passed  as a reference to a MCpiData object
    * @return completedOK
    */
-  int collector(def o){
+  int collector(Object o){
     iterationSum = iterationSum + ((piData) o).iterations
     withinSum = withinSum + ((piData) o).within
     return completedOK
