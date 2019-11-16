@@ -263,6 +263,8 @@ class Server extends DataClass implements CSProcess {
 
                 UniversalResponse respond = server.&"$selectParentsFunction"(input.count)
 
+                // respond is - a universal response, which consists, of a payload, containing,
+
                 assert (respond != null):
                         "Client-Server: Server Process $selectParentsFunction returned null"
 

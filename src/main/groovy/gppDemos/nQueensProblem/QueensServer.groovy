@@ -44,7 +44,7 @@ class QueensServer extends DataClass{
             int p = rng.nextInt(population.size())
             response.payload[i] = population[p]
         }
-        return response
+        return response // returns population is a list of clients, p is a random integer between 0..population.size() so payload[n] is a random client from within the population
     }
 
     int addChildren(List <QueensClient> children) {
