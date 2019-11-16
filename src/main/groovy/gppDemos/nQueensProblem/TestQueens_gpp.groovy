@@ -2,7 +2,7 @@ package gppDemos.nQueensProblem
 
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
-import gppLibrary.functionals.evolutionary.ParallelClientServerEngine
+import gppDemos.ParallelClientServerEngine
 import gppDemos.nQueensProblem.QueensServer as qs
 import gppDemos.nQueensProblem.QueensClient as qc
 

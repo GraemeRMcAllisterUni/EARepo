@@ -2,7 +2,7 @@ package gppDemos.nQueensProblem.cluster
 
 import gppLibrary.GroupDetails
 import gppLibrary.cluster.NodeInterface
-import gppLibrary.functionals.evolutionary.Client
+import gppDemos.Client
 import groovyJCSP.*
 import jcsp.lang.*
 

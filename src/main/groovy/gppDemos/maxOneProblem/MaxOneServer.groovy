@@ -1,7 +1,8 @@
 package gppDemos.maxOneProblem
 
+
+import gppDemos.UniversalResponse
 import gppLibrary.DataClass
-import gppLibrary.UniversalResponse
 
 class MaxOneServer extends DataClass{
     List <MaxOneIndividual> population = []

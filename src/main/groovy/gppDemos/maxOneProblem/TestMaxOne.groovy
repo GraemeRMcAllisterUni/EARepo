@@ -1,14 +1,12 @@
 package gppDemos.maxOneProblem
 
-import jcsp.lang.*
-import groovyJCSP.*
- 
-import gppLibrary.GroupDetails
-import gppLibrary.LocalDetails
-import gppLibrary.functionals.evolutionary.ParallelClientServerEngine
+
 import gppDemos.maxOneProblem.MaxOneServer as moServer
 import gppDemos.maxOneProblem.MaxOneIndividual as moIndividual
- 
+import gppDemos.ParallelClientServerEngine
+import gppLibrary.GroupDetails
+import gppLibrary.LocalDetails
+
 
 //usage runDemo maxOneProblem TestMaxOne resultsFile N clients initialPopulation
  
@@ -44,7 +42,7 @@ int requiredParents = 2
 int resultantChildren = 2
 List clientSeeds = [11223344L, 33445566L, 44556677L, 55667788L]
 float editProportion = 0.1F
- 
+
 LocalDetails serverDetails = new LocalDetails(
 lName: moServer.getName(),
 lInitMethod: moServer.initMethod,

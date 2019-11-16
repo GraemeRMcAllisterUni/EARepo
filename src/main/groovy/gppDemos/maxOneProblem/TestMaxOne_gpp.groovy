@@ -2,7 +2,7 @@ package gppDemos.maxOneProblem
 
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
-import gppLibrary.functionals.evolutionary.ParallelClientServerEngine
+import gppDemos.ParallelClientServerEngine
 import gppDemos.maxOneProblem.MaxOneServer as moServer
 import gppDemos.maxOneProblem.MaxOneIndividual as moIndividual
 

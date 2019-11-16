@@ -1,7 +1,7 @@
 package gppDemos.nQueensProblem
 
 import gppLibrary.DataClass
-import gppLibrary.UniversalResponse
+import gppDemos.UniversalResponse
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -35,9 +35,13 @@ class QueensServer extends DataClass{
     }
 
     UniversalResponse selectParents(int parents) {
+
         requestedParents = requestedParents + parents // for analysis
+
         int populationSize = population.size()
+
         def response = new UniversalResponse()
+
         for ( i in 0 ..< parents) {
             int p = rng.nextInt(populationSize)
             response.payload[i] = population[p]
@@ -127,10 +131,7 @@ class QueensServer extends DataClass{
     }
 
     boolean carryOn() { // returns true if the server should continue
-        if ( bestFitness != requiredFitness)
-            return true
-        else
-            return false
+        return ( bestFitness != requiredFitness)
     }
 
     int finalise(List d) {
