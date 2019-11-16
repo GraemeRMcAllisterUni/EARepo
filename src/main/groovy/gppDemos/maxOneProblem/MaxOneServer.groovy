@@ -27,19 +27,18 @@ class MaxOneServer extends DataClass{
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = d[0]
-        bitsPerGene = d[1]
-        editProportion = d[2]
+        seed = (long)d[0]
+        bitsPerGene = (int)d[1]
+        editProportion = (float)d[2]
         rng.setSeed(seed)
         return completedOK
     }
 
     UniversalResponse selectParents(int parents) {
         requestedParents = requestedParents + parents // for analysis
-        int populationSize = population.size()
         def response = new UniversalResponse()
         for ( i in 0 ..< parents) {
-            int p = rng.nextInt(populationSize)
+            int p = rng.nextInt(population.size())
             response.payload[i] = population[p]
         }
         return response

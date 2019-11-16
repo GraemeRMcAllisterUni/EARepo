@@ -36,14 +36,12 @@ class QueensServer extends DataClass{
 
     UniversalResponse selectParents(int parents) {
 
-        requestedParents = requestedParents + parents // for analysis
-
-        int populationSize = population.size()
+        //requestedParents = requestedParents + parents // for analysis
 
         def response = new UniversalResponse()
 
         for ( i in 0 ..< parents) {
-            int p = rng.nextInt(populationSize)
+            int p = rng.nextInt(population.size())
             response.payload[i] = population[p]
         }
         return response
@@ -119,8 +117,8 @@ class QueensServer extends DataClass{
         }
     }
 
-    int addIndividuals(List <QueensClient> individuals) {
-        //add the new individuals to the population
+    int addIndividuals(List <QueensClient> individuals) { //add the new individuals to the population
+
         for ( i in 0 ..< individuals.size()) {
             population.add(individuals[i])
         }
