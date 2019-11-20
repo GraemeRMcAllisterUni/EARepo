@@ -1,73 +1,68 @@
 package gppDemos.maxOneProblem
 
+
+
+import gppDemos.CSPEAClient
+import gppDemos.Population
+import gppDemos.Chromosome
+import gppDemos.Gene
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class MaxOneIndividual extends DataClass{
-    static int bitsPerGene = 16
-    BitSet gene = new BitSet()
-    Double fitness = 1.0D
+class MaxOneIndividual extends CSPEAClient{
 
     static int crossoverProb = -1
     static int mutateProb = -1
-
-    static String initialiseMethod = "init"
-    static String createFunction = "createFunction"
-    static String evolveFunction = "evolve"
     
 
     static Random rng = new Random()
 
-    int init(List d) {
-        bitsPerGene = d[0]
-        crossoverProb = d[1]
-        mutateProb = d[2]
-        if (d[3] != null) rng.setSeed((long)d[3])   
-        return completedOK
-    }
+
     
     int createFunction() {
-        gene = new BitSet(bitsPerGene)
-        for ( b in 0 ..< bitsPerGene) {
-            if (rng.nextInt(2)  == 1) gene.set(b)
+        chromosome = new Chromosome();
+        for ( b in 0 ..< chromosomeLength) {
+            if (rng.nextInt(2)  == 1)
+                chromosome.setGene(b)
         }
-        fitness = doFitness(gene)
+        fitness = doFitness(chromosome)
         return completedOK
     } 
     
-    double doFitness(BitSet gene) {
-        return 1.0D - (gene.cardinality()/ bitsPerGene)
+    double doFitness(Chromosome c) {
+        int count = 0
+        c.each{count = count + 1}
+        return 1.0D - (count/ chromosomeLength)
     }  
     
-    boolean evolve(List <MaxOneIndividual> parameters) {
+    boolean evolve(Population parents, int i) {
         // expecting two parents and returning two children
-        MaxOneIndividual p1 = parameters[0]
-        MaxOneIndividual p2 = parameters[1]
-        MaxOneIndividual c1 = parameters[2]
-        MaxOneIndividual c2 = parameters[3]
+        Chromosome p1 = parents.getChromosome(0)
+        Chromosome p2 = parents.getChromosome(1)
         if (rng.nextInt(101) < crossoverProb) {
             // do the crossover
-            int xOver = rng.nextInt(bitsPerGene)
-            c1.gene = new BitSet(bitsPerGene)
-            c2.gene = new BitSet(bitsPerGene)
+            int xOver = rng.nextInt(chromosomeLength)
+            Chromosome c1 = new Chromosome()
+            Chromosome c2 = new Chromosome()
             for ( b in 0 .. xOver) {
-                if (p1.gene[b]) c1.gene.set(b)
-                if (p2.gene[b]) c2.gene.set(b)
+                if (p1.getGene(b)) c1.setGene(b)
+                if (p2.getGene(b)) c2.setGene(b)
             }
-            for ( b in xOver+1 .. bitsPerGene) {
-                if (p2.gene[b]) c1.gene.set(b)
-                if (p1.gene[b]) c2.gene.set(b)
+            for ( b in xOver+1 .. chromosomeLength) {
+                if (p2.getGene(b)) c1.setGene(b)
+                if (p1.getGene(b)) c2.setGene(b)
             }
             if (rng.nextInt(101) < mutateProb) {
                 // do mutate operation
-                int m1 = rng.nextInt(bitsPerGene)
-                int m2 = rng.nextInt(bitsPerGene)
-                c1.gene.flip(m1)
-                c2.gene.flip(m2)
+                int m1 = rng.nextInt(chromosomeLength)
+                int m2 = rng.nextInt(chromosomeLength)
+                c1.remove(m1)
+                c2.remove(m2)
             }
-            c1.fitness = doFitness(c1.gene)
-            c2.fitness = doFitness(c2.gene)
+
+            parents.Fitness(c1,doFitness(c1))
+            parents.Fitness(c2,doFitness(c2))
             return true
         }
         else
