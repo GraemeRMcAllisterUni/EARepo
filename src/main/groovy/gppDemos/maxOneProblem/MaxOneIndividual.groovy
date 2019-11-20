@@ -12,6 +12,8 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class MaxOneIndividual extends CSPEAClient{
 
+    static Population localPopulation = new Population()
+
     static int crossoverProb = -1
     static int mutateProb = -1
 
@@ -20,20 +22,26 @@ class MaxOneIndividual extends CSPEAClient{
 
     
     int createFunction() {
-        Chromosome chro = new Chromosome();
+        Chromosome chromo = new Chromosome()
         for ( b in 0 ..< chromosomeLength) {
             if (rng.nextInt(2) == 1)
-                chro.setGene(b)
+                chromo.setGene(b)
         }
-        fitness = doFitness(chro)
+        fitness = doFitness(chromo)
+        localPopulation.addChromosome(chromo, fitness)
+        localPopulation.Fitness(chromo, fitness)
         return completedOK
-    } 
-    
+    }
+
     double doFitness(Chromosome c) {
         int count = 0
         c.each{count = count + 1}
         return 1.0D - (count/ chromosomeLength)
-    }  
+    }
+
+    Population getLast (){
+        return localPopulation
+    }
     
     boolean evolve(Population parents, int i) {
         // expecting two parents and returning two children

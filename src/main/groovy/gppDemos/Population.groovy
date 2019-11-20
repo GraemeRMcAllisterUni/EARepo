@@ -1,11 +1,17 @@
 package gppDemos
 
-class Population {
+import gppLibrary.DataClassInterface
+
+class Population implements Serializable{
     def pop = [:]
-    List<Chromosome> chromosomes
+    List<Chromosome> chromosomes = new ArrayList<Chromosome>()
 
     void Fitness(Chromosome chro, double f){
         pop.put(chro, f)
+    }
+
+    Chromosome getLast(){
+        return chromosomes.last()
     }
 
     double getFitness(Chromosome chro){
@@ -13,7 +19,12 @@ class Population {
     }
 
     void addChromosome(Chromosome c) {
-        this.chromosomes.add(c)
+        chromosomes.add(c)
+    }
+
+    void addChromosome(Chromosome c, double f) {
+        chromosomes.add(c)
+        pop.put(c, f)
     }
 
     Chromosome getChromosome(int i){
@@ -31,7 +42,7 @@ class Population {
 
 }
 
-class Chromosome {
+class Chromosome implements Serializable{
     List<Gene> genes
     double fitness
 
@@ -63,9 +74,17 @@ class Chromosome {
         return getGenes().toString()
     }
 
+    String printGenes(){
+        String s
+        Gene gene
+        (gene in genes).each{
+            s = gene.toString()
+        }
+    }
+
 }
 
-class Gene {
+class Gene implements Serializable{
     int gene
 
     Gene(int i){

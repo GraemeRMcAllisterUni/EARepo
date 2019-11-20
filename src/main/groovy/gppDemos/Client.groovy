@@ -36,15 +36,16 @@ class Client extends DataClass implements CSProcess {
         int returnCode
 
         Class clientClass = Class.forName(clientDetails.lName) // creates a class based on the name from GroupDetails in the groovy script will be name of CSP cient or server groovy class
-        Object individualInit = clientClass.newInstance()
-        callUserMethod(individualInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
+        Object client = clientClass.newInstance()
+        callUserMethod(client, clientDetails.lInitMethod, clientDetails.lInitData, 27) // CSPEAClient.init initdata = N, crossoverProb, mutateProb
 
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
+
         for (p in 1..initialPopulation) {
-            Object individual = clientClass.newInstance()
-            returnCode = individual.&"$createIndividualFunction"()
+            //Object individual = clientClass.newInstance()
+            returnCode = client.&"$createIndividualFunction"()
             if (returnCode == completedOK)
-                initialise.individuals << individual   // add an individual created initially by this client
+                initialise.individuals << client.&"getLast"()   // add an individual created initially by this client
         }
 
         send.write(initialise) // send created individuals to server
@@ -74,7 +75,7 @@ class Client extends DataClass implements CSProcess {
 //                for (i in 0..<resultantChildren) {
 //                    parameters << new Chromosome()
 //                }
-                boolean result = individualInit.&"$evolveFunction"(population) // it is here that we find the limitation that the client only uses
+                boolean result = client.&"$evolveFunction"(population) // it is here that we find the limitation that the client only uses
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {

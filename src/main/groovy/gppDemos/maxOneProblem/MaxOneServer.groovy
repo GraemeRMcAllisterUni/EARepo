@@ -91,11 +91,8 @@ class MaxOneServer extends DataClass{
             int id = rng.nextInt(populationSize)
 //            print "$c = $id: ${population[id]} ->"
             int m1 = rng.nextInt(chromosomeLength)
-            int m2 = rng.nextInt(chromosomeLength)
-            while ( m2 == m1)
-                m2 = rng.nextInt(chromosomeLength)
             // remove from list at m1
-           // population.replaceChromosome(, )
+            //population.replaceChromosome(, )
            // ((MaxOneIndividual)population[id]).fitness = ((MaxOneIndividual)population[id]).doFitness(((Chromosome) // add in pop
 //            println "$m1, $m2, ${population[id]}"
         }
@@ -120,10 +117,16 @@ class MaxOneServer extends DataClass{
         }
     }
 
-    int addIndividuals(Population localPop) {
+
+    int addIndividuals(List<Population> localPopulations) {
         //add the new individuals to the population
-        for ( i in 0 ..< localPop.size()) {
-            population.addChromosome(localPop.getChromosome(i))
+        for(x in 0 ..<localPopulations.size()) {
+            Population localPop = new Population()
+            localPop = localPopulations[x]
+            for (i in 0..<localPop.Count()) {
+                print(localPop.getChromosome(i).printGenes())
+                population.addChromosome(localPop.getChromosom e(i))
+            }
         }
         determineBestWorst()
         return completedOK

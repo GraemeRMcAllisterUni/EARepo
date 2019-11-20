@@ -78,8 +78,9 @@ class QueensServer extends DataClass{
             } // end if
         } // end for loop
         if (childAdded) {
-            if (bestFitness == worstFitness)
-                editPopulation()            
+            //if (bestFitness == worstFitness)
+                //editPopulation()
+            determineBestWorst()
         }        
         return completedOK        
     }
@@ -94,7 +95,7 @@ class QueensServer extends DataClass{
             int m2 = rng.nextInt(N) + 1
             while ( m2 == m1)
                 m2 = rng.nextInt(N) + 1
-            ((QueensClient)population[id]).board.swap(m1, m2)
+            population[id].board.swap(m1, m2)
             ((QueensClient)population[id]).fitness = ((QueensClient)population[id]).doFitness(((QueensClient)population[id]).board)
 //            println "$m1, $m2, ${population[id]}"
         }

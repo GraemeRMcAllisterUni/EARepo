@@ -37,17 +37,18 @@ class Server extends DataClass implements CSProcess {
 
         Class serverClass = Class.forName(serverDetails.lName)
         def server = serverClass.newInstance()         //initialise the server class
-        println("Here")
         callUserMethod(server, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
 
         for (c in 0..<clients) {
 
             def initialPopulation = (UniversalRequest) ((ChannelInput) request[c]).read() // now add the enclosed individuals to the population
+            println(initialPopulation.individuals)
 
             assert (initialPopulation.tag == writeRequest):
                     "Server expecting writeRequest UniversalRequest"
 
             callUserMethod(server, addIndividualsMethod, initialPopulation.individuals, 30) //individuals is a list of
+
         }
         def startSignal = []
         for (i in 0..<clients) startSignal << new UniversalSignal()
@@ -61,7 +62,7 @@ class Server extends DataClass implements CSProcess {
         while (running) { // running loop
 
             println("Iteration: " + iter)
-            index = (clients == 1) ? 0 : alt.fairSelect() // if (clients == 1) then index = 0  else index = alt.fairselect()
+            index = (clients == 1) ? 0 : alt.fairSelect() // if (clients == 1) then index = 0  else index = alt.fairSelect()
 
             def input = (UniversalRequest) ((ChannelInput) request[index]).read() //input is either a UniversalRequest or UniversalResponse
 
@@ -84,7 +85,7 @@ class Server extends DataClass implements CSProcess {
                 //input.individuals.each{println "$it"}
                 callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
             }
-            iter = iter + 1
+            iter += 1
 
 
             running = server.&"$carryOnFunction"()  // returns false when loop should terminate

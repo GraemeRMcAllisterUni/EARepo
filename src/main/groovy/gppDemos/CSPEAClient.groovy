@@ -11,7 +11,7 @@ abstract class CSPEAClient extends DataClass{
     static int chromosomeLength
     static int popSize
 
-    static Population population
+    static Population localPopulation = new Population()
     static Chromosome chromosome
     static Gene gene
     Double fitness = 1.0D
