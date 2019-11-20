@@ -13,7 +13,7 @@ class QueensClient extends CSPEAClient {
     static int N = 0   // number of Queens to be placed
     Chromosome board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
-    
+
     static int initialPopulationSize =-1
     static int crossoverProb = -1
     static int mutateProb = -1
@@ -22,7 +22,7 @@ class QueensClient extends CSPEAClient {
     static String createFunction = "createFunction"
 //    static String evolveFunction = "evolveTwoPoint"
     static String evolveFunction = "evolveOnePoint"
-    
+
 
     static Random rng = new Random()
 
@@ -36,8 +36,8 @@ class QueensClient extends CSPEAClient {
         fitness = doFitness(board)
 //        println "Initial Board: $board, Fit: $fitness"
         return completedOK
-    }    
-    
+    }
+
     void permute () {
         board = new Chromosome()
         for ( int i in 1.. N)
@@ -49,12 +49,12 @@ class QueensClient extends CSPEAClient {
             board.Swap(i,j)
         }
     }
-    
+
     double doFitness(Chromosome board) {
         List <Integer> leftDiagonal = new ArrayList(2*N)
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
-        
+
         for ( i in 1 .. 2*N) {
             leftDiagonal[i] = 0
             rightDiagonal[i] = 0
@@ -75,10 +75,10 @@ class QueensClient extends CSPEAClient {
         }
         // target fitness is 0.0
         // sum can be negative so return absolute value
-        return Math.abs(sum)   
+        return Math.abs(sum)
     }
 
-    
+
     void doCrossoverTwoPoint (QueensClient p1, QueensClient p2, QueensClient evolute,
                         int c1, int c2) {
         if (c1 > c2) (c1,c2)=[c2,c1]    // groovy way to swap two values lhs is a double assignment
@@ -127,7 +127,7 @@ class QueensClient extends CSPEAClient {
                 }
             }
         }
-            
+
         // now iterate through mb2 looking for matches in eb1
         // replace any with values from mb1
         for ( i in 0..< mb2Size) {
@@ -146,10 +146,10 @@ class QueensClient extends CSPEAClient {
             }
         }
         // now construct the final result in evolute
-        evolute.board = [null] + sb1 + mb2 + eb1    // zeroth element is always null        
+        evolute.board = [null] + sb1 + mb2 + eb1    // zeroth element is always null
     }
-    
-    boolean evolveTwoPoint ( List parameters) {
+
+    boolean evolveTwoPoint (List parameters) {
         QueensClient p1 = parameters[0]
         QueensClient p2 = parameters[1]
         QueensClient evolute = parameters[2]
@@ -161,7 +161,7 @@ class QueensClient extends CSPEAClient {
             int c2 = rng.nextInt(N-1) + 1   // c2 in range 1 .. N-1
             // ensure c1 and c2 are different
             while (Math.abs(c1 - c2) <= 2) c2 = rng.nextInt(N-1) + 1
-            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)            
+            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
                 // do the mutate operation
@@ -171,32 +171,32 @@ class QueensClient extends CSPEAClient {
 //                while (mutate2 == mutate1)  mutate2 = rng.nextInt(N) + 1
                 // swaps bits m1 and m2 in evolute.board
                 evolute.board.swap(mutate1, mutate2)
-            }            
-             
-            evolute.fitness = doFitness(evolute.board)    
-            return true            
+            }
+
+            evolute.fitness = doFitness(evolute.board)
+            return true
         }
         else
             return false
     }
-    
+
     void doCrossoverOnePoint (QueensClient p1, QueensClient p2, QueensClient child1, QueensClient child2, int cPoint) {
         // zeroth element is null
 //        println "P1: $p1 P2: $p2 xOver: $cPoint"
-        List p1a = p1.board.getAt(1 .. cPoint)                         
-        List p2a = p2.board.getAt(1 .. cPoint)   
-        List p1b = p1.board.getAt(cPoint+1 .. N)                      
-        List p2b = p2.board.getAt(cPoint+1 .. N) 
-        // find values in common between p1a and p2a 
-        List common = []  
+        List p1a = p1.board.getAt(1 .. cPoint)
+        List p2a = p2.board.getAt(1 .. cPoint)
+        List p1b = p1.board.getAt(cPoint+1 .. N)
+        List p2b = p2.board.getAt(cPoint+1 .. N)
+        // find values in common between p1a and p2a
+        List common = []
         for ( int i in 0 ..< cPoint) {
             if ( p2a.contains(p1a[i])) {
                 common << p1a[i]
             }
-        }   
-        List p1aRem = p1a.minus(common)              
-        List p2aRem = p2a.minus(common) 
-//        println "$p1a, $p1b, $p2a, $p2b, $p1aRem, $p2aRem, $common"   
+        }
+        List p1aRem = p1a.minus(common)
+        List p2aRem = p2a.minus(common)
+//        println "$p1a, $p1b, $p2a, $p2b, $p1aRem, $p2aRem, $common"
         child1.board << null
         child2.board << null
         for ( int i in 0 ..< cPoint) {
@@ -208,22 +208,22 @@ class QueensClient extends CSPEAClient {
         int p2P = 0
         for ( int i in 0 ..< p2b.size())  {
             int v1 = p2b[i]
-            if ( p1aRem.contains(v1)) { 
+            if ( p1aRem.contains(v1)) {
                 child1.board << p2aRem[p2P]
-                p2P +=1                
+                p2P +=1
             }
-            else 
+            else
                 child1.board << v1
-            int v2 = p1b[i]   
+            int v2 = p1b[i]
             if ( p2aRem.contains(v2)) {
                 child2.board << p1aRem[p1P]
                 p1P += 1
             }
-            else 
+            else
                 child2.board << v2
-        } 
+        }
     }
-    
+
     boolean evolveOnePoint ( List parameters) {
         QueensClient p1 = parameters[0]
         QueensClient p2 = parameters[1]
@@ -235,7 +235,7 @@ class QueensClient extends CSPEAClient {
             child1.board = new ArrayList(N+1)
             child2.board = new ArrayList(N+1)
             int cPoint = rng.nextInt(N-3) + 2    // choose the crossover point >0 and <N
-            doCrossoverOnePoint (p1, p2, child1, child2, cPoint)            
+            doCrossoverOnePoint (p1, p2, child1, child2, cPoint)
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
                 // do the mutate operation
@@ -248,11 +248,11 @@ class QueensClient extends CSPEAClient {
                 child2.board.swap(mutate1, mutate2)
             }
 
-            child1.fitness = doFitness(child1.board)    
-            child2.fitness = doFitness(child2.board)    
+            child1.fitness = doFitness(child1.board)
+            child2.fitness = doFitness(child2.board)
 //            println "C1: $child1 C2: $child2"
-            
-            return true            
+
+            return true
         }
         else
             return false
@@ -276,8 +276,8 @@ class QueensClient extends CSPEAClient {
     }
 
 
-    
-    
+
+
     String toString(){
         String s = ""
 //        s = s + "Board: $board, Fit: $fitness"
@@ -294,5 +294,5 @@ class QueensClient extends CSPEAClient {
         }
         s = s + "Fit: $fitness,  Check: ${CheckSolution()}"
     }
-    
+
 }
