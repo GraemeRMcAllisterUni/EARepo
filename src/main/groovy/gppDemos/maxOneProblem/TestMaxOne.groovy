@@ -16,9 +16,9 @@ int initialPopulation
  
 if (args.size() == 0) {
 // assumed to be running form within Intellij
-N = 400
+N = 46
 clients = 3
-initialPopulation = 48
+initialPopulation = 20
 }
 else {
 // assumed to be running via runDemo

@@ -30,6 +30,7 @@ class MaxOneIndividual extends CSPEAClient{
         fitness = doFitness(chromo)
         localPopulation.addChromosome(chromo, fitness)
         localPopulation.Fitness(chromo, fitness)
+
         return completedOK
     }
 

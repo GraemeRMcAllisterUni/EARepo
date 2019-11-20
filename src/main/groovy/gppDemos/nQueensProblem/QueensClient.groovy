@@ -1,14 +1,17 @@
 package gppDemos.nQueensProblem
 
+import gppDemos.CSPEAClient
+import gppDemos.Chromosome
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
 // based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.720&rep=rep1&type=pdf
 
 @CompileStatic
-class QueensClient extends DataClass {
+class QueensClient extends CSPEAClient {
+
     static int N = 0   // number of Queens to be placed
-    List <Integer> board = null
+    Chromosome board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
     
     static int initialPopulationSize =-1
@@ -25,15 +28,7 @@ class QueensClient extends DataClass {
 
     int individuals = 0
 
-    int init(List d) {
-//        println "QC-init: $d"
-        N = d[0]
-        crossoverProb = d[1]
-        mutateProb = d[2]
-        if (d[3] != null) rng.setSeed((long)d[3])   
-        return completedOK
-    }
-    
+
     int instance = 0
 
     int createFunction() {
@@ -44,17 +39,18 @@ class QueensClient extends DataClass {
     }    
     
     void permute () {
-        board = new ArrayList(N+1)
-        for ( int i in 1.. N) board[i] = i
+        board = new Chromosome()
+        for ( int i in 1.. N)
+            board.setGene(i)
 //        println "QC-permute: Client: $clientId board = $board"
         for (int i in 1 .. N) {
 //            println "QC-permute: Client: $clientId i: $i"
             int j = rng.nextInt(N) + 1  //range is 1..N
-            board.swap(i,j)
+            board.Swap(i,j)
         }
     }
     
-    double doFitness(List <Integer> board) {
+    double doFitness(Chromosome board) {
         List <Integer> leftDiagonal = new ArrayList(2*N)
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
@@ -64,8 +60,8 @@ class QueensClient extends DataClass {
             rightDiagonal[i] = 0
         }
         for ( int i in 1 .. N) {
-            leftDiagonal[i+board[i]-1]++
-            int idx = N-i+board[i]
+            leftDiagonal[i + board.getGene(i) -1]++
+            int idx = N-i + board.getGene(i)
             rightDiagonal[idx]++
 //            rightDiagonal[N-i+board[i]]++
         }

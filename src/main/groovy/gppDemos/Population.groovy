@@ -37,7 +37,11 @@ class Population implements Serializable{
 
     int Count(){
        return chromosomes.size()
+    }
 
+    String toString(){
+
+        return chromosomes.toString()
     }
 
 }
@@ -48,7 +52,7 @@ class Chromosome implements Serializable{
 
 
     Chromosome(){
-        this.genes = new ArrayList<Gene>()
+        genes = new ArrayList<Gene>()
     }
 
     Chromosome(Chromosome c ){
@@ -59,7 +63,12 @@ class Chromosome implements Serializable{
         genes.remove(i)
     }
 
-    Gene getGene(int i )
+    void Swap(int i, int j){
+
+    }
+
+
+    int getGene(int i )
     {
         return genes[i]
     }
@@ -71,7 +80,7 @@ class Chromosome implements Serializable{
     }
 
     String toString(){
-        return getGenes().toString()
+        return genes.toString()
     }
 
     String printGenes(){
@@ -97,5 +106,9 @@ class Gene implements Serializable{
 
     Gene getGene(){
         return gene
+    }
+
+    String toString(){
+        return gene.toString()
     }
 }

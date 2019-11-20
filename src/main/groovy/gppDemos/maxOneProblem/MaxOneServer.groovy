@@ -100,37 +100,10 @@ class MaxOneServer extends DataClass{
         modifications += 1
     }
     
-    void determineBestWorst(){
-        bestFitness = 1.0D
-        worstFitness = 0.0D
-        for ( p in 0..< population.Count()) {
-            if (population.getChromosome(p).fitness < bestFitness) {
-                // update max fitness data
-                bestFitness = population.getChromosome(p).fitness
-                bestLocation = p
-            }
-            if (population[p].fitness > worstFitness) {
-                // update min fitness data
-                worstFitness = population.getChromosome(p).fitness
-                worstLocation = p
-            }
-        }
-    }
 
 
-    int addIndividuals(List<Population> localPopulations) {
-        //add the new individuals to the population
-        for(x in 0 ..<localPopulations.size()) {
-            Population localPop = new Population()
-            localPop = localPopulations[x]
-            for (i in 0..<localPop.Count()) {
-                print(localPop.getChromosome(i).printGenes())
-                population.addChromosome(localPop.getChromosom e(i))
-            }
-        }
-        determineBestWorst()
-        return completedOK
-    }
+
+
 
     boolean carryOn() { // returns true if the server should continue
         if ( bestFitness != requiredFitness)
