@@ -92,7 +92,8 @@ class QueensServer extends DataClass{
 //            print "$c = $id: ${population[id]} ->"
             int m1 = rng.nextInt(N) + 1
             int m2 = rng.nextInt(N) + 1
-            while ( m2 == m1) m2 = rng.nextInt(N) + 1
+            while ( m2 == m1)
+                m2 = rng.nextInt(N) + 1
             ((QueensClient)population[id]).board.swap(m1, m2)
             ((QueensClient)population[id]).fitness = ((QueensClient)population[id]).doFitness(((QueensClient)population[id]).board)
 //            println "$m1, $m2, ${population[id]}"

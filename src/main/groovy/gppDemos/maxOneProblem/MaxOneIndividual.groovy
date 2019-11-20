@@ -14,19 +14,18 @@ class MaxOneIndividual extends CSPEAClient{
 
     static int crossoverProb = -1
     static int mutateProb = -1
-    
 
     static Random rng = new Random()
 
 
     
     int createFunction() {
-        chromosome = new Chromosome();
+        Chromosome chro = new Chromosome();
         for ( b in 0 ..< chromosomeLength) {
-            if (rng.nextInt(2)  == 1)
-                chromosome.setGene(b)
+            if (rng.nextInt(2) == 1)
+                chro.setGene(b)
         }
-        fitness = doFitness(chromosome)
+        fitness = doFitness(chro)
         return completedOK
     } 
     

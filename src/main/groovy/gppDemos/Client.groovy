@@ -39,7 +39,6 @@ class Client extends DataClass implements CSProcess {
         Object individualInit = clientClass.newInstance()
         callUserMethod(individualInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
 
-
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
         for (p in 1..initialPopulation) {
             Object individual = clientClass.newInstance()
@@ -66,19 +65,21 @@ class Client extends DataClass implements CSProcess {
             else {  //response will be a list of requiredParents and children
                 assert (inputObject instanceof UniversalResponse):
                         "Client did not receive instance of UniversalResponse"
-                List parameters = []
+                Population population = new Population()
                 for (i in 0..<requiredParents) {
-                    parameters << ((List) ((UniversalResponse) inputObject).payload)[i]
+                    Chromosome c = new Chromosome(((Chromosome) ((UniversalResponse) inputObject).payload))
+                    println(c.toString())
+                    population.addChromosome(c)
                 }
-                for (i in 0..<resultantChildren) {
-                    parameters << clientClass.newInstance()
-                }
-                boolean result = individualInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses
+//                for (i in 0..<resultantChildren) {
+//                    parameters << new Chromosome()
+//                }
+                boolean result = individualInit.&"$evolveFunction"(population) // it is here that we find the limitation that the client only uses
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {
                     List children = []
-                    for (i in 0..<resultantChildren) children << parameters[requiredParents + i]
+                    for (i in 0..<resultantChildren) children << population.getChromosome(requiredParents + i)
                     def sendChildren = new UniversalRequest(tag: writeRequest,
                             count: resultantChildren,
                             individuals: children)

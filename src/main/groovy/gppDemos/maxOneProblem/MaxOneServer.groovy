@@ -1,11 +1,12 @@
 package gppDemos.maxOneProblem
 
-
+import gppDemos.Chromosome
+import gppDemos.Population
 import gppDemos.UniversalResponse
 import gppLibrary.DataClass
 
 class MaxOneServer extends DataClass{
-    List <MaxOneIndividual> population = []
+    Population population
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
     Double bestFitness = 1.0D
@@ -16,7 +17,7 @@ class MaxOneServer extends DataClass{
     static int requestedParents = 0
     static int improvements = 0
     static int modifications = 0
-    static int bitsPerGene = 0
+    static int chromosomeLength = 0
     static float editProportion = 0.0F
 
     static String selectParentsFunction = "selectParents"
@@ -28,46 +29,48 @@ class MaxOneServer extends DataClass{
 
     int initialise (List d) {
         seed = (long)d[0]
-        bitsPerGene = (int)d[1]
+        chromosomeLength = (int)d[1]
         editProportion = (float)d[2]
         rng.setSeed(seed)
         return completedOK
     }
 
     UniversalResponse selectParents(int parents) {
+        Chromosome chro = new Chromosome()
         requestedParents = requestedParents + parents // for analysis
         def response = new UniversalResponse()
         for ( i in 0 ..< parents) {
-            int p = rng.nextInt(population.size())
-            response.payload[i] = population[p]
+            int p = rng.nextInt(400)
+            response.payload[i] = chro[p]
         }
         return response
     }
 
-    int addChildren(List <MaxOneIndividual> children) {
+    int addChildren(Population children) {
         boolean childAdded = false
         for ( c in 0 ..< children.size()) {
-            MaxOneIndividual child = children[c]
+            Chromosome child = children.getChromosome(c)
+            child.fitness = children.getFitness(child)
             // only add child if it is better than the worst child in the population
             if (child.fitness < worstFitness) {
                 childAdded = true
                 improvements = improvements + 1 // for analysis
 //                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
                 worstFitness = child.fitness
-                population[worstLocation] = child
+                population.replaceChromosome(worstLocation, child)
                 // new child could be better than the current best
                 if (child.fitness < bestFitness) {
                     bestFitness = child.fitness
                     bestLocation = worstLocation
-//                    print " new best"
-//                    println "$child.fitness after ${requestedParents/2} evolutions "
+                    print " new best"
+                    println "$child.fitness after ${requestedParents/2} evolutions "
                 }
                 // now update minFitness
                 worstFitness = bestFitness
-                for ( p in 0 ..< population.size()) {
-                    if (population[p].fitness > worstFitness) {
+                for ( p in 0 ..< population.Count()) {
+                    if (child.fitness > worstFitness) {
                         // found a new minimum fitness
-                        worstFitness = population[p].fitness
+                        worstFitness = child.fitness
                         worstLocation = p
                     }
                 }
@@ -76,20 +79,24 @@ class MaxOneServer extends DataClass{
         } // end for loop
         if (childAdded) {
             if (bestFitness == worstFitness)
-                editPopulation()            
+                nuke()
         }        
         return completedOK        
     }
 
-    void editPopulation(){
-        int populationSize = population.size()
+    void nuke(){
+        int populationSize = population.Count()
         int editNumber = (int)(populationSize * editProportion)
-        for ( c in 1 .. editNumber) {
+        for ( c in 0 .. editNumber) {
             int id = rng.nextInt(populationSize)
 //            print "$c = $id: ${population[id]} ->"
-            int m1 = rng.nextInt(bitsPerGene) + 1
-            ((MaxOneIndividual)population[id]).gene.flip(m1)
-            ((MaxOneIndividual)population[id]).fitness = ((MaxOneIndividual)population[id]).doFitness(((MaxOneIndividual)population[id]).gene)
+            int m1 = rng.nextInt(chromosomeLength)
+            int m2 = rng.nextInt(chromosomeLength)
+            while ( m2 == m1)
+                m2 = rng.nextInt(chromosomeLength)
+            // remove from list at m1
+           // population.replaceChromosome(, )
+           // ((MaxOneIndividual)population[id]).fitness = ((MaxOneIndividual)population[id]).doFitness(((Chromosome) // add in pop
 //            println "$m1, $m2, ${population[id]}"
         }
         determineBestWorst()
@@ -99,24 +106,24 @@ class MaxOneServer extends DataClass{
     void determineBestWorst(){
         bestFitness = 1.0D
         worstFitness = 0.0D
-        for ( p in 0..< population.size()) {
-            if (population[p].fitness < bestFitness) {
+        for ( p in 0..< population.Count()) {
+            if (population.getChromosome(p).fitness < bestFitness) {
                 // update max fitness data
-                bestFitness = population[p].fitness
+                bestFitness = population.getChromosome(p).fitness
                 bestLocation = p
             }
             if (population[p].fitness > worstFitness) {
                 // update min fitness data
-                worstFitness = population[p].fitness
+                worstFitness = population.getChromosome(p).fitness
                 worstLocation = p
             }
         }
     }
 
-    int addIndividuals(List <MaxOneIndividual> individuals) {
+    int addIndividuals(Population localPop) {
         //add the new individuals to the population
-        for ( i in 0 ..< individuals.size()) {
-            population.add(individuals[i])
+        for ( i in 0 ..< localPop.size()) {
+            population.addChromosome(localPop.getChromosome(i))
         }
         determineBestWorst()
         return completedOK

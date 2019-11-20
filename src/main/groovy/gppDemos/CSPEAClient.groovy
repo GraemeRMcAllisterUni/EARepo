@@ -8,10 +8,6 @@ import gppDemos.Gene
 abstract class CSPEAClient extends DataClass{
 
 
-//    static int gene
-//    static int[] chromosome
-//    static int[][] population = new int[popSize]
-
     static int chromosomeLength
     static int popSize
 
@@ -26,6 +22,7 @@ abstract class CSPEAClient extends DataClass{
     static String initialiseMethod = "init"
     static String createFunction = "createFunction"
     static String evolveFunction = "evolve"
+
     int init(List d) {
         chromosomeLength = d[0]
         crossoverProb = d[1]
