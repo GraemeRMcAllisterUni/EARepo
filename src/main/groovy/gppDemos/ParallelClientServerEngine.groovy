@@ -253,7 +253,10 @@ class Server extends DataClass implements CSProcess {
 
         int index = -1
 
-        while (running) { // running loop
+        int iter = 10
+
+        while (running&&iter!=0) { // running loop
+            println(iter)
 
             index = (clients == 1) ? 0 : alt.fairSelect() // if (clients == 1) then index = 0  else index = alt.fairselect()
 
@@ -278,6 +281,8 @@ class Server extends DataClass implements CSProcess {
                 //input.individuals.each{println "$it"}
                 callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
             }
+
+            iter = iter -1
 
 
             running = server.&"$carryOnFunction"()  // returns false when loop should terminate
