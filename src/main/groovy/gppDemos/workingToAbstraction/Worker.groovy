@@ -1,4 +1,4 @@
-package gppDemos.empty
+package gppDemos.workingToAbstraction
 
 import gppDemos.maxOneProblem.MaxOneIndividual
 import groovy.transform.CompileStatic
@@ -7,7 +7,7 @@ import gppLibrary.DataClass
 
 
 @CompileStatic
-class EmptyClient extends DataClass {
+class Worker extends DataClass {
 
 
     static int N = 0   // number of Queens to be place
@@ -33,24 +33,24 @@ class EmptyClient extends DataClass {
 
 
     int createFunction() {
-        println("Client:creating board")
+        println("Worker:creating board")
         permute()
         fitness = doFitness(board)
         return completedOK
     }
 
     void permute () {
-        println("Client:permute")
+        println("Worker:permute")
     }
 
     double doFitness(List <Integer> board) {
-        println("Client:doing fitness")
+        println("Worker:doing fitness")
         double result
         return result
     }
 
     boolean evolve (List <MaxOneIndividual> parameters){
-        println("Client:evolving")
+        println("Worker:evolving")
         return true
     }
 

@@ -1,12 +1,12 @@
-package gppDemos.empty
+package gppDemos.workingToAbstraction
 
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 import gppDemos.ParallelClientServerEngine
 
 
-import gppDemos.empty.emptyManager as emptyS
-import gppDemos.empty.emptyWorker as emptyC
+import gppDemos.workingToAbstraction.Manager as emptyS
+import gppDemos.workingToAbstraction.Worker as emptyC
 
 
 int clients = 1

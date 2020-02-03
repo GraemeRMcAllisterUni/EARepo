@@ -30,7 +30,7 @@ class QueensServer extends DataClass{
         seed = d[0]
         N = d[1]
         editProportion = d[2]
-        rng.setSeed(seed)
+        rng.setSeed(System.currentTimeMillis())
         return completedOK
     }
 

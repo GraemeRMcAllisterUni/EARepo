@@ -1,11 +1,11 @@
-package gppDemos.empty
+package gppDemos.workingToAbstraction
 
 import gppDemos.UniversalResponse
 import gppDemos.maxOneProblem.MaxOneIndividual
 import gppLibrary.DataClass
 
 
-class EmptyServer extends DataClass{
+abstract class Manager extends DataClass{
 
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
@@ -27,48 +27,53 @@ class EmptyServer extends DataClass{
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = (long)d[0]
+        seed = (long)d[0] //seed is used to construct a randomiser
         N = (int)d[1]
         editProportion = (float)d[2]
-        rng.setSeed(seed)
+        //rng.setSeed(seed)
         return completedOK
     }
 
 
     UniversalResponse selectParents(int parents) {
-        println("Server:selecting parents")
+        println("Manager:need a method for selecting parents")
+        requestedParents = requestedParents + parents // for analysis
         def response = new UniversalResponse()
+        for ( i in 0 ..< parents) {
+            int p = rng.nextInt(population.size())
+            response.payload[i] = population[p]
+        }
         return response
     }
 
-    int addChildren(List <EmptyClient> children) {
-        println("Server:adding children")
+    int addChildren(List <Worker> children) {
+        println("Manager: need a method to add children, takes in list of workers as param")
         editPopulation()
         return completedOK
     }
 
 
     void editPopulation(){
-        println("Server:editing population")
+        println("Manager:editing population")
         determineBestWorst()
     }
 
 
     void determineBestWorst(){
-        println("Server:determining best worst")
+        println("Manager:determining best worst")
     }
 
 
-    int addIndividuals(List <EmptyClient> individuals) {
-        println("Server:adding individuals")
+    int addIndividuals(List <Worker> individuals) {
+        println("Manager:adding individuals")
         determineBestWorst()
         return completedOK
     }
 
 
 
-    boolean carryOn() { // returns true if the server should continue
-        println("Server:checking if solution found")
+    boolean carryOn() { // returns true if the manager should continue
+        println("Manager:checking if solution found")
         if ( bestFitness != requiredFitness)
             return true
         else
@@ -76,7 +81,7 @@ class EmptyServer extends DataClass{
     }
 
     int finalise(List d) {
-        println("Server:elapsed or solution found")
+        println("Manager:elapsed or solution found")
         return completedOK
     }
 }
