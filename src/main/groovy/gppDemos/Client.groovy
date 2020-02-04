@@ -34,17 +34,18 @@ class Client extends DataClass implements CSProcess {
         Object inputObject = new Object()
         int returnCode
 
-        Class clientClass = Class.forName(clientDetails.lName) // creates a class based on the name from GroupDetails in the groovy script will be name of CSP cient or server groovy class
-        Object individualInit = clientClass.newInstance()
-        callUserMethod(individualInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
-
+        Class workerClass = Class.forName(clientDetails.lName) // creates a class based on the name from GroupDetails in the groovy script will be name of CSP cient or server groovy class
+        Object workerInit = workerClass.newInstance()
+        callUserMethod(workerInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
 
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
+
         for (p in 1..initialPopulation) {
-            Object individual = clientClass.newInstance()
-            returnCode = individual.&"$createIndividualFunction"()
+            Object worker = workerClass.newInstance()
+            callUserMethod(worker, clientDetails.lInitMethod, clientDetails.lInitData, 27)
+            returnCode = worker.&"$createIndividualFunction"()
             if (returnCode == completedOK)
-                initialise.individuals << individual   // add an individual created initially by this client
+                initialise.individuals << worker   // add an individual created initially by this client
         }
 
         send.write(initialise) // send created individuals to server
@@ -70,9 +71,9 @@ class Client extends DataClass implements CSProcess {
                     parameters << ((List) ((UniversalResponse) inputObject).payload)[i]
                 }
                 for (i in 0..<resultantChildren) {
-                    parameters << clientClass.newInstance()
+                    parameters << workerClass.newInstance()
                 }
-                boolean result = individualInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses 
+                boolean result = workerInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {

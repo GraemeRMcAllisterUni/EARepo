@@ -1,12 +1,12 @@
 package gppDemos.workingToAbstraction
 
 import gppDemos.UniversalResponse
-import gppDemos.maxOneProblem.MaxOneIndividual
 import gppLibrary.DataClass
 
 
 abstract class Manager extends DataClass{
 
+    List <Worker> population = []
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
     Double bestFitness = 1.0D
@@ -27,10 +27,9 @@ abstract class Manager extends DataClass{
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = (long)d[0] //seed is used to construct a randomiser
-        N = (int)d[1]
-        editProportion = (float)d[2]
-        //rng.setSeed(seed)
+        N = (int)d[0]
+        editProportion = (float)d[1]
+        rng.setSeed(100)
         return completedOK
     }
 

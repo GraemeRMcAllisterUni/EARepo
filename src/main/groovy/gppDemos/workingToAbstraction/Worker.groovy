@@ -31,7 +31,6 @@ class Worker extends DataClass {
         return completedOK
     }
 
-
     int createFunction() {
         println("Worker:creating board")
         permute()

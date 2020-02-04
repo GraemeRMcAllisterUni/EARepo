@@ -36,19 +36,17 @@ class Server extends DataClass implements CSProcess {
         int returnCode
         int finished = 0
 
-        Class serverClass = Class.forName(serverDetails.lName)
-        def server = serverClass.newInstance()         //initialise the server class
+        Class managerClass = Class.forName(serverDetails.lName)
+        def manager = managerClass.newInstance()         //initialise the server class
 
-        callUserMethod(server, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
+        callUserMethod(manager, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
 
         for (c in 0..<clients) {
 
             def initialPopulation = (UniversalRequest) ((ChannelInput) request[c]).read() // now add the enclosed individuals to the population
-
             assert (initialPopulation.tag == writeRequest):
                     "Server expecting writeRequest UniversalRequest"
-
-            callUserMethod(server, addIndividualsMethod, initialPopulation.individuals, 30)
+            callUserMethod(manager, addIndividualsMethod, initialPopulation.individuals, 30)
         }
 
         def startSignal = []
@@ -73,7 +71,7 @@ class Server extends DataClass implements CSProcess {
 
             if (input.tag == readRequest) {
 
-                UniversalResponse respond = server.&"$selectParentsFunction"(input.count)
+                UniversalResponse respond = manager.&"$selectParentsFunction"(input.count)
 
                 // respond is - a universal response, which consists, of a payload, containing,
 
@@ -88,13 +86,13 @@ class Server extends DataClass implements CSProcess {
                 assert (input.tag == writeRequest):
                         "Client-Server: Server Process expecting request to write evolved children into population"
                 //input.individuals.each{println "$it"}
-                callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31)
             }
 
 
 
 
-            running = server.&"$carryOnFunction"()  // returns false when loop should terminate
+            running = manager.&"$carryOnFunction"()  // returns false when loop should terminate
             assert (running != null):
                     "Client-Server: Server Process $carryOnFunction returned null"
         } // see if we are terminating
@@ -111,12 +109,12 @@ class Server extends DataClass implements CSProcess {
             if (input.tag == readRequest) {
                 terminated = terminated + 1 // wait until all clients are awaiting a response
             } else { // must be an evolved child being returned
-                callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31)
             }
             if (terminated == clients) running = false
         }
         // now do server finalisation
-        callUserMethod(server, serverDetails.lFinaliseMethod, serverDetails.lFinaliseData, 32)
+        callUserMethod(manager, serverDetails.lFinaliseMethod, serverDetails.lFinaliseData, 32)
         // now send signal in parallel to the clients to terminate main processing loop
         def endSignal = []
         for (i in 0..<clients) endSignal << new UniversalTerminator()

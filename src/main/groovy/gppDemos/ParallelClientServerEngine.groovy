@@ -37,9 +37,9 @@ class ParallelClientServerEngine extends DataClass implements CSProcess {
 
     void run() {
         assert (clients > 0):
-                "ParallelClientServerEngine property clients MUST be greater than 0 actually $clients"
+                "ParallelClientServerEngine property clients MUST be greater than 0; is $clients"
         assert (clientDetails != null):
-                "EAClientServerEngine property gDetails MUST NOT be null"
+                "EAClientServerEngine property Details MUST NOT be null"
         def serverToClients = Channel.one2oneArray(clients)
         def clientsToServer = Channel.one2oneArray(clients)
         def serverToClientsListOut = new ChannelOutputList(serverToClients)
