@@ -72,12 +72,15 @@ class Client extends DataClass implements CSProcess {
                 for (i in 0..<resultantChildren) {
                     parameters << workerClass.newInstance()
                 }
+
                 Object workerInit = workerClass.newInstance()
                 callUserMethod(workerInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
                 boolean result = workerInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {
+
+
                     List children = []
                     for (i in 0..<resultantChildren) children << parameters[requiredParents + i]
                     def sendChildren = new UniversalRequest(tag: writeRequest,

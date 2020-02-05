@@ -19,9 +19,9 @@ int initialPopulation
 
 if (args.size() == 0){
 // assumed to be running form within Intellij
-    clients = 2     // max 16
-    N = 16
-    initialPopulation = 8
+    clients = 1     // max 16
+    N = 8
+    initialPopulation = 1
 }
 else {
 // assumed to be running via runDemo

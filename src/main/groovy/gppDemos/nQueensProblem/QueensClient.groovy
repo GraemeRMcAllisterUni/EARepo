@@ -1,13 +1,13 @@
 package gppDemos.nQueensProblem
 
 import gppDemos.workingToAbstraction.Worker
-
+import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
 // based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.720&rep=rep1&type=pdf
 
 @CompileStatic
-class QueensClient extends Worker {
+class QueensClient extends DataClass {
     static int N = 0   // number of Queens to be placed
     List <Integer> board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
@@ -18,7 +18,7 @@ class QueensClient extends Worker {
 
     static String initialiseMethod = "init"
     static String createFunction = "createFunction"
-//    static String evolveFunction = "evolveTwoPoint"
+   // static String evolveFunction = "evolveTwoPoint"
     static String evolveFunction = "evolveOnePoint"
     
 
@@ -179,7 +179,11 @@ class QueensClient extends Worker {
                 evolute.board.swap(mutate1, mutate2)
             }            
              
-            evolute.fitness = doFitness(evolute.board)    
+            evolute.fitness = doFitness(evolute.board)
+
+            println("Parent 1 fitness" + p1.fitness)
+            println("Parent 2 fitness" + p2.fitness)
+            println("evolute fitness" + evolute.fitness)
             return true            
         }
         else
@@ -230,12 +234,12 @@ class QueensClient extends Worker {
         } 
     }
     
-    boolean evolveOnePoint (List <Worker> parameters) {
+    boolean evolveOnePoint (List <QueensClient> parameters) {
 
-        QueensClient p1 = (QueensClient)parameters[0]
-        QueensClient p2 = (QueensClient)parameters[1]
-        QueensClient child1 = (QueensClient)parameters[2]
-        QueensClient child2 = (QueensClient)parameters[3]
+        QueensClient p1 = parameters[0]
+        QueensClient p2 = parameters[1]
+        QueensClient child1 = parameters[2]
+        QueensClient child2 = parameters[3]
         int probability = rng.nextInt(101)
         if (probability < crossoverProb) {
             // do the crossover operation
@@ -255,8 +259,13 @@ class QueensClient extends Worker {
                 child2.board.swap(mutate1, mutate2)
             }
 
-            child1.fitness = doFitness(child1.board)    
-            child2.fitness = doFitness(child2.board)    
+            child1.fitness = doFitness(child1.board)
+            println("Parent 1 fitness" + p1.fitness)
+            println("Child 1 fitness" + child1.fitness)
+
+            child2.fitness = doFitness(child2.board)
+            println("Parent 2 fitness" + p2.fitness)
+            println("Child 2 fitness" + child2.fitness)
 //            println "C1: $child1 C2: $child2"
             
             return true            
@@ -283,7 +292,7 @@ class QueensClient extends Worker {
     }
 
 
-    
+
     
     String toString(){
         String s = ""

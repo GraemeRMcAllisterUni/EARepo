@@ -60,8 +60,10 @@ class Server extends DataClass implements CSProcess {
         int index = -1
 
 
+        int iter = 100
 
-        while (running) { // running loop
+        while (running&&iter!=0) { // running loop
+            iter = iter - 1
 
 
             index = (clients == 1) ? 0 : alt.fairSelect() // if (clients == 1) then index = 0  else index = alt.fairselect()

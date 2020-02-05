@@ -129,7 +129,14 @@ class QueensServer extends DataClass{
     }
 
     boolean carryOn() { // returns true if the server should continue
-        return ( bestFitness != requiredFitness)
+        println(bestFitness + " " + requiredFitness)
+        if ( bestFitness != requiredFitness)
+            return true
+        else {
+
+            println(population[bestLocation].toString())
+            return false
+        }
     }
 
     int finalise(List d) {
