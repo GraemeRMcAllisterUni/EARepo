@@ -29,7 +29,7 @@ abstract class Manager extends DataClass{
     int initialise (List d) {
         N = (int)d[0]
         editProportion = (float)d[1]
-        rng.setSeed(100)
+        //rng.setSeed()
         return completedOK
     }
 
