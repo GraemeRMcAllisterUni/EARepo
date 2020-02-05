@@ -10,7 +10,7 @@ import gppLibrary.DataClass
 class Worker extends DataClass {
 
 
-    static int N = 0   // number of Queens to be place
+    static int N = 0   // number of Queens to be placed
     static int initialPopulationSize = -1
     static int crossoverProb = -1
     static int mutateProb = -1
@@ -20,6 +20,7 @@ class Worker extends DataClass {
     static String initialiseMethod = "init"
     static String createFunction = "createFunction"
     static String evolveFunction = "evolve"
+    int id = -1
 
 
     int init(List d) {
@@ -28,6 +29,7 @@ class Worker extends DataClass {
         crossoverProb = d[1]
         mutateProb = d[2]
         if (d[3] != null) rng.setSeed((long)d[3])
+        if (d[4] != null) id = d[4]
         return completedOK
     }
 

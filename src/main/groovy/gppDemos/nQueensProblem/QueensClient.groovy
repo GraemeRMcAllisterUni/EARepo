@@ -1,12 +1,13 @@
 package gppDemos.nQueensProblem
 
-import gppLibrary.DataClass
+import gppDemos.workingToAbstraction.Worker
+
 import groovy.transform.CompileStatic
 
 // based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.720&rep=rep1&type=pdf
 
 @CompileStatic
-class QueensClient extends DataClass {
+class QueensClient extends Worker {
     static int N = 0   // number of Queens to be placed
     List <Integer> board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
@@ -30,7 +31,7 @@ class QueensClient extends DataClass {
         N = d[0]
         crossoverProb = d[1]
         mutateProb = d[2]
-        if (d[3] != null) rng.setSeed((long)d[3])   
+        if (d[3] != null) rng.setSeed((long)d[3])
         return completedOK
     }
     
@@ -49,6 +50,7 @@ class QueensClient extends DataClass {
 //        println "QC-permute: Client: $clientId board = $board"
         for (int i in 1 .. N) {
 //            println "QC-permute: Client: $clientId i: $i"
+            rng.setSeed(System.currentTimeMillis())
             int j = rng.nextInt(N) + 1  //range is 1..N
             board.swap(i,j)
         }
@@ -228,11 +230,12 @@ class QueensClient extends DataClass {
         } 
     }
     
-    boolean evolveOnePoint ( List parameters) {
-        QueensClient p1 = parameters[0]
-        QueensClient p2 = parameters[1]
-        QueensClient child1 = parameters[2]
-        QueensClient child2 = parameters[3]
+    boolean evolveOnePoint (List <Worker> parameters) {
+
+        QueensClient p1 = (QueensClient)parameters[0]
+        QueensClient p2 = (QueensClient)parameters[1]
+        QueensClient child1 = (QueensClient)parameters[2]
+        QueensClient child2 = (QueensClient)parameters[3]
         int probability = rng.nextInt(101)
         if (probability < crossoverProb) {
             // do the crossover operation

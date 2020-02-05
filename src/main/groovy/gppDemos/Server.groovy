@@ -42,7 +42,6 @@ class Server extends DataClass implements CSProcess {
         callUserMethod(manager, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
 
         for (c in 0..<clients) {
-
             def initialPopulation = (UniversalRequest) ((ChannelInput) request[c]).read() // now add the enclosed individuals to the population
             assert (initialPopulation.tag == writeRequest):
                     "Server expecting writeRequest UniversalRequest"
