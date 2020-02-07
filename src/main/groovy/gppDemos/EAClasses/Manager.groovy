@@ -1,4 +1,4 @@
-package gppDemos.workingToAbstraction
+package gppDemos.EAClasses
 
 import gppDemos.UniversalResponse
 import gppLibrary.DataClass
@@ -7,16 +7,16 @@ import gppLibrary.DataClass
 class Manager extends DataClass{
 
     List <Worker> population = []
-    Double requiredFitness
-    Double worstFitness
-    Double bestFitness
+    Double requiredFitness = 0.0D
+    Double worstFitness = 0.0D
+    Double bestFitness = 1.0D
     int worstLocation, bestLocation
     static Random rng = new Random()
     static int requestedParents = 0
     static int improvements = 0
     static int N = 0
     static float editProportion = 0.0F
-    def board
+    //def board
 
     static String initMethod = "initialise"
     static String selectParentsFunction = "selectParents"

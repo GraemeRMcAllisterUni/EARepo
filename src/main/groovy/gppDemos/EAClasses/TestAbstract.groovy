@@ -5,8 +5,8 @@ import gppLibrary.LocalDetails
 import gppDemos.ParallelClientServerEngine
 
 
-import gppDemos.workingToAbstraction.Manager as emptyS
-import gppDemos.workingToAbstraction.Worker as emptyC
+import gppDemos.EAClasses.Manager as emptyS
+import gppDemos.EAClasses.Worker as emptyC
 
 
 int clients = 1

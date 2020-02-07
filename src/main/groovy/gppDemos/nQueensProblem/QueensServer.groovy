@@ -1,13 +1,13 @@
 package gppDemos.nQueensProblem
 
-import gppDemos.workingToAbstraction.Manager
+import gppDemos.EAClasses.Manager
 import gppLibrary.DataClass
 import gppDemos.UniversalResponse
 import groovy.transform.CompileStatic
 
 @CompileStatic
 class QueensServer extends Manager {
-    //List <QueensClient> population = []
+    List <QueensClient> population = []
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
     Double bestFitness = 1.0D
@@ -28,62 +28,62 @@ class QueensServer extends Manager {
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = d[0]
-        N = d[1]
-        editProportion = d[2]
+        //seed = d[0]
+        N = d[0]
+        editProportion = d[1]
         rng.setSeed(System.currentTimeMillis())
         return completedOK
     }
 
-//    UniversalResponse selectParents(int parents) {
-//
-//        //requestedParents = requestedParents + parents // for analysis
-//
-//        def response = new UniversalResponse()
-//
-//        for ( i in 0 ..< parents) {
-//            int p = rng.nextInt(population.size())
-//            response.payload[i] = population[p]
-//        }
-//        return response // returns population is a list of clients, p is a random integer between 0..population.size() so payload[n] is a random client from within the population
-//    }
+    UniversalResponse selectParents(int parents) {
 
-//    int addChildren(List <QueensClient> children) {
-//        boolean childAdded = false
-//        for ( c in 0 ..< children.size()) {
-//            QueensClient child = children[c]
-//            // only add child if it is better than the worst child in the population
-//            if (child.fitness < worstFitness) {
-//                childAdded = true
-//                improvements = improvements + 1 // for analysis
-////                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
-//                worstFitness = child.fitness
-//                population[worstLocation] = child
-//                // new child could be better than the current best
-//                if (child.fitness < bestFitness) {
-//                    bestFitness = child.fitness
-//                    bestLocation = worstLocation
-////                    print " new best"
-////                    println "$child.fitness after ${requestedParents/2} evolutions "
-//                }
-//                // now update minFitness
-//                worstFitness = bestFitness
-//                for ( p in 0 ..< population.size()) {
-//                    if (population[p].fitness > worstFitness) {
-//                        // found a new minimum fitness
-//                        worstFitness = population[p].fitness
-//                        worstLocation = p
-//                    }
-//                }
-////                println " $worstFitness, $bestFitness"
-//            } // end if
-//        } // end for loop
-//        if (childAdded) {
-//            if (bestFitness == worstFitness)
-//                editPopulation()
-//        }
-//        return completedOK
-//    }
+        //requestedParents = requestedParents + parents // for analysis
+
+        def response = new UniversalResponse()
+
+        for ( i in 0 ..< parents) {
+            int p = rng.nextInt(population.size())
+            response.payload[i] = population[p]
+        }
+        return response // returns population is a list of clients, p is a random integer between 0..population.size() so payload[n] is a random client from within the population
+    }
+
+    int addChildren(List <QueensClient> children) {
+        boolean childAdded = false
+        for ( c in 0 ..< children.size()) {
+            QueensClient child = children[c]
+            // only add child if it is better than the worst child in the population
+            if (child.fitness < worstFitness) {
+                childAdded = true
+                improvements = improvements + 1 // for analysis
+//                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
+                worstFitness = child.fitness
+                population[worstLocation] = child
+                // new child could be better than the current best
+                if (child.fitness < bestFitness) {
+                    bestFitness = child.fitness
+                    bestLocation = worstLocation
+//                    print " new best"
+//                    println "$child.fitness after ${requestedParents/2} evolutions "
+                }
+                // now update minFitness
+                worstFitness = bestFitness
+                for ( p in 0 ..< population.size()) {
+                    if (population[p].fitness > worstFitness) {
+                        // found a new minimum fitness
+                        worstFitness = population[p].fitness
+                        worstLocation = p
+                    }
+                }
+//                println " $worstFitness, $bestFitness"
+            } // end if
+        } // end for loop
+        if (childAdded) {
+            if (bestFitness == worstFitness)
+                editPopulation()
+        }
+        return completedOK
+    }
     
     void editPopulation(){
         int populationSize = population.size()

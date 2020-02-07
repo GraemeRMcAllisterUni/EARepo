@@ -13,7 +13,7 @@ import jcsp.lang.Channel
 import jcsp.lang.ChannelInput
 import jcsp.lang.ChannelOutput
 
-import gppDemos.workingToAbstraction.Manager as man
+import gppDemos.EAClasses.Manager as man
 
 class Server extends DataClass implements CSProcess {
 

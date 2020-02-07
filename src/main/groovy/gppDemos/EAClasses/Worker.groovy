@@ -1,4 +1,4 @@
-package gppDemos.workingToAbstraction
+package gppDemos.EAClasses
 
 import gppDemos.maxOneProblem.MaxOneIndividual
 import groovy.transform.CompileStatic

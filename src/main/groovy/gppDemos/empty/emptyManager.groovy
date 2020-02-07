@@ -1,7 +1,7 @@
 package gppDemos.empty
 
 
-import gppDemos.workingToAbstraction.Manager
+import gppDemos.EAClasses.Manager
 
 
 class emptyManager extends Manager{

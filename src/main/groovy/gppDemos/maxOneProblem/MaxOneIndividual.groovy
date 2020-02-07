@@ -1,6 +1,6 @@
 package gppDemos.maxOneProblem
 
-import gppDemos.workingToAbstraction.Worker
+import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 

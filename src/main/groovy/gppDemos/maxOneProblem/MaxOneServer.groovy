@@ -2,7 +2,8 @@ package gppDemos.maxOneProblem
 
 
 import gppDemos.UniversalResponse
-import gppDemos.workingToAbstraction.Manager
+import gppDemos.EAClasses.Manager
+import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 
 class MaxOneServer extends Manager{
@@ -11,7 +12,6 @@ class MaxOneServer extends Manager{
     Double worstFitness = 0.0D
     Double bestFitness = 1.0D
     int worstLocation, bestLocation
-    long seed = 0L
     static Random rng = new Random()
 
     static int requestedParents = 0
@@ -45,10 +45,10 @@ class MaxOneServer extends Manager{
         return response
     }
 
-    int addChildren(List <MaxOneIndividual> children) {
+    int addChildren(List <Worker> children) {
         boolean childAdded = false
         for ( c in 0 ..< children.size()) {
-            MaxOneIndividual child = children[c]
+            Worker child = children[c]
             // only add child if it is better than the worst child in the population
             if (child.fitness < worstFitness) {
                 childAdded = true
@@ -112,6 +112,7 @@ class MaxOneServer extends Manager{
                 worstLocation = p
             }
         }
+        println population[bestLocation]
     }
 
     int addIndividuals(List <MaxOneIndividual> individuals) {

@@ -1,6 +1,6 @@
 package gppDemos.empty
 
-import gppDemos.workingToAbstraction.Worker
+import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 
 

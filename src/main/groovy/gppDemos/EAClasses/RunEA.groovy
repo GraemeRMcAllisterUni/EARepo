@@ -1,16 +1,17 @@
-package gppDemos.empty
+package gppDemos.EAClasses
 
 import gppDemos.ParallelClientServerEngine
-import gppDemos.workingToAbstraction.Manager
-import gppDemos.workingToAbstraction.Worker
+import gppDemos.empty.emptyWorker
+import gppDemos.EAClasses.Manager
+import gppDemos.EAClasses.Worker
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 
 class RunEA {
 
-    int clients = 3
-    int N = 6
-    int initialPopulation = 2
+    int clients = 4
+    int N = 8
+    int initialPopulation = 4
 
     int crossoverProb = 95
     int mutateProb = 5
