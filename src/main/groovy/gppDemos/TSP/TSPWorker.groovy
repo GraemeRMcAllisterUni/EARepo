@@ -6,11 +6,13 @@ import gppDemos.EAClasses.Worker
 
 class TSPWorker extends Worker {
 
-    List <Integer> board
+    List <Integer> board = []
 
     def cityList = [:]
 
     int cities = 5
+
+    int N = 5
 
     int mapSize = 25
 
@@ -18,26 +20,27 @@ class TSPWorker extends Worker {
     @Override
     int createFunction() {
 
-        for (int i in 0..cities) {
+
+
+        for (int i in 0..N) {
             cityList = [i, new City(rng.nextInt(mapSize), rng.nextInt(mapSize))]
             board.add(i)
         }
-
+        return completedOK
 
     }
 
     @Override
     double doFitness(List board) {
         for (int i in 0..board.size() - 1) {
-
-            fitness = +distance((City) cityList[i], (City) cityList[i + 1])
+            fitness =+ distance((City) cityList[i], (City) cityList[i + 1])
         }
         return fitness
     }
 
     double distance(City c1, City c2) {
-        double xDis = abs(c1.x - c2.x)
-        double yDis = abs(c1.y - c2.y)
+        double xDis = Math.abs(c1.x - c2.x)
+        double yDis = Math.abs(c1.y - c2.y)
         return Math.sqrt((xDis**2) + (yDis**2))
     }
 
@@ -52,7 +55,7 @@ class TSPWorker extends Worker {
             // do the crossover operation
             child1.board = new ArrayList(N + 1)
             child2.board = new ArrayList(N + 1)
-            int cPoint = rng.nextInt(N - 3) + 2    // choose the crossover point >0 and <N
+            int cPoint = rng.nextInt(N)// - 3) + 2    // choose the crossover point >0 and <N
             doCrossoverOnePoint(p1, p2, child1, child2, cPoint)
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
@@ -81,13 +84,13 @@ class TSPWorker extends Worker {
     }
 
 
-    void doCrossoverOnePoint(p1, p2, child1, child2, cPoint) {
+    void doCrossoverOnePoint(p1, p2, child1, child2, int cPoint) {
         // zeroth element is null
 //        println "P1: $p1 P2: $p2 xOver: $cPoint"
-        List p1a = p1.board.(1..cPoint)
-        List p2a = p2.board.(1..cPoint)
-        List p1b = p1.board.(cPoint + 1..N)
-        List p2b = p2.board.(cPoint + 1..N)
+        List p1a = p1.board.getAt(1..cPoint)
+        List p2a = p2.board.getAt(1..cPoint)
+        List p1b = p1.board.getAt(cPoint + 1..N)
+        List p2b = p2.board.getAt(cPoint + 1..N)
         // find values in common between p1a and p2a
         List common = []
         for (int i in 0..<cPoint) {

@@ -22,13 +22,12 @@ class QueensClient extends Worker {
     static String evolve = "evolveOnePoint"
 
     @Override
-    boolean evolve(List<Worker> parameters) {
+    boolean evolve(List parameters) {
         return 0
     }
 
     static Random rng = new Random()
 
-    int individuals = 0
 
     int init(List d) {
 //        println "QC-init: $d"
@@ -38,8 +37,7 @@ class QueensClient extends Worker {
         if (d[3] != null) rng.setSeed((long)d[3])
         return completedOK
     }
-    
-    int instance = 0
+
 
     int createFunction() {
         permute()
@@ -60,7 +58,7 @@ class QueensClient extends Worker {
         }
     }
     
-    double doFitness(List <Integer> board) {
+    double doFitness(List  board) {
         List <Integer> leftDiagonal = new ArrayList(2*N)
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
@@ -70,8 +68,8 @@ class QueensClient extends Worker {
             rightDiagonal[i] = 0
         }
         for ( int i in 1 .. N) {
-            leftDiagonal[i+board[i]-1]++
-            int idx = N-i+board[i]
+            leftDiagonal[i+(int)board[i]-1]++
+            int idx = N-i+(int)board[i]
             rightDiagonal[idx]++
 //            rightDiagonal[N-i+board[i]]++
         }
@@ -233,11 +231,11 @@ class QueensClient extends Worker {
                 child2.board << p1aRem[p1P]
                 p1P += 1
             }
-            else 
+            else
                 child2.board << v2
-        } 
+        }
     }
-    
+
     boolean evolveOnePoint (List <QueensClient> parameters) {
 
         QueensClient p1 = parameters[0]

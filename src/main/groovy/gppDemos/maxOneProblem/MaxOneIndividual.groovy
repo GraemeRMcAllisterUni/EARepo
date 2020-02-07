@@ -38,7 +38,7 @@ class MaxOneIndividual extends Worker{
     }
 
     @Override
-    double doFitness(List<Integer> board) {
+    double doFitness(List board) {
         return 0
     }
 
@@ -46,7 +46,7 @@ class MaxOneIndividual extends Worker{
         return 1.0D - (gene.cardinality()/ bitsPerGene)
     }  
     
-    boolean evolve(List <Worker> parameters) {
+    boolean evolve(List parameters) {
         // expecting two parents and returning two children
         MaxOneIndividual p1 = (MaxOneIndividual)parameters[0]
         MaxOneIndividual p2 = (MaxOneIndividual)parameters[1]

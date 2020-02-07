@@ -22,12 +22,12 @@ class SodukoClient extends Worker {
     }
 
     @Override
-    double doFitness(List<Integer> board) {
+    double doFitness(List board) {
         return 0
     }
 
     @Override
-    boolean evolve(List<Worker> parameters) {
+    boolean evolve(List parameters) {
         return false
     }
 }
