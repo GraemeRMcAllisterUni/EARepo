@@ -19,8 +19,12 @@ class QueensClient extends Worker {
     static String initialiseMethod = "init"
     static String createFunction = "createFunction"
    // static String evolveFunction = "evolveTwoPoint"
-    static String evolveFunction = "evolveOnePoint"
-    
+    static String evolve = "evolveOnePoint"
+
+    @Override
+    boolean evolve(List<Worker> parameters) {
+        return 0
+    }
 
     static Random rng = new Random()
 
@@ -155,7 +159,7 @@ class QueensClient extends Worker {
         evolute.board = [null] + sb1 + mb2 + eb1    // zeroth element is always null        
     }
     
-    boolean evolveTwoPoint ( List parameters) {
+    boolean evolveTwoPoint (List parameters) {
         QueensClient p1 = parameters[0]
         QueensClient p2 = parameters[1]
         QueensClient evolute = parameters[2]

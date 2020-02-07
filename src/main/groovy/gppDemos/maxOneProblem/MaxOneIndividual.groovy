@@ -35,8 +35,13 @@ class MaxOneIndividual extends Worker{
         }
         fitness = doFitness(board)
         return completedOK
-    } 
-    
+    }
+
+    @Override
+    double doFitness(List<Integer> board) {
+        return 0
+    }
+
     double doFitness(BitSet gene) {
         return 1.0D - (gene.cardinality()/ bitsPerGene)
     }  

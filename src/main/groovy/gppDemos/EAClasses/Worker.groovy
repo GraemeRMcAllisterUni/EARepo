@@ -6,7 +6,6 @@ import gppDemos.UniversalResponse
 import gppLibrary.DataClass
 
 
-@CompileStatic
 abstract class Worker extends DataClass {
 
 
@@ -21,22 +20,23 @@ abstract class Worker extends DataClass {
     static String evolveFunction = "evolve"
     int id = -1
 
+    //List board
+
 
 
 
     int init(List d) {
-//        println "QC-init: $d"
         N = d[0]
         crossoverProb = d[1]
         mutateProb = d[2]
         return completedOK
     }
 
-    int createFunction() {}
+    abstract int createFunction()
 
-    double doFitness(List <Integer> board) {}
+    abstract double doFitness(List board)
 
-    boolean evolve (List <Worker> parameters){}
+    abstract boolean evolve (List parameters)
 
 
 
