@@ -1,11 +1,10 @@
 package gppDemos.workingToAbstraction
 
 import gppDemos.UniversalResponse
-import gppDemos.nQueensProblem.QueensClient
 import gppLibrary.DataClass
 
 
-abstract class Manager extends DataClass{
+class Manager extends DataClass{
 
     List <Worker> population = []
     Double requiredFitness
@@ -17,6 +16,7 @@ abstract class Manager extends DataClass{
     static int improvements = 0
     static int N = 0
     static float editProportion = 0.0F
+    def board
 
     static String initMethod = "initialise"
     static String selectParentsFunction = "selectParents"
@@ -114,7 +114,9 @@ abstract class Manager extends DataClass{
                 worstFitness = population[p].fitness
                 worstLocation = p
             }
+
         }
+        println population[bestLocation]
     }
 
 
@@ -141,5 +143,3 @@ abstract class Manager extends DataClass{
         return completedOK
     }
 }
-
-class EmptyManager extends Manager {}

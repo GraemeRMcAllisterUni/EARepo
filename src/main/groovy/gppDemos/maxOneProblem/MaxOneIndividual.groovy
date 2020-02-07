@@ -1,12 +1,13 @@
 package gppDemos.maxOneProblem
 
+import gppDemos.workingToAbstraction.Worker
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class MaxOneIndividual extends DataClass{
+class MaxOneIndividual extends Worker{
     static int bitsPerGene = 16
-    BitSet gene = new BitSet()
+    BitSet board = new BitSet()
     Double fitness = 1.0D
 
     static int crossoverProb = -1
@@ -28,11 +29,11 @@ class MaxOneIndividual extends DataClass{
     }
     
     int createFunction() {
-        gene = new BitSet(bitsPerGene)
+        board = new BitSet(bitsPerGene)
         for ( b in 0 ..< bitsPerGene) {
-            if (rng.nextInt(2)  == 1) gene.set(b)
+            if (rng.nextInt(2)  == 1) board.set(b)
         }
-        fitness = doFitness(gene)
+        fitness = doFitness(board)
         return completedOK
     } 
     
@@ -40,34 +41,34 @@ class MaxOneIndividual extends DataClass{
         return 1.0D - (gene.cardinality()/ bitsPerGene)
     }  
     
-    boolean evolve(List <MaxOneIndividual> parameters) {
+    boolean evolve(List <Worker> parameters) {
         // expecting two parents and returning two children
-        MaxOneIndividual p1 = parameters[0]
-        MaxOneIndividual p2 = parameters[1]
-        MaxOneIndividual c1 = parameters[2]
-        MaxOneIndividual c2 = parameters[3]
+        MaxOneIndividual p1 = (MaxOneIndividual)parameters[0]
+        MaxOneIndividual p2 = (MaxOneIndividual)parameters[1]
+        MaxOneIndividual c1 = (MaxOneIndividual)parameters[2]
+        MaxOneIndividual c2 = (MaxOneIndividual)parameters[3]
         if (rng.nextInt(101) < crossoverProb) {
             // do the crossover
             int xOver = rng.nextInt(bitsPerGene)
-            c1.gene = new BitSet(bitsPerGene)
-            c2.gene = new BitSet(bitsPerGene)
+            c1.board = new BitSet(bitsPerGene)
+            c2.board = new BitSet(bitsPerGene)
             for ( b in 0 .. xOver) {
-                if (p1.gene[b]) c1.gene.set(b)
-                if (p2.gene[b]) c2.gene.set(b)
+                if (p1.board[b]) c1.board.set(b)
+                if (p2.board[b]) c2.board.set(b)
             }
             for ( b in xOver+1 .. bitsPerGene) {
-                if (p2.gene[b]) c1.gene.set(b)
-                if (p1.gene[b]) c2.gene.set(b)
+                if (p2.board[b]) c1.board.set(b)
+                if (p1.board[b]) c2.board.set(b)
             }
             if (rng.nextInt(101) < mutateProb) {
                 // do mutate operation
                 int m1 = rng.nextInt(bitsPerGene)
                 int m2 = rng.nextInt(bitsPerGene)
-                c1.gene.flip(m1)
-                c2.gene.flip(m2)
+                c1.board.flip(m1)
+                c2.board.flip(m2)
             }
-            c1.fitness = doFitness(c1.gene)
-            c2.fitness = doFitness(c2.gene)
+            c1.fitness = doFitness(c1.board)
+            c2.fitness = doFitness(c2.board)
             return true
         }
         else
@@ -75,7 +76,7 @@ class MaxOneIndividual extends DataClass{
     } // evolve
     
     String toString() {
-        return "Gene Fitness: $fitness"
+        return "$board\nGene Fitness: $fitness"
     }
     
 }

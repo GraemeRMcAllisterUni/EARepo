@@ -2,9 +2,10 @@ package gppDemos.maxOneProblem
 
 
 import gppDemos.UniversalResponse
+import gppDemos.workingToAbstraction.Manager
 import gppLibrary.DataClass
 
-class MaxOneServer extends DataClass{
+class MaxOneServer extends Manager{
     List <MaxOneIndividual> population = []
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
@@ -27,10 +28,9 @@ class MaxOneServer extends DataClass{
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = (long)d[0]
-        bitsPerGene = (int)d[1]
-        editProportion = (float)d[2]
-        rng.setSeed(seed)
+        bitsPerGene = (int)d[0]
+        editProportion = (float)d[1]
+        rng.setSeed(System.currentTimeMillis())
         return completedOK
     }
 
@@ -89,8 +89,8 @@ class MaxOneServer extends DataClass{
             int id = rng.nextInt(populationSize)
 //            print "$c = $id: ${population[id]} ->"
             int m1 = rng.nextInt(bitsPerGene) + 1
-            ((MaxOneIndividual)population[id]).gene.flip(m1)
-            ((MaxOneIndividual)population[id]).fitness = ((MaxOneIndividual)population[id]).doFitness(((MaxOneIndividual)population[id]).gene)
+            ((MaxOneIndividual)population[id]).board.flip(m1)
+            ((MaxOneIndividual)population[id]).fitness = ((MaxOneIndividual)population[id]).doFitness(((MaxOneIndividual)population[id]).board)
 //            println "$m1, $m2, ${population[id]}"
         }
         determineBestWorst()
@@ -131,7 +131,7 @@ class MaxOneServer extends DataClass{
     }
 
     int finalise(List d) {
-        println "Best ${population[bestLocation].gene}"
+        println "Best ${population[bestLocation].board}\nFitness: ${population[bestLocation].fitness}"
         println "$requestedParents parents requested; creating $improvements improvements"
         print "$requestedParents, $improvements, $modifications, "
         return completedOK

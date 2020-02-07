@@ -7,8 +7,6 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class QueensServer extends Manager {
-    /*
-}
     //List <QueensClient> population = []
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
@@ -148,5 +146,5 @@ class QueensServer extends Manager {
 //        println "${population[bestLocation]}"
         return completedOK
     }
-*/
+
 }

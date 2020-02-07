@@ -1,8 +1,8 @@
 package gppDemos.empty
 
 import gppDemos.ParallelClientServerEngine
-import gppDemos.workingToAbstraction.Manager as Manager
-import gppDemos.workingToAbstraction.Worker as Worker
+import gppDemos.workingToAbstraction.Manager
+import gppDemos.workingToAbstraction.Worker
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 
@@ -18,9 +18,9 @@ class RunEA {
     int resultantChildren = 2
     float editProportion = 0.1F
 
-    Manager M = new emptyManager()
+    Manager manager = new Manager()
 
-    Worker W = new emptyWorker()
+    Worker worker = new emptyWorker()
 
 
 
@@ -28,10 +28,10 @@ class RunEA {
 
 
         LocalDetails serverDetails = new LocalDetails(
-                lName: M.class.getName(),
-                lInitMethod: M.initMethod,
+                lName: manager.class.getName(),
+                lInitMethod: manager.initMethod,
                 lInitData: [N, editProportion],
-                lFinaliseMethod: M.finaliseMethod)
+                lFinaliseMethod: manager.finaliseMethod)
 
 
         def clientDetails = new GroupDetails(
@@ -40,8 +40,8 @@ class RunEA {
 
         for (c in 0..<clients) {
             clientDetails.groupDetails[c] = new LocalDetails(
-                    lName: w.class.getName(),
-                    lInitMethod: W.initialiseMethod,
+                    lName: worker.class.getName(),
+                    lInitMethod: worker.initialiseMethod,
                     lInitData: [N, crossoverProb, mutateProb])
         }
 
@@ -53,12 +53,12 @@ class RunEA {
                 initialPopulation: initialPopulation,
                 requiredParents: requiredParents,
                 resultantChildren: resultantChildren,
-                evolveFunction: W.evolveFunction,
-                createIndividualFunction: W.createFunction,
-                addIndividualsMethod: M.addIndividualsMethod,
-                selectParentsFunction: M.selectParentsFunction,
-                incorporateChildrenMethod: M.incorporateChildrenMethod,
-                carryOnFunction: M.carryOnFunction
+                evolveFunction: worker.evolveFunction,
+                createIndividualFunction: worker.createFunction,
+                addIndividualsMethod: manager.addIndividualsMethod,
+                selectParentsFunction: manager.selectParentsFunction,
+                incorporateChildrenMethod: manager.incorporateChildrenMethod,
+                carryOnFunction: manager.carryOnFunction
         )
 
         System.gc()
