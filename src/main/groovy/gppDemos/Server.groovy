@@ -13,7 +13,7 @@ import jcsp.lang.Channel
 import jcsp.lang.ChannelInput
 import jcsp.lang.ChannelOutput
 
-
+import gppDemos.workingToAbstraction.Manager as man
 
 class Server extends DataClass implements CSProcess {
 
@@ -36,7 +36,15 @@ class Server extends DataClass implements CSProcess {
         int returnCode
         int finished = 0
 
-        Class managerClass = Class.forName(serverDetails.lName)
+        println(man.getName())
+
+        Class managerClass = Class.forName(man.getName())
+
+        if(Class.forName(serverDetails.lName)!=null) {
+            managerClass = Class.forName(serverDetails.lName)
+        }
+
+
         def manager = managerClass.newInstance()         //initialise the server class
 
         callUserMethod(manager, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server

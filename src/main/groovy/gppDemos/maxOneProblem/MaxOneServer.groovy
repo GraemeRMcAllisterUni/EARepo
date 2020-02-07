@@ -35,6 +35,7 @@ class MaxOneServer extends DataClass{
     }
 
     UniversalResponse selectParents(int parents) {
+        //println("populationSize: " + population.size())
         requestedParents = requestedParents + parents // for analysis
         def response = new UniversalResponse()
         for ( i in 0 ..< parents) {
@@ -130,8 +131,8 @@ class MaxOneServer extends DataClass{
     }
 
     int finalise(List d) {
-//        println "Best ${population[bestLocation]}"
-//        println "$requestedParents parents requested; creating $improvements improvements"
+        println "Best ${population[bestLocation].gene}"
+        println "$requestedParents parents requested; creating $improvements improvements"
         print "$requestedParents, $improvements, $modifications, "
         return completedOK
     }

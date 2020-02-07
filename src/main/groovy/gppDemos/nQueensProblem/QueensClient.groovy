@@ -7,7 +7,7 @@ import groovy.transform.CompileStatic
 // based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.720&rep=rep1&type=pdf
 
 @CompileStatic
-class QueensClient extends DataClass {
+class QueensClient extends Worker {
     static int N = 0   // number of Queens to be placed
     List <Integer> board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
