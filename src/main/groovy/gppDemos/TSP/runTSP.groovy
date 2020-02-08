@@ -3,20 +3,30 @@ package gppDemos.empty
 
 import gppDemos.EAClasses.RunEA
 import gppDemos.TSP.TSPWorker
-import gppDemos.maxOneProblem.MaxOneIndividual
-import gppDemos.maxOneProblem.MaxOneServer
-import gppDemos.EAClasses.Manager
-import gppDemos.EAClasses.Worker
+
+int mapSize = 25
+
+
+int N = 10
 
 
 
 RunEA EA = new RunEA()
 
-EA.worker = new TSPWorker()
+TSPWorker builder = new TSPWorker()
 
-EA.N = 4
+EA.worker = builder
 
-EA.clients = 4
+EA.n = 1
+
+EA.clients = 2
+
+EA.initialPopulation = 2
+
+def world = builder.buildWorld(N, 400)
+
+println(world)
+
 
 EA.run()
 

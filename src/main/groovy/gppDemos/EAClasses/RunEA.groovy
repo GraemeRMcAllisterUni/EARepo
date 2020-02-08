@@ -7,10 +7,10 @@ import gppDemos.EAClasses.Worker
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 
-class RunEA {
+public class RunEA {
 
     int clients = 4
-    int N = 8
+    int n = 8
     int initialPopulation = 4
 
     int crossoverProb = 95
@@ -23,15 +23,23 @@ class RunEA {
 
     Worker worker = new emptyWorker()
 
-
+    List <Object> param = null
 
     void run() {
 
 
+
+        List<Integer> d = [n, crossoverProb, mutateProb]
+
+
+        if (param!=null) param.each{ p -> d.add((int)p)}
+
+        println d
+
         LocalDetails serverDetails = new LocalDetails(
                 lName: manager.class.getName(),
                 lInitMethod: manager.initMethod,
-                lInitData: [N, editProportion],
+                lInitData: [n, editProportion],
                 lFinaliseMethod: manager.finaliseMethod)
 
 
@@ -43,7 +51,7 @@ class RunEA {
             clientDetails.groupDetails[c] = new LocalDetails(
                     lName: worker.class.getName(),
                     lInitMethod: worker.initialiseMethod,
-                    lInitData: [N, crossoverProb, mutateProb])
+                    lInitData: d)
         }
 
 
@@ -67,7 +75,7 @@ class RunEA {
 
         println("int clients = " + clients)
 
-        println("int N = " + N)
+        println("int n = " + n)
 
         println("int initialPopulation = " + initialPopulation)
         eaCSprocess.run()

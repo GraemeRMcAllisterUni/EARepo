@@ -43,12 +43,12 @@ class ClientGroup implements CSProcess {
                     clientDetails: clientDetails.groupDetails [c],
                     evolveFunction: evolveFunction,
                     createIndividualFunction: createIndividualFunction,
-                    clientId: c,
                     initialPopulation: initialPopulation,
                     requiredParents: requiredParents,
                     resultantChildren: resultantChildren,
                     logPhaseName: logPhaseName == "" ? "" : (String)"$c, "  + logPhaseName ,
-                    logPropertyName: logPropertyName)
+                    logPropertyName: logPropertyName,
+                    clientId: c,)
         }
 
         new PAR(network).run()

@@ -8,7 +8,7 @@ class TSPWorker extends Worker {
 
     List <Integer> board = []
 
-    def cityList = [:]
+    transient Map cityList = [0: [396, 100], 1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
 
     int cities = 5
 
@@ -16,16 +16,43 @@ class TSPWorker extends Worker {
 
     int mapSize = 25
 
+    @Override
+    int init(List d) {
+        drawWorld()
+        N = (Integer)d[0]
+        crossoverProb = (int)d[1]
+        mutateProb = (int)d[2]
+        return completedOK
+    }
+
+    void drawWorld(){
+
+        GraphDraw frame = new GraphDraw("worker")
+
+        frame.setSize(500,500)
+
+        frame.setVisible(true)
+
+        cityList.each{ k, v ->
+            List<Integer> city = (List<Integer>)v
+            frame.addNode(k.toString(), city[0], city[1])
+        }
+    }
+
+    def buildWorld(int N, int mapSize){
+        for (int i in 0..N) {
+            cityList.put((int)i, new City(rng.nextInt(mapSize), rng.nextInt(mapSize)))
+        }
+        println(cityList)
+        return cityList
+    }
 
     @Override
     int createFunction() {
-
-
-
-        for (int i in 0..N) {
-            cityList = [i, new City(rng.nextInt(mapSize), rng.nextInt(mapSize))]
+        for(int i in 0..cityList.size())
             board.add(i)
-        }
+        Collections.shuffle(board)
+
         return completedOK
 
     }
@@ -128,14 +155,3 @@ class TSPWorker extends Worker {
 }
 
 
-class City{
-
-    int x = 0
-    int y = 0
-
-    City(x,y){
-        this.x = x
-        this.y = y
-    }
-
-}

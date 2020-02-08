@@ -34,14 +34,12 @@ class Client extends DataClass implements CSProcess {
         Object inputObject = new Object()
         int returnCode
         Class workerClass = Class.forName(clientDetails.lName) // creates a class based on the name from GroupDetails in the groovy script will be name of CSP cient or server groovy class
-
+        Object workerInit = workerClass.newInstance()
+        callUserMethod(workerInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
 
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
-
         for (p in 0..initialPopulation) {
-            clientDetails.lInitData << p
             Object worker = workerClass.newInstance()
-            callUserMethod(worker, clientDetails.lInitMethod, clientDetails.lInitData, 27)
             returnCode = worker.&"$createIndividualFunction"()
             if (returnCode == completedOK)
                 initialise.individuals << worker   // add an individual created initially by this client
@@ -72,9 +70,6 @@ class Client extends DataClass implements CSProcess {
                 for (i in 0..<resultantChildren) {
                     parameters << workerClass.newInstance()
                 }
-
-                Object workerInit = workerClass.newInstance()
-                callUserMethod(workerInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
                 boolean result = workerInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
