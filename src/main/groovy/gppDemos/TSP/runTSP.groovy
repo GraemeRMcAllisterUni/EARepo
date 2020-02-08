@@ -19,7 +19,7 @@ EA.worker = builder
 
 EA.n = 1
 
-EA.clients = 2
+EA.clients = 1
 
 EA.initialPopulation = 2
 

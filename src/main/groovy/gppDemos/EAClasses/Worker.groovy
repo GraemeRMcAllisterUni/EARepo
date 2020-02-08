@@ -32,8 +32,7 @@ abstract class Worker extends DataClass {
         return completedOK
     }
 
-    abstract int createFunction()//must do fitness
-
+    abstract int createFunction()
     abstract double doFitness(List board)
 
     abstract boolean evolve (List parameters)

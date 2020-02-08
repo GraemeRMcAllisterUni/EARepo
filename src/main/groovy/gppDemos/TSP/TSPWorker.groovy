@@ -8,9 +8,11 @@ class TSPWorker extends Worker {
 
     List <Integer> board = []
 
-    transient Map cityList = [0: [396, 100], 1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
+    transient Map cityList = [1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
 
     int cities = 5
+
+    transient GraphDraw frame = new GraphDraw("worker")
 
     int N = 5
 
@@ -26,13 +28,8 @@ class TSPWorker extends Worker {
     }
 
     void drawWorld(){
-
-        GraphDraw frame = new GraphDraw("worker")
-
         frame.setSize(500,500)
-
         frame.setVisible(true)
-
         cityList.each{ k, v ->
             List<Integer> city = (List<Integer>)v
             frame.addNode(k.toString(), city[0], city[1])
@@ -49,25 +46,30 @@ class TSPWorker extends Worker {
 
     @Override
     int createFunction() {
-        for(int i in 0..cityList.size())
+        for(int i in 1..cityList.size())
             board.add(i)
         Collections.shuffle(board)
-
+        println(board)
+        doFitness(board)
         return completedOK
-
     }
 
     @Override
     double doFitness(List board) {
-        for (int i in 0..board.size() - 1) {
-            fitness =+ distance((City) cityList[i], (City) cityList[i + 1])
+        for (int i in 1..board.size()-1) {
+            println(i)
+            println(board.size())
+            fitness =+ distance((List)cityList.get(i), (List)cityList.get(i + 1))
+            //frame.addEdge(i, (i + 1))
         }
+        println(fitness)
         return fitness
     }
 
-    double distance(City c1, City c2) {
-        double xDis = Math.abs(c1.x - c2.x)
-        double yDis = Math.abs(c1.y - c2.y)
+    double distance(List c1, List c2) {
+        println("$c1\n$c2")
+        double xDis = Math.abs((int)c1[0] - (int)c2[0])
+        double yDis = Math.abs((int)c1[1] - (int)c2[1])
         return Math.sqrt((xDis**2) + (yDis**2))
     }
 
