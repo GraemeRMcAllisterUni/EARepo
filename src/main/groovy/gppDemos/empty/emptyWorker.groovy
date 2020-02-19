@@ -7,19 +7,27 @@ import gppLibrary.DataClass
 //@CompileStatic
 class emptyWorker extends Worker {
 
+
+    //int n = 0
+
     @Override
     int createFunction() {
-        return 0
+        println "Worker - Creating solutions. Solutions per client = $n"
+        return completedOK
     }
 
     @Override
-    double doFitness(List<Integer> board) {
-        return 0
+    double doFitness(List board) {
+        //println "Worker - Doing fitness on board(from Manager)"
+        return 1
     }
 
     @Override
-    boolean evolve(List<Worker> parameters) {
-        return false
+    boolean evolve(List parameters) {
+        //println "Worker - Evolving from 2 parents(from Manager)"
+
+        return true
     }
 }
+
 

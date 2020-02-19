@@ -9,8 +9,8 @@ import gppLibrary.LocalDetails
 
 public class RunEA {
 
-    int clients = 4
-    int n = 8
+    int clients = 2
+    int n = 4
     int initialPopulation = 4
 
     int crossoverProb = 95
@@ -26,8 +26,6 @@ public class RunEA {
     List <Object> param = null
 
     void run() {
-
-
 
         List<Integer> d = [n, crossoverProb, mutateProb]
 

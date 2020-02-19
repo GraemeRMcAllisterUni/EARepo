@@ -12,7 +12,8 @@ class Manager extends DataClass{
     Double bestFitness = 1.0D
     int worstLocation, bestLocation
     static Random rng = new Random()
-    static int requestedParents = 0
+    static int requestedParents = 2
+    static int requeiredarents = 2
     static int improvements = 0
     static int N = 0
     static float editProportion = 0.0F
@@ -36,7 +37,7 @@ class Manager extends DataClass{
 
 
     UniversalResponse selectParents(int parents) {
-        requestedParents = requestedParents + parents // for analysis
+        requestedParents = requeiredarents + parents // for analysis
         def response = new UniversalResponse()
         for ( i in 0 ..< parents) {
             int p = rng.nextInt(population.size())

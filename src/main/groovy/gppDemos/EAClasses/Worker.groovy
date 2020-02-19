@@ -9,7 +9,7 @@ import gppLibrary.DataClass
 abstract class Worker extends DataClass {
 
 
-     static int N  // number of Queens to be placed
+     static int N
      static int initialPopulationSize
      static int crossoverProb
      static int mutateProb
@@ -25,10 +25,10 @@ abstract class Worker extends DataClass {
 
 
     int init(List d) {
-        println("Master init called")
-        N = (int)d[0]
-        crossoverProb = (int)d[1]
-        mutateProb = (int)d[2]
+        println("Super.init() called")
+        N = (int)d[0]; println "N = $N"
+        crossoverProb = (int)d[1]; println "crossoverProb = $crossoverProb"
+        mutateProb = (int)d[2]; println "mutateProb = $mutateProb"
         return completedOK
     }
 
@@ -36,9 +36,6 @@ abstract class Worker extends DataClass {
     abstract double doFitness(List board)
 
     abstract boolean evolve (List parameters)
-
-
-
 
 }
 

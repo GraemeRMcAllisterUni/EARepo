@@ -10,15 +10,22 @@ improve upon it!
 
 import java.util.*;
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GraphDraw extends JFrame {
+public class GraphDraw extends JFrame implements Runnable  {
     int width;
     int height;
 
     ArrayList<Node> nodes;
     ArrayList<edge> edges;
+
+    public void run(){
+
+        System.out.println("Started Drawing");
+
+    }
 
     public GraphDraw() { //Constructor
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
