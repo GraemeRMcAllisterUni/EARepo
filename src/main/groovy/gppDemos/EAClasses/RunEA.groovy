@@ -10,7 +10,7 @@ import gppLibrary.LocalDetails
 public class RunEA {
 
     int clients = 2
-    int n = 4
+    int N = 4
     int initialPopulation = 4
 
     int crossoverProb = 95
@@ -27,7 +27,7 @@ public class RunEA {
 
     void run() {
 
-        List<Integer> d = [n, crossoverProb, mutateProb]
+        List<Integer> d = [N, crossoverProb, mutateProb]
 
 
         if (param!=null) param.each{ p -> d.add((int)p)}
@@ -37,7 +37,7 @@ public class RunEA {
         LocalDetails serverDetails = new LocalDetails(
                 lName: manager.class.getName(),
                 lInitMethod: manager.initMethod,
-                lInitData: [n, editProportion],
+                lInitData: [N, editProportion],
                 lFinaliseMethod: manager.finaliseMethod)
 
 
@@ -73,7 +73,7 @@ public class RunEA {
 
         println("int clients = " + clients)
 
-        println("int n = " + n)
+        println("int N = " + N)
 
         println("int initialPopulation = " + initialPopulation)
         eaCSprocess.run()

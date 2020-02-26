@@ -10,20 +10,17 @@ class TSPWorker extends Worker{
 
         List<Integer> board = []
 
-        transient Map cityList = [1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
+        Map cityList = [1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
 
-        int cities = 5
+        GraphDraw frame = new GraphDraw("Worker")
 
-        transient GraphDraw frame = new GraphDraw("worker")
-
-        int N = 5
-
-        int mapSize = 25
+        int N = cityList.size()
 
         @Override
         int init(List d) {
-            //drawWorld()
+            drawWorld()
             N = (Integer) d[0]
+            N = cityList.size()
             crossoverProb = (int) d[1]
             mutateProb = (int) d[2]
             return completedOK
@@ -36,13 +33,13 @@ class TSPWorker extends Worker{
                 List<Integer> city = (List<Integer>) v
                 frame.addNode(k.toString(), city[0], city[1])
             }
+
         }
 
         def buildWorld(int N, int mapSize) {
             for (int i in 0..N) {
                 cityList.put((int) i, new City(rng.nextInt(mapSize), rng.nextInt(mapSize)))
             }
-            println(cityList)
             return cityList
         }
 
@@ -51,46 +48,45 @@ class TSPWorker extends Worker{
             for (int i in 1..cityList.size())
                 board.add(i)
             Collections.shuffle(board)
-            println(board)
             doFitness(board)
             return completedOK
         }
 
         @Override
         double doFitness(List board) {
-            println board.size()
             for (int i in 0..board.size() - 2) {
-                println i
+                print "$i\t"
                 List c1 = (List) cityList.get(board[i])
                 List c2 = (List) cityList.get(board[i + 1])
-                println(i + ": " + board[i] + "," + board[i + 1])
-                fitness = +distance(c1, c2)
                 frame.addEdge((int) board[i], (int) board[i + 1])
+                fitness = +distance(c1, c2)
             }
             println(fitness)
             return fitness
         }
 
-        double distance(List c1, List c2) {
-            println("$c1\n$c2")
-            double xDis = Math.abs((int) c1[0] - (int) c2[0])
-            double yDis = Math.abs((int) c1[1] - (int) c2[1])
+        static double distance(List city1, List city2) {
+            double xDis = Math.abs((int) city1[0] - (int) city2[0])
+            double yDis = Math.abs((int) city1[1] - (int) city2[1])
             return Math.sqrt((xDis**2) + (yDis**2))
         }
 
         @Override
         boolean evolve(List parameters) {
+            println "Evolving"
             TSPWorker p1 = (TSPWorker) parameters[0]
             TSPWorker p2 = (TSPWorker) parameters[1]
             TSPWorker child1 = (TSPWorker) parameters[2]
             TSPWorker child2 = (TSPWorker) parameters[3]
             int probability = rng.nextInt(101)
+            println "probability = $probability\n crossoverProb = $crossoverProb"
             if (probability < crossoverProb) {
                 // do the crossover operation
                 child1.board = new ArrayList(N + 1)
                 child2.board = new ArrayList(N + 1)
                 int cPoint = rng.nextInt(N)// - 3) + 2    // choose the crossover point >0 and <N
-                doCrossoverOnePoint(p1, p2, child1, child2, cPoint)
+                println "cPoint = " + cPoint
+                doOrderedCrossover(p1, p2, child1, child2, cPoint)
                 probability = rng.nextInt(101)
                 if (probability < mutateProb) {
                     // do the mutate operation
@@ -103,9 +99,11 @@ class TSPWorker extends Worker{
                     child2.board.swap(mutate1, mutate2)
                 }
 
+                println("Doing fitness from evolve")
+                println("Child 1 = " + child1.board)
                 child1.fitness = doFitness(child1.board)
                 println("Parent 1 fitness" + p1.fitness)
-                println("Child 1 fitness" + child1.fitness)
+
 
                 child2.fitness = doFitness(child2.board)
                 println("Parent 2 fitness" + p2.fitness)
@@ -118,13 +116,12 @@ class TSPWorker extends Worker{
         }
 
 
-        void doCrossoverOnePoint(p1, p2, child1, child2, int cPoint) {
-            // zeroth element is null
-//        println "P1: $p1 P2: $p2 xOver: $cPoint"
-            List p1a = p1.board.getAt(1..cPoint)
-            List p2a = p2.board.getAt(1..cPoint)
-            List p1b = p1.board.getAt(cPoint + 1..N)
-            List p2b = p2.board.getAt(cPoint + 1..N)
+        void doOrderedCrossover(p1, p2, child1, int cPoint) {
+        println "P1: $p1.board P2: $p2.board xOver: $cPoint"
+            List p1a = p1.board.getAt(0..cPoint)
+            List p2a = p2.board.getAt(0..cPoint)
+            List p1b = p1.board.getAt(cPoint + 0..N-1)
+            List p2b = p2.board.getAt(cPoint + 0..N-1)
             // find values in common between p1a and p2a
             List common = []
             for (int i in 0..<cPoint) {
@@ -138,9 +135,9 @@ class TSPWorker extends Worker{
             child1.board << null
             child2.board << null
             for (int i in 0..<cPoint) {
-                child1.board[i + 1] = p1a[i]
-                child2.board[i + 1] = p2a[i]
+                child1.board[i] = p1a[i]
             }
+            for (int p in startGene..endGene)
 //        println "C1: $child1 C2: $child2"
             int p1P = 0
             int p2P = 0

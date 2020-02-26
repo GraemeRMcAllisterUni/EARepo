@@ -2,14 +2,10 @@ package gppDemos.TSP
 
 
 import gppDemos.EAClasses.RunEA
+import gppDemos.EAClasses.Manager
 import gppDemos.TSP.TSPWorker
 
 int mapSize = 25
-
-
-int N = 10
-
-
 
 RunEA EA = new RunEA()
 
@@ -17,7 +13,7 @@ RunEA EA = new RunEA()
 
 EA.worker = new TSPWorker()
 
-EA.n = 1
+EA.N = 10
 
 EA.clients = 1
 

@@ -20,7 +20,7 @@ abstract class Worker extends DataClass {
     transient static String evolveFunction = "evolve"
     transient int id = -1
 
-    //List board
+    //def board = []
 
 
 
