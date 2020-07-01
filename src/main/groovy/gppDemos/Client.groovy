@@ -38,12 +38,13 @@ class Client extends DataClass implements CSProcess {
         callUserMethod(workerInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
 
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
-        for (p in 0..initialPopulation) {
+        for (p in 0..initialPopulation-1) {
             Object worker = workerClass.newInstance()
             returnCode = worker.&"$createIndividualFunction"()
             if (returnCode == completedOK)
-                initialise.individuals << worker   // add an individual created initially by this client
+                initialise.individuals << worker   // add 'initialPopulation' of solutions created initially by this client
         }
+
 
         send.write(initialise) // send created individuals to server
 
@@ -57,9 +58,8 @@ class Client extends DataClass implements CSProcess {
 
             inputObject = receive.read()  // read response from server
 
-            if (inputObject instanceof UniversalTerminator) running = false
-
-
+            if (inputObject instanceof UniversalTerminator)
+                running = false
             else {  //response will be a list of requiredParents and children
                 assert (inputObject instanceof UniversalResponse):
                         "Client did not receive instance of UniversalResponse"
@@ -70,7 +70,7 @@ class Client extends DataClass implements CSProcess {
                 for (i in 0..<resultantChildren) {
                     parameters << workerClass.newInstance()
                 }
-                boolean result = workerInit.&"$evolveFunction"(parameters) // it is here that we find the limitation that the client only uses
+                boolean result = workerInit.&"$evolveFunction"(parameters)
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {

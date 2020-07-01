@@ -48,7 +48,7 @@ class ClientGroup implements CSProcess {
                     resultantChildren: resultantChildren,
                     logPhaseName: logPhaseName == "" ? "" : (String)"$c, "  + logPhaseName ,
                     logPropertyName: logPropertyName,
-                    clientId: c,)
+                    clientId: c)
         }
 
         new PAR(network).run()

@@ -94,7 +94,7 @@ class Server extends DataClass implements CSProcess {
                 assert (input.tag == writeRequest):
                         "Client-Server: Server Process expecting request to write evolved children into population"
                 //input.individuals.each{println "$it"}
-                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31) // addChildren
             }
 
 
@@ -117,7 +117,7 @@ class Server extends DataClass implements CSProcess {
             if (input.tag == readRequest) {
                 terminated = terminated + 1 // wait until all clients are awaiting a response
             } else { // must be an evolved child being returned
-                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31) // addChildren
             }
             if (terminated == clients) running = false
         }

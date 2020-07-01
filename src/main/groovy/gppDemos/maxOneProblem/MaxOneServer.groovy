@@ -47,10 +47,12 @@ class MaxOneServer extends Manager{
 
     int addChildren(List <Worker> children) {
         boolean childAdded = false
+
+
         for ( c in 0 ..< children.size()) {
             Worker child = children[c]
             // only add child if it is better than the worst child in the population
-            if (child.fitness < worstFitness) {
+            if (child.fitness < worstFitness && child.fitness != bestFitness) {
                 childAdded = true
                 improvements = improvements + 1 // for analysis
 //                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
@@ -135,6 +137,7 @@ class MaxOneServer extends Manager{
         println "Best ${population[bestLocation].board}\nFitness: ${population[bestLocation].fitness}"
         println "$requestedParents parents requested; creating $improvements improvements"
         print "$requestedParents, $improvements, $modifications, "
+
         return completedOK
     }
 

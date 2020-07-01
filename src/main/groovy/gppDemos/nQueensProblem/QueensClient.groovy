@@ -19,11 +19,11 @@ class QueensClient extends Worker {
     static String initialiseMethod = "init"
     static String createFunction = "createFunction"
    // static String evolveFunction = "evolveTwoPoint"
-    static String evolve = "evolveOnePoint"
+    static String evolve = "evolve"
 
     @Override
     boolean evolve(List parameters) {
-        return 0
+        return evolveOnePoint(parameters);
     }
 
     static Random rng = new Random()
@@ -158,9 +158,9 @@ class QueensClient extends Worker {
     }
     
     boolean evolveTwoPoint (List parameters) {
-        QueensClient p1 = parameters[0]
-        QueensClient p2 = parameters[1]
-        QueensClient evolute = parameters[2]
+        QueensClient p1 = (QueensClient) parameters[0]
+        QueensClient p2 = (QueensClient) parameters[1]
+        QueensClient evolute = (QueensClient) parameters[2]
         int probability = rng.nextInt(101)
         if (probability < crossoverProb) {
             // do the crossover operation

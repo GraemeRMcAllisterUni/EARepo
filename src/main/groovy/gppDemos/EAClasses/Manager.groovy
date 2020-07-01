@@ -12,12 +12,14 @@ class Manager extends DataClass{
     Double bestFitness = 1.0D
     int worstLocation, bestLocation
     static Random rng = new Random()
-    static int requestedParents = 2
+    static int requestedParents = 0
     static int requeiredarents = 2
     static int improvements = 0
     static int N = 0
     static float editProportion = 0.0F
     //def board
+
+    static long seed = System.currentTimeMillis()
 
     static String initMethod = "initialise"
     static String selectParentsFunction = "selectParents"
@@ -29,15 +31,21 @@ class Manager extends DataClass{
 
 
     int initialise (List d) {
+        improvements = 0
+        requestedParents =0
+        population = []
+        worstFitness = 0.0D
+        bestFitness = 1.0D
         N = (int)d[0]
         editProportion = (float)d[1]
-        rng.setSeed(System.currentTimeMillis())
+        if (d[2] != null) seed = (long)d[2]
+        rng.setSeed(seed)
         return completedOK
     }
 
 
     UniversalResponse selectParents(int parents) {
-        requestedParents = requeiredarents + parents // for analysis
+        requestedParents = requestedParents + parents // for analysis
         def response = new UniversalResponse()
         for ( i in 0 ..< parents) {
             int p = rng.nextInt(population.size())
@@ -48,7 +56,7 @@ class Manager extends DataClass{
 
     int addChildren(List <Worker> children) {
         boolean childAdded = false
-        for ( c in 0 ..< children.size()) {
+        for (c in 0 ..< children.size()) {
             Worker child = children[c]
             // only add child if it is better than the worst child in the population
             if (child.fitness < worstFitness) {
@@ -85,26 +93,26 @@ class Manager extends DataClass{
 
 
     void editPopulation(){
-        int populationSize = population.size()
-        int editNumber = (int)(populationSize * editProportion)
-        for ( c in 1 .. editNumber) {
-            int id = rng.nextInt(populationSize)
-//            print "$c = $id: ${population[id]} ->"
-            int m1 = rng.nextInt(N) + 1
-            int m2 = rng.nextInt(N) + 1
-            while ( m2 == m1) m2 = rng.nextInt(N) + 1
-            ((Worker)population[id]).board.swap(m1, m2)
-            ((Worker)population[id]).fitness = ((Worker)population[id]).doFitness(((Worker)population[id]).board)
-//            println "$m1, $m2, ${population[id]}"
-        }
+//        int populationSize = population.size()
+//        int editNumber = (int)(populationSize * editProportion)
+//        for ( c in 1 .. editNumber) {
+//            int id = rng.nextInt(populationSize)
+////            print "$c = $id: ${population[id]} ->"
+//            int m1 = rng.nextInt(N) + 1
+//            int m2 = rng.nextInt(N) + 1
+//            while ( m2 == m1) m2 = rng.nextInt(N) + 1
+//            ((Worker)population[id]).board.swap(m1, m2)
+//            ((Worker)population[id]).fitness = ((Worker)population[id]).doFitness(((Worker)population[id]).board)
+////            println "$m1, $m2, ${population[id]}"
+//        }
         determineBestWorst()
     }
 
 
     void determineBestWorst(){
-        bestFitness = 1.0D
-        worstFitness = 0.0D
-        for ( p in 0..< population.size()) {
+        bestFitness = population[0].fitness
+        worstFitness = population[0].fitness
+        for (p in 0..< population.size()) {
             if (population[p].fitness < bestFitness) {
                 // update max fitness data
                 bestFitness = population[p].fitness
@@ -123,7 +131,7 @@ class Manager extends DataClass{
 
     int addIndividuals(List <Worker> individuals) { //add the new individuals to the population
 
-        for ( i in 0 ..< individuals.size()) {
+        for (int i in 0 ..<individuals.size()) {
             population.add(individuals[i])
         }
         determineBestWorst()
@@ -140,6 +148,9 @@ class Manager extends DataClass{
     }
 
     int finalise(List d) {
+        for (p in 0..< population.size()) {
+            println(population[p])
+        }
         println "Solution Found ${population[bestLocation]}\n "
         return completedOK
     }

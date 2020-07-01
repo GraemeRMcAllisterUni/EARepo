@@ -12,13 +12,10 @@ class TSPWorker extends Worker{
 
         Map cityList = [1: [342, 228], 2: [74, 386], 3: [142, 261], 4: [337, 394], 5: [211, 66], 6: [292, 242], 7: [290, 256], 8: [387, 212], 9: [272, 377], 10: [429, 179]]
 
-        GraphDraw frame = new GraphDraw("Worker")
-
         int N = cityList.size()
 
         @Override
         int init(List d) {
-            drawWorld()
             N = (Integer) d[0]
             N = cityList.size()
             crossoverProb = (int) d[1]
@@ -26,22 +23,7 @@ class TSPWorker extends Worker{
             return completedOK
         }
 
-        void drawWorld() {
-            frame.setSize(500, 500)
-            frame.setVisible(true)
-            cityList.each { k, v ->
-                List<Integer> city = (List<Integer>) v
-                frame.addNode(k.toString(), city[0], city[1])
-            }
 
-        }
-
-        def buildWorld(int N, int mapSize) {
-            for (int i in 0..N) {
-                cityList.put((int) i, new City(rng.nextInt(mapSize), rng.nextInt(mapSize)))
-            }
-            return cityList
-        }
 
         @Override
         int createFunction() {
@@ -54,18 +36,19 @@ class TSPWorker extends Worker{
 
         @Override
         double doFitness(List board) {
-            for (int i in 0..board.size() - 2) {
-                print "$i\t"
+            double fitnessResult = 0
+            println("doing fitness on: " + board)
+            for (int i in 0..N - 2) {
                 List c1 = (List) cityList.get(board[i])
                 List c2 = (List) cityList.get(board[i + 1])
-                frame.addEdge((int) board[i], (int) board[i + 1])
-                fitness = +distance(c1, c2)
+                fitnessResult = fitnessResult + distance(c1, c2)
             }
-            println(fitness)
-            return fitness
+            fitnessResult = fitnessResult + distance(cityList.get(board[0]), cityList.get(board[board.size()-1]))
+            println(fitnessResult)
+            return fitnessResult
         }
 
-        static double distance(List city1, List city2) {
+        double distance(List city1, List city2) {
             double xDis = Math.abs((int) city1[0] - (int) city2[0])
             double yDis = Math.abs((int) city1[1] - (int) city2[1])
             return Math.sqrt((xDis**2) + (yDis**2))
@@ -78,20 +61,23 @@ class TSPWorker extends Worker{
             TSPWorker p2 = (TSPWorker) parameters[1]
             TSPWorker child1 = (TSPWorker) parameters[2]
             TSPWorker child2 = (TSPWorker) parameters[3]
+            println("Parent 1 board is: " + p1.board)
+            println("Parent 2 board is: " + p2.board)
             int probability = rng.nextInt(101)
             println "probability = $probability\n crossoverProb = $crossoverProb"
             if (probability < crossoverProb) {
                 // do the crossover operation
-                child1.board = new ArrayList(N + 1)
-                child2.board = new ArrayList(N + 1)
-                int cPoint = rng.nextInt(N)// - 3) + 2    // choose the crossover point >0 and <N
+                println("doing fitness on: " + board)
+                child1.board = new int[N]
+                child2.board = new int[N]
+                int cPoint = rng.nextInt(N-2)+2   // choose the crossover point >0 and <N
                 println "cPoint = " + cPoint
                 doOrderedCrossover(p1, p2, child1, child2, cPoint)
                 probability = rng.nextInt(101)
                 if (probability < mutateProb) {
                     // do the mutate operation
-                    int mutate1 = rng.nextInt(N) + 1
-                    int mutate2 = rng.nextInt(N) + 1
+                    int mutate1 = rng.nextInt(N+1)
+                    int mutate2 = rng.nextInt(N+1)
                     //ensure m1 and m2 are different
                     while (mutate2 == mutate1) mutate2 = rng.nextInt(N) + 1
                     // swaps bits m1 and m2 in evolute.board
@@ -100,13 +86,13 @@ class TSPWorker extends Worker{
                 }
 
                 println("Doing fitness from evolve")
-                println("Child 1 = " + child1.board)
                 child1.fitness = doFitness(child1.board)
-                println("Parent 1 fitness" + p1.fitness)
+                println("Child 1 = " + child1.board)
+                println("Parent 1 fitness: " + p1.fitness)
 
 
                 child2.fitness = doFitness(child2.board)
-                println("Parent 2 fitness" + p2.fitness)
+                println("Parent 2 fitness: " + p2.fitness)
                 println("Child 2 fitness" + child2.fitness)
 //            println "C1: $child1 C2: $child2"
 
@@ -116,12 +102,12 @@ class TSPWorker extends Worker{
         }
 
 
-        void doOrderedCrossover(p1, p2, child1, int cPoint) {
-        println "P1: $p1.board P2: $p2.board xOver: $cPoint"
-            List p1a = p1.board.getAt(0..cPoint)
-            List p2a = p2.board.getAt(0..cPoint)
-            List p1b = p1.board.getAt(cPoint + 0..N-1)
-            List p2b = p2.board.getAt(cPoint + 0..N-1)
+        void doOrderedCrossover(TSPWorker parent1, TSPWorker parent2, TSPWorker child1, TSPWorker child2, int cPoint) {
+        println "Parent1: $parent1.board Parent2: $parent2.board xOver: $cPoint"
+            List p1a = parent1.board[0..cPoint]
+            List p1b = parent1.board[cPoint..N - 1]
+            List p2a = parent2.board[0..cPoint]
+            List p2b = parent2.board[cPoint..N - 1]
             // find values in common between p1a and p2a
             List common = []
             for (int i in 0..<cPoint) {
@@ -129,15 +115,14 @@ class TSPWorker extends Worker{
                     common << p1a[i]
                 }
             }
+            println(common)
             List p1aRem = p1a.minus(common)
             List p2aRem = p2a.minus(common)
-//        println "$p1a, $p1b, $p2a, $p2b, $p1aRem, $p2aRem, $common"
-            child1.board << null
-            child2.board << null
+        println "$p1a, $p1b, $p2a, $p2b, $p1aRem, $p2aRem, $common"
             for (int i in 0..<cPoint) {
                 child1.board[i] = p1a[i]
             }
-            for (int p in startGene..endGene)
+            //for (int p in startGene..endGene)
 //        println "C1: $child1 C2: $child2"
             int p1P = 0
             int p2P = 0

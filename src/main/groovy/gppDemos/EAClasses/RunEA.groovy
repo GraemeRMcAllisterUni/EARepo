@@ -18,6 +18,7 @@ public class RunEA {
     int requiredParents = 2
     int resultantChildren = 2
     float editProportion = 0.1F
+    long seed
 
     Manager manager = new Manager()
 
@@ -27,17 +28,15 @@ public class RunEA {
 
     void run() {
 
-        List<Integer> d = [N, crossoverProb, mutateProb]
-
+        //def d = [N, crossoverProb, seed]
 
         if (param!=null) param.each{ p -> d.add((int)p)}
 
-        println d
 
         LocalDetails serverDetails = new LocalDetails(
                 lName: manager.class.getName(),
                 lInitMethod: manager.initMethod,
-                lInitData: [N, editProportion],
+                lInitData: [N, editProportion, seed],
                 lFinaliseMethod: manager.finaliseMethod)
 
 
@@ -45,7 +44,8 @@ public class RunEA {
                 workers: clients,
                 groupDetails: new LocalDetails[clients])
 
-        for (c in 0..<clients) {
+        for (int c in 0..<clients) {
+            def d = [N, crossoverProb, seed, c]
             clientDetails.groupDetails[c] = new LocalDetails(
                     lName: worker.class.getName(),
                     lInitMethod: worker.initialiseMethod,
@@ -68,10 +68,9 @@ public class RunEA {
                 carryOnFunction: manager.carryOnFunction
         )
 
-        System.gc()
+        //System.gc()
 
-
-        println("int clients = " + clients)
+    println("int clients = " + clients)
 
         println("int N = " + N)
 
