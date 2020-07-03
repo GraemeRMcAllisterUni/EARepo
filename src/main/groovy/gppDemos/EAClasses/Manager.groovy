@@ -84,27 +84,27 @@ class Manager extends DataClass{
 //                println " $worstFitness, $bestFitness"
             } // end if
         } // end for loop
-        if (childAdded) {
-            if (bestFitness == worstFitness)
-                editPopulation()
-        }
+//        if (childAdded) {
+//            if (bestFitness == worstFitness)
+//                editPopulation()
+//        }
         return completedOK
     }
 
 
     void editPopulation(){
-//        int populationSize = population.size()
-//        int editNumber = (int)(populationSize * editProportion)
-//        for ( c in 1 .. editNumber) {
-//            int id = rng.nextInt(populationSize)
-////            print "$c = $id: ${population[id]} ->"
-//            int m1 = rng.nextInt(N) + 1
-//            int m2 = rng.nextInt(N) + 1
-//            while ( m2 == m1) m2 = rng.nextInt(N) + 1
-//            ((Worker)population[id]).board.swap(m1, m2)
-//            ((Worker)population[id]).fitness = ((Worker)population[id]).doFitness(((Worker)population[id]).board)
-////            println "$m1, $m2, ${population[id]}"
-//        }
+        int populationSize = population.size()
+        int editNumber = (int)(populationSize * editProportion)
+        for ( c in 1 .. editNumber) {
+            int id = rng.nextInt(populationSize)
+//            print "$c = $id: ${population[id]} ->"
+            int m1 = rng.nextInt(N) + 1
+            int m2 = rng.nextInt(N) + 1
+            while ( m2 == m1) m2 = rng.nextInt(N) + 1
+            ((Worker)population[id]).board.swap(m1, m2)
+            ((Worker)population[id]).fitness = ((Worker)population[id]).doFitness(((Worker)population[id]).board)
+//            println "$m1, $m2, ${population[id]}"
+        }
         determineBestWorst()
     }
 

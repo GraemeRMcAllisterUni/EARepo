@@ -9,9 +9,9 @@ import gppDemos.EAClasses.Worker
 
 
 
-List ClientList=    [1, 2,  3,  4,  6,  8,  12, 16, 24, 48]
+List ClientList=    [48, 24, 16, 12, 8,  6,  4, 3,  2,  1]
 
-int[] possPops=     [48, 24, 16, 12, 8,  6,  4, 3,  2,  1]
+int[] possPops=     [1, 2,  3,  4,  6,  8,  12, 16, 24, 48]
 
 //Collections.shuffle(ClientList)
 
@@ -116,8 +116,8 @@ class MaxOneManager extends Manager{
             FileWriter fr = new FileWriter("running.csv", true)
             fr.write(System.currentTimeMillis() + ",")
             fr.close()
-            determineBestWorst()
         }
+        determineBestWorst()
 
         return completedOK
     }
