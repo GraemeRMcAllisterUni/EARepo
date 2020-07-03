@@ -1,9 +1,6 @@
 package gppDemos.EAClasses
 
 import gppDemos.ParallelClientServerEngine
-import gppDemos.empty.emptyWorker
-import gppDemos.EAClasses.Manager
-import gppDemos.EAClasses.Worker
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 
@@ -18,12 +15,9 @@ public class RunEA {
     int requiredParents = 2
     int resultantChildren = 2
     float editProportion = 0.1F
-    long seed
-
+    long seed = System.currentTimeMillis()
     Manager manager = new Manager()
-
-    Worker worker = new emptyWorker()
-
+    Worker worker
     List <Object> param = null
 
     void run() {
@@ -45,7 +39,7 @@ public class RunEA {
                 groupDetails: new LocalDetails[clients])
 
         for (int c in 0..<clients) {
-            def d = [N, crossoverProb, seed, c]
+            def d = [N, crossoverProb, mutateProb, seed, c]
             clientDetails.groupDetails[c] = new LocalDetails(
                     lName: worker.class.getName(),
                     lInitMethod: worker.initialiseMethod,
@@ -68,13 +62,11 @@ public class RunEA {
                 carryOnFunction: manager.carryOnFunction
         )
 
-        //System.gc()
+        System.gc()
 
-    println("int clients = " + clients)
-
-        println("int N = " + N)
-
-        println("int initialPopulation = " + initialPopulation)
+//        println("int clients = " + clients)
+//        println("int N = " + N)
+//        println("int initialPopulation = " + initialPopulation)
         eaCSprocess.run()
     }
 }

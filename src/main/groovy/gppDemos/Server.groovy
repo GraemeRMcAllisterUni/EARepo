@@ -36,7 +36,7 @@ class Server extends DataClass implements CSProcess {
         int returnCode
         int finished = 0
 
-        println(man.getName())
+        //println(man.getName())
 
         Class managerClass = Class.forName(man.getName())
 

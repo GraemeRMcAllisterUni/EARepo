@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class QueensClient extends Worker {
     static int N = 0   // number of Queens to be placed
-    List <Integer> board = null
+    static List <Integer> board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
     
     static int initialPopulationSize =-1
@@ -195,7 +195,7 @@ class QueensClient extends Worker {
     void doCrossoverOnePoint (QueensClient p1, QueensClient p2, QueensClient child1, QueensClient child2, int cPoint) {
         // zeroth element is null
 //        println "P1: $p1 P2: $p2 xOver: $cPoint"
-        List p1a = p1.board.getAt(1 .. cPoint)                         
+        List p1a = p1.board.getAt(1 .. cPoint)
         List p2a = p2.board.getAt(1 .. cPoint)   
         List p1b = p1.board.getAt(cPoint+1 .. N)                      
         List p2b = p2.board.getAt(cPoint+1 .. N) 

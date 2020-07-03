@@ -74,8 +74,6 @@ class Client extends DataClass implements CSProcess {
                 assert (result != null):
                         "Client Process: unexpected error from $evolveFunction"
                 if (result) {
-
-
                     List children = []
                     for (i in 0..<resultantChildren) children << parameters[requiredParents + i]
                     def sendChildren = new UniversalRequest(tag: writeRequest,

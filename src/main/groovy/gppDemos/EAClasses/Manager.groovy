@@ -11,11 +11,12 @@ class Manager extends DataClass{
     Double worstFitness = 0.0D
     Double bestFitness = 1.0D
     int worstLocation, bestLocation
+    Integer N = 0
     static Random rng = new Random()
     static int requestedParents = 0
     static int requeiredarents = 2
     static int improvements = 0
-    static int N = 0
+
     static float editProportion = 0.0F
     //def board
 
@@ -27,8 +28,6 @@ class Manager extends DataClass{
     static String addIndividualsMethod = "addIndividuals"
     static String carryOnFunction = "carryOn"
     static String finaliseMethod = "finalise"
-
-
 
     int initialise (List d) {
         improvements = 0
@@ -61,7 +60,7 @@ class Manager extends DataClass{
             // only add child if it is better than the worst child in the population
             if (child.fitness < worstFitness) {
                 childAdded = true
-                improvements = improvements + 1 // for analysis
+                improvements++ // for analysis
 //                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
                 worstFitness = child.fitness
                 population[worstLocation] = child
@@ -123,9 +122,8 @@ class Manager extends DataClass{
                 worstFitness = population[p].fitness
                 worstLocation = p
             }
-
         }
-        println population[bestLocation]
+        //println population[bestLocation]
     }
 
 
@@ -141,10 +139,7 @@ class Manager extends DataClass{
 
 
     boolean carryOn() { // returns true if the server should continue
-        if ( bestFitness != requiredFitness)
-            return true
-        else
-            return false
+        return bestFitness != requiredFitness
     }
 
     int finalise(List d) {
