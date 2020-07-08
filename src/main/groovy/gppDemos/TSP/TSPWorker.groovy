@@ -6,17 +6,21 @@ import gppDemos.EAClasses.Worker
 
 class TSPWorker extends Worker {
 
+    String filePath = "Djibouti.csv";
 
     List<Integer> board = []
 
-    Map cityList// = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179]]
+    int mutationRate = 6
+
+    Map cityList = new HashMap()// = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179]]
 
     //def cityList = [[342, 228], [74, 386], [142, 261], [337, 394], [211, 66], [292, 242], [290, 256], [387, 212], [272, 377], [429, 179]]
 
     int N// = cityList.size()
 
     TSPWorker() {
-        cityList = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179] , 8:[150,500], 9:[300,100], 10:[100,100], 11:[220,420], 12:[100,200], 13:[100,450], 14:[350,120], 15:[400,330], 16:[100,330]]
+        readTSP()
+        //cityList = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179] , 8:[150,500], 9:[300,100], 10:[100,100], 11:[220,420], 12:[100,200], 13:[100,450], 14:[350,120], 15:[400,330], 16:[100,330]]
         N = cityList.size()
     }
 
@@ -73,18 +77,18 @@ class TSPWorker extends Worker {
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
                 // do the mutate operation
-                mutate(child1)
-                mutate(child2)
+                //int mutation = rng.nextInt(mutationRate)
+                rng.nextInt(mutationRate).times{
+                    mutate(child1)
+                }
+                //mutation = rng.nextInt(6)
+//                rng.nextInt(mutationRate).times{
+//                    mutate(child2)
+//                }
             }
             child1.fitness = doFitness(child1.board)
+            child2.board = new int[N]
             child2.fitness = doFitness(child2.board)
-            println "Evolve production:"
-            println p1
-            println p2
-            println child1
-            println child2
-
-            //println "C1: $child1 C2: $child2"
 
             return true
         } else
@@ -252,7 +256,7 @@ class TSPWorker extends Worker {
     @Override
     boolean equals(Object obj) {
         if(obj instanceof TSPWorker) {
-            return obj.board.equals(this.board)
+            return obj.fitness.equals(this.fitness) && obj.board.equals(this.board)
         }
         else
             return false
@@ -261,6 +265,27 @@ class TSPWorker extends Worker {
     @Override
     String toString() {
         return fitness + " " + board + " " + board.first()
+    }
+
+    Map readTSP()
+    {
+
+        String line;
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        while ((line = reader.readLine()) != null)
+        {
+            String[] parts = line.split(",", 3);
+
+            int key = Integer.parseInt(parts[0])
+            List value = [Double.parseDouble(parts[1]),Double.parseDouble(parts[2])]
+            cityList.put(key, value);
+        }
+
+//        for (String key : cityList.keySet())
+//        {
+//            System.out.println(key + ":" + cityList.get(key));
+//        }
+        reader.close();
     }
 }
 

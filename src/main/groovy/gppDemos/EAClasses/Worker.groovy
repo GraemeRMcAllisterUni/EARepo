@@ -76,6 +76,19 @@ abstract class Worker extends DataClass {
 
     }
 
+//    void mutate(Worker child) {
+//        int point1 = rng.nextInt(child.board.size())
+//        int point2 = point1+1
+//
+//        if(point1=child.board.size()-1)
+//            point2 = point1-1
+//
+//        def swap = child.board[point1]
+//        child.board[point1] = child.board[point2]
+//        child.board[point2] = swap
+//
+//    }
+
     String toString() {
         return "$fitness $board"
     }

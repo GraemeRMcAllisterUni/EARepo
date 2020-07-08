@@ -64,9 +64,6 @@ class Manager extends DataClass{
 
     int addChildren(List <Worker> children) {
         noImprovements++
-        println noImprovements
-        for (c in children)
-            println "received " + c
         improvementattempts++
         boolean childAdded = false
         for (c in 0 ..< children.size()) {
@@ -74,33 +71,15 @@ class Manager extends DataClass{
             // only add child if it is better than the worst child in the population
             if(!population.contains(child))
                 if (child.fitness < worstFitness ) {
-                    println "added child " + child
-                    println "better than " + population[worstLocation]
-                childAdded = true
+                    childAdded = true
                     noImprovements = 0
+                    println "noImprovements = 0"
                 improvements++ // for analysis
 //                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
                 worstFitness = child.fitness
                 population[worstLocation] = child
                 // new child could be better than the current best
                 determineBestWorst()
-
-//                if (child.fitness < bestFitness) {
-//                    bestFitness = child.fitness
-//                    bestLocation = worstLocation
-////                    print " new best"
-////                    println "$child.fitness after ${requestedParents/2} evolutions "
-//                }
-//                // now update minFitness
-//                worstFitness = bestFitness
-//                for ( p in 0 ..< population.size()) {
-//                    if (population[p].fitness > worstFitness) {
-//                        // found a new minimum fitness
-//                        worstFitness = population[p].fitness
-//                        worstLocation = p
-//                    }
-//                }
-//                println " $worstFitness, $bestFitness"
             } // end if
         } // end for loop
         return completedOK

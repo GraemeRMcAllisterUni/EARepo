@@ -98,8 +98,6 @@ class Server extends DataClass implements CSProcess {
             }
 
 
-
-
             running = manager.&"$carryOnFunction"()  // returns false when loop should terminate
             assert (running != null):
                     "Client-Server: Server Process $carryOnFunction returned null"
