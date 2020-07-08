@@ -7,7 +7,7 @@ import gppLibrary.LocalDetails
 public class RunEA {
 
     int clients = 2
-    int N = 4
+    public int N = 4
     int initialPopulation = 4
 
     int crossoverProb = 95
@@ -16,7 +16,7 @@ public class RunEA {
     int resultantChildren = 2
     float editProportion = 0.1F
     long seed = System.currentTimeMillis()
-    Manager manager = new Manager()
+    def manager
     Worker worker
     List <Object> param = null
 
@@ -32,7 +32,6 @@ public class RunEA {
                 lInitMethod: manager.initMethod,
                 lInitData: [N, editProportion, seed],
                 lFinaliseMethod: manager.finaliseMethod)
-
 
         def clientDetails = new GroupDetails(
                 workers: clients,
@@ -61,9 +60,6 @@ public class RunEA {
                 incorporateChildrenMethod: manager.incorporateChildrenMethod,
                 carryOnFunction: manager.carryOnFunction
         )
-
-        System.gc()
-
 //        println("int clients = " + clients)
 //        println("int N = " + N)
 //        println("int initialPopulation = " + initialPopulation)

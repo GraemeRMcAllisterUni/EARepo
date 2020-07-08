@@ -12,6 +12,8 @@ class MaxOneIndividual extends Worker {
     BitSet board = new BitSet()
     Double fitness = null
 
+    static int k = 2
+
     static int crossoverProb = -1
     static int mutateProb = -1
 
@@ -63,23 +65,24 @@ class MaxOneIndividual extends Worker {
 
     void crossover(Worker parent0, Worker parent1, Worker child, int n, int k){
         def points = []
+        int modifier
         List<MaxOneIndividual> parents = [(MaxOneIndividual)parent0,(MaxOneIndividual)parent1]
-
         for(int i in 0..k-1)
             points[i] = rng.nextInt(n-1)+1
         points = points.sort()
         int slice = 0
         for(int i=0; i<k; i++)
         {
-            int modifier = ((i % 2 == 0) ? 0 : 1)
+            modifier = ((i % 2 == 0) ? 0 : 1)
             for(int j in slice..(int)points[i])
                 if (parents[modifier].board[j]) ((MaxOneIndividual)child).board.set(j)
 
             slice += (int)points[i] + 1
-
         }
+        modifier = ((k % 2 == 0) ? 0 : 1)
         for(int j in slice..n)
-            if (parents[((k % 2 == 0) ? 0 : 1)].board[j]) ((MaxOneIndividual)child).board.set(j)
+            if (parents[modifier].board[j]) ((MaxOneIndividual)child).board.set(j)
+
     }
 
  boolean evolve(List parameters) {
@@ -88,12 +91,12 @@ class MaxOneIndividual extends Worker {
      List<MaxOneIndividual> children = []
      for(i in 2..parameters.size()-1)
      children[i-2] = (MaxOneIndividual) parameters[i]
-     if (rng.nextInt(100) < crossoverProb) {
+     if (rng.nextInt(101) < crossoverProb) {
          // do the crossover
          int xOver = rng.nextInt(N)
          for (c in children) {
              c.board = new BitSet(N)
-             crossover(parents[0],parents[1],c, N,)
+             crossover(parents[0],parents[1],c, N, 1)
              parents.reverse()
              if (rng.nextInt(101) < mutateProb) {
                  // do mutate operation
@@ -101,6 +104,10 @@ class MaxOneIndividual extends Worker {
              }
              c = (MaxOneIndividual)c
              c.fitness = doFitness((BitSet)c.board)
+//             println("Parent 1 " + (MaxOneIndividual)parameters[1])
+//             println("Parent 2 " + (MaxOneIndividual)parameters[0])
+//             for (child in children)
+//                 println("Child " + child)
          }
          return true
      } else
@@ -114,7 +121,7 @@ class MaxOneIndividual extends Worker {
 //     MaxOneIndividual p2 = (MaxOneIndividual)parameters[1]
 //     MaxOneIndividual c1 = (MaxOneIndividual)parameters[2]
 //     MaxOneIndividual c2 = (MaxOneIndividual)parameters[3]
-//     //if (rng.nextInt(101) < crossoverProb) {
+//     if (rng.nextInt(101) < crossoverProb) {
 //         // do the crossover
 //         int xOver = rng.nextInt(N)
 //         c1.board = new BitSet(N)
@@ -137,13 +144,25 @@ class MaxOneIndividual extends Worker {
 //         c1.fitness = doFitness(c1.board)
 //         c2.fitness = doFitness(c2.board)
 //         return true
-////        }
-////        else
-////            return false
+//        }
+//        else
+//            return false
 // } // evolve
 
     String toString() {
         return "$fitness $board"
     }
+
+//    @Override
+//    boolean equals(Object obj) {
+//        try{
+//            obj = (Worker)obj
+//            return obj.fitness == this.fitness && obj.board == this.board
+//        }
+//        finally{
+//            return false
+//        }
+//
+//    }
 
 }

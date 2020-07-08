@@ -4,13 +4,11 @@ import gppDemos.maxOneProblem.MaxOneIndividual
 import groovy.transform.CompileStatic
 import gppDemos.UniversalResponse
 import gppLibrary.DataClass
-import gppDemos.QuickSort.Quicksort
 
 
 abstract class Worker extends DataClass {
 
-
-    int N = 2
+    public int N = 2
     static int crossoverProb
     static int mutateProb
     public double fitness
@@ -49,18 +47,16 @@ abstract class Worker extends DataClass {
 
     void crossover(Worker parent0, Worker parent1, Worker  child, int n, int k){
         int[] points = new int[k+1]
+        int modifier =0
         List<Worker> parents = [parent0,parent1]
 
         for(int i in 0..k)
             points[i] = rng.nextInt(n-1)+1
-
-        //quicksort.sort(points)
-
         int range = 0
         for(int i=0; i<k; i++)
         {
             for(int j in range.. points[i])
-                int modifier = ((i % 2==0) ? 0 : 1)
+                modifier = ((i % 2==0) ? 0 : 1)
                 child.board[range..points[i]] = parents[modifier].board[range..points[i]]
             range += points[i] + 1
         }
@@ -68,14 +64,27 @@ abstract class Worker extends DataClass {
     }
 
     void mutate(Worker child) {
-        int point = rng.nextInt(N-1)
-        def swap = child.board[point]
-        child.board[point] = child.board[point+1]
-        child.board[point+1] = swap
+        int point1 = rng.nextInt(N-1)
+        int point2 = rng.nextInt(N-1)
+        def swap = child.board[point1]
+        child.board[point1] = child.board[point2]
+        child.board[point2] = swap
     }
 
     String toString() {
         return "$fitness $board"
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        try{
+            obj = (Worker)obj
+            obj.board == this.board
+        }
+        finally{
+            return false
+        }
+
     }
 
 }
