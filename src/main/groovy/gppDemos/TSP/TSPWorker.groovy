@@ -16,7 +16,7 @@ class TSPWorker extends Worker {
     int N// = cityList.size()
 
     TSPWorker() {
-        cityList = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179]]
+        cityList = [1: [74, 386], 2: [142, 261], 3: [337, 394], 4: [211, 66], 5: [400,270], 6: [272, 377], 7: [429, 179] , 8:[150,500], 9:[300,100], 10:[100,100], 11:[220,420], 12:[100,200], 13:[100,450], 14:[350,120], 15:[400,330], 16:[100,330]]
         N = cityList.size()
     }
 
@@ -46,8 +46,7 @@ class TSPWorker extends Worker {
             List city2 = (List) cityList.get(board[i + 1])
             fitnessResult = fitnessResult + distance(city1, city2)
         }
-        fitnessResult = fitnessResult + distance(cityList.get(board[0]), cityList.get(board[board.size() - 1]))
-        println(fitnessResult)
+        fitnessResult = fitnessResult + distance((List)cityList.get(board[0]), (List)cityList.get(board[board.size() - 1]))
         return fitnessResult
     }
 
@@ -71,25 +70,19 @@ class TSPWorker extends Worker {
             child1.board = new int[N]
             child2.board = new int[N]
             onePointCrossover(p1, p2, child1, child2)
-//            probability = rng.nextInt(101)
-//            if (probability < mutateProb) {
-//                // do the mutate operation
-//                int mutate1 = rng.nextInt(N + 1)
-//                int mutate2 = rng.nextInt(N + 1)
-//                //ensure m1 and m2 are different
-//                while (mutate2 == mutate1) mutate2 = rng.nextInt(N) + 1
-//                // swaps bits m1 and m2 in evolute.board
-//                child1.board.swap(mutate1, mutate2)
-//                child2.board.swap(mutate1, mutate2)
-//            }
-
-//            println("Child 1 = " + child1.board)
-//            println("Parent 1 fitness: " + p1.fitness)
-//
-//
-//            println("Child 2 =" + child2.board)
-//            child2.fitness = doFitness(child2.board)
-//            println("Parent 2 fitness: " + p2.fitness)
+            probability = rng.nextInt(101)
+            if (probability < mutateProb) {
+                // do the mutate operation
+                mutate(child1)
+                mutate(child2)
+            }
+            child1.fitness = doFitness(child1.board)
+            child2.fitness = doFitness(child2.board)
+            println "Evolve production:"
+            println p1
+            println p2
+            println child1
+            println child2
 
             //println "C1: $child1 C2: $child2"
 
@@ -186,7 +179,6 @@ class TSPWorker extends Worker {
                 common << parent1a[i]
             }
         }
-
         List p1aRem = parent1a.minus(common)
         List p2aRem = parent2a.minus(common)
 //        println("common: " + common)
@@ -213,6 +205,7 @@ class TSPWorker extends Worker {
             } else
                 child2.board << v2
         }
+
     }
 
 
@@ -255,6 +248,20 @@ class TSPWorker extends Worker {
 //                child2.board << v2
 //        }
 //    }
+
+    @Override
+    boolean equals(Object obj) {
+        if(obj instanceof TSPWorker) {
+            return obj.board.equals(this.board)
+        }
+        else
+            return false
+    }
+
+    @Override
+    String toString() {
+        return fitness + " " + board + " " + board.first()
+    }
 }
 
 

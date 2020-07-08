@@ -10,8 +10,8 @@ public class RunEA {
     public int N = 4
     int initialPopulation = 4
 
-    int crossoverProb = 95
-    int mutateProb = 5
+    int crossoverProb = 100
+    int mutateProb = 50
     int requiredParents = 2
     int resultantChildren = 2
     float editProportion = 0.1F

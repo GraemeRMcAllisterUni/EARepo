@@ -54,7 +54,8 @@ class MaxOneIndividual extends Worker {
     }
 
     double doFitness(BitSet gene) {
-        return 1.0D - (gene.cardinality() / N)
+        return N - gene.cardinality()
+        //return 1.0D - (gene.cardinality() / N)
     }
 
     void mutate(Worker child) {
@@ -104,65 +105,25 @@ class MaxOneIndividual extends Worker {
              }
              c = (MaxOneIndividual)c
              c.fitness = doFitness((BitSet)c.board)
-//             println("Parent 1 " + (MaxOneIndividual)parameters[1])
-//             println("Parent 2 " + (MaxOneIndividual)parameters[0])
-//             for (child in children)
-//                 println("Child " + child)
          }
          return true
      } else
          return false
  } // evolve
 
-
-//    boolean evolve(List parameters) {
-//     // expecting two parents and returning two children
-//     MaxOneIndividual p1 = (MaxOneIndividual)parameters[0]
-//     MaxOneIndividual p2 = (MaxOneIndividual)parameters[1]
-//     MaxOneIndividual c1 = (MaxOneIndividual)parameters[2]
-//     MaxOneIndividual c2 = (MaxOneIndividual)parameters[3]
-//     if (rng.nextInt(101) < crossoverProb) {
-//         // do the crossover
-//         int xOver = rng.nextInt(N)
-//         c1.board = new BitSet(N)
-//         c2.board = new BitSet(N)
-//         for ( b in 0 .. xOver) {
-//             if (p1.board[b]) c1.board.set(b)
-//             if (p2.board[b]) c2.board.set(b)
-//         }
-//         for ( b in xOver+1 .. N) {
-//             if (p2.board[b]) c1.board.set(b)
-//             if (p1.board[b]) c2.board.set(b)
-//         }
-//         if (rng.nextInt(101) < 100-crossoverProb) {
-//             // do mutate operation
-//             int m1 = rng.nextInt(N)
-//             int m2 = rng.nextInt(N)
-//             c1.board.flip(m1)
-//             c2.board.flip(m2)
-//         }
-//         c1.fitness = doFitness(c1.board)
-//         c2.fitness = doFitness(c2.board)
-//         return true
-//        }
-//        else
-//            return false
-// } // evolve
-
     String toString() {
         return "$fitness $board"
     }
 
-//    @Override
-//    boolean equals(Object obj) {
-//        try{
-//            obj = (Worker)obj
-//            return obj.fitness == this.fitness && obj.board == this.board
-//        }
-//        finally{
-//            return false
-//        }
-//
-//    }
+    @Override
+    boolean equals(Object obj) {
+        if(obj instanceof MaxOneIndividual) {
+            return obj.board.equals(this.board)
+        }
+        else
+            return false
+
+    }
+
 
 }

@@ -4,7 +4,6 @@ import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 
 
-//@CompileStatic
 class emptyWorker extends Worker {
 
 
@@ -25,7 +24,6 @@ class emptyWorker extends Worker {
     @Override
     boolean evolve(List parameters) {
         //println "Worker - Evolving from 2 parents(from Manager)"
-
         return true
     }
 }

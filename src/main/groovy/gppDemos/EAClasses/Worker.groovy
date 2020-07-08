@@ -64,11 +64,16 @@ abstract class Worker extends DataClass {
     }
 
     void mutate(Worker child) {
-        int point1 = rng.nextInt(N-1)
-        int point2 = rng.nextInt(N-1)
+        int point1 = rng.nextInt(child.board.size())
+        int point2 = rng.nextInt(child.board.size())
+
+        while(point1 == point2)
+            point2 = rng.nextInt(child.board.size())
+
         def swap = child.board[point1]
         child.board[point1] = child.board[point2]
         child.board[point2] = swap
+
     }
 
     String toString() {
@@ -77,15 +82,11 @@ abstract class Worker extends DataClass {
 
     @Override
     boolean equals(Object obj) {
-        try{
-            obj = (Worker)obj
-            obj.board == this.board
+        if(obj instanceof Worker) {
+            return obj.board.equals(this.board)
         }
-        finally{
+        else
             return false
-        }
-
     }
-
 }
 

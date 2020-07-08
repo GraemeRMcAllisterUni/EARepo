@@ -7,6 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class Manager extends DataClass{
 
+
+    int noImprovements = 0
     List <Worker> population = []
     Double requiredFitness = 0.0D
     Double worstFitness
@@ -61,17 +63,21 @@ class Manager extends DataClass{
     }
 
     int addChildren(List <Worker> children) {
+        noImprovements++
+        println noImprovements
+        for (c in children)
+            println "received " + c
         improvementattempts++
-//        println "addinf something"
-//        for (c in children)
-//            println c
         boolean childAdded = false
         for (c in 0 ..< children.size()) {
             Worker child = children[c]
             // only add child if it is better than the worst child in the population
-            //if(!population.contains(child))
+            if(!population.contains(child))
                 if (child.fitness < worstFitness ) {
+                    println "added child " + child
+                    println "better than " + population[worstLocation]
                 childAdded = true
+                    noImprovements = 0
                 improvements++ // for analysis
 //                print "improvement $improvements with fit $child.fitness after $requestedParents parent requests"
                 worstFitness = child.fitness
@@ -100,12 +106,10 @@ class Manager extends DataClass{
         return completedOK
     }
 
-
-
     void determineBestWorst(){
 
-        bestFitness = population[0].fitness
-        worstFitness = population[0].fitness
+        bestFitness = Double.MAX_VALUE
+        worstFitness = 0
         for (i in 0..< population.size()) {
             if (population[i].fitness < bestFitness) {
                 // update max fitness data
@@ -124,7 +128,6 @@ class Manager extends DataClass{
 
 
     int addIndividuals(List <Worker> individuals) { //add the new individuals to the population
-
         for (int i in 0 ..<individuals.size()) {
             population.add(individuals[i])
         }

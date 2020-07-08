@@ -9,14 +9,14 @@ import java.util.concurrent.ThreadLocalRandom
 Random random = new Random();
 
 
-List ClientList=   [1, 2, 3, 4, 6, 12]
+List ClientList = [1, 2, 3, 4, 6, 12]
 
 
 //Collections.shuffle(ClientList)
 
 int N = 1000//rng.nextInt(5000)+1
 int clients
-int totalPop = 48
+int totalPop = 12
 int initialPopulation//possPops[ rng.nextInt(possPops.size()) ]
 int crossoverProb = 100//random.nextInt(101)
 int mutateProb = 100//random.nextInt(101)
@@ -34,15 +34,15 @@ long startrunTime = System.currentTimeSeconds()
 println(startrunTime)
 File log = new File("clients2.csv");
 log.createNewFile()
-for(int l = 1;l<loopsonloops;l++) {
+for (int l = 1; l < loopsonloops; l++) {
     Collections.shuffle(ClientList)
     seed = 1234567L
     for (int i = 0; i < ClientList.size(); i++) {
-            loops.times {
+        loops.times {
             System.gc()
             int j = random.nextInt(ClientList.size())
             clients = ClientList[i]
-            initialPopulation = (int)(totalPop/clients)
+            initialPopulation = (int) (totalPop / clients)
             RunEA EA = new RunEA()
 
             EA.worker = new MaxOneIndividual()
@@ -76,9 +76,9 @@ for(int l = 1;l<loopsonloops;l++) {
 
 
 long endrunTime = System.currentTimeSeconds()
-println endrunTime-startrunTime
+println endrunTime - startrunTime
 
-class MaxOneManager extends Manager{
+class MaxOneManager extends Manager {
 
 
     int finalise(List d) {
@@ -95,7 +95,7 @@ class MaxOneManager extends Manager{
         return completedOK
     }
 
-    static void writeFile(){
+    static void writeFile() {
         FileWriter fr = new FileWriter("clients2.csv", true)
         fr.write("$requestedParents,$improvements,")
         fr.close()
@@ -110,11 +110,11 @@ class MaxOneManager extends Manager{
 
 
     @Override
-    int addIndividuals(List <Worker> individuals) { //add the new individuals to the population
-        for ( i in 0 ..< individuals.size()) {
+    int addIndividuals(List<Worker> individuals) { //add the new individuals to the population
+        for (i in 0..<individuals.size()) {
             population.add(individuals[i])
         }
-        if(population.size()>=48) {
+        if (population.size() >= 48) {
             FileWriter fr = new FileWriter("clients2.csv", true)
             fr.write(System.currentTimeMillis() + ",")
             fr.close()
@@ -125,10 +125,10 @@ class MaxOneManager extends Manager{
 
 
     @Override
-    void determineBestWorst(){
-        bestFitness = 1
+    void determineBestWorst() {
+        bestFitness = 1000
         worstFitness = 0
-        for (i in 0..< population.size()) {
+        for (i in 0..<population.size()) {
             if (population[i].fitness < bestFitness) {
                 // update max fitness data
                 bestFitness = population[i].fitness
@@ -141,6 +141,4 @@ class MaxOneManager extends Manager{
             }
         }
     }
-
-
 }
