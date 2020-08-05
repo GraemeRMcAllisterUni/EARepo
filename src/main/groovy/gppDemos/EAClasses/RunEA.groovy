@@ -6,8 +6,8 @@ import gppLibrary.LocalDetails
 
 public class RunEA {
 
-    int clients = 2
-    public int N = 4
+    int clients = 4
+    int n = 100
     int initialPopulation = 4
 
     int crossoverProb = 100
@@ -15,22 +15,19 @@ public class RunEA {
     int requiredParents = 2
     int resultantChildren = 2
     float editProportion = 0.1F
-    long seed = System.currentTimeMillis()
-    def manager
+    long seed = System.nanoTime()
+    Manager manager
     Worker worker
     List <Object> param = null
 
     void run() {
 
-        //def d = [N, crossoverProb, seed]
-
         if (param!=null) param.each{ p -> d.add((int)p)}
-
 
         LocalDetails serverDetails = new LocalDetails(
                 lName: manager.class.getName(),
                 lInitMethod: manager.initMethod,
-                lInitData: [N, editProportion, seed],
+                lInitData: [n, editProportion, seed],
                 lFinaliseMethod: manager.finaliseMethod)
 
         def clientDetails = new GroupDetails(
@@ -38,13 +35,12 @@ public class RunEA {
                 groupDetails: new LocalDetails[clients])
 
         for (int c in 0..<clients) {
-            def d = [N, crossoverProb, mutateProb, seed, c]
+            def d = [n, crossoverProb, mutateProb, seed, c]
             clientDetails.groupDetails[c] = new LocalDetails(
                     lName: worker.class.getName(),
                     lInitMethod: worker.initialiseMethod,
                     lInitData: d)
         }
-
 
         def eaCSprocess = new ParallelClientServerEngine(
                 clientDetails: clientDetails,
@@ -60,9 +56,6 @@ public class RunEA {
                 incorporateChildrenMethod: manager.incorporateChildrenMethod,
                 carryOnFunction: manager.carryOnFunction
         )
-//        println("int clients = " + clients)
-//        println("int N = " + N)
-//        println("int initialPopulation = " + initialPopulation)
         eaCSprocess.run()
     }
 }

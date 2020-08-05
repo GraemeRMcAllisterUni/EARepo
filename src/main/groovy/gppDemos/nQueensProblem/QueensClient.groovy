@@ -17,8 +17,8 @@ class QueensClient extends Worker {
     static int mutateProb = -1
 
     static String initialiseMethod = "init"
-    static String createFunction = "createFunction"
-   // static String evolveFunction = "evolveTwoPoint"
+    //static String createFunction = "createFunction"
+   static String evolveFunction = "evolveOnePoint"
     static String evolve = "evolve"
 
     @Override
@@ -97,7 +97,7 @@ class QueensClient extends Worker {
         // evolute c1..c2 = p2 c1..<c2
         // evolute c2+1..N = p1 c2..N
         // then have to ensure that no value is repeated to maintain board consistency
-        List sb1 = p1.board.getAt(1 ..< c1) // first part of p1.board
+        List sb1 = p1.board.getAt(1 .. c1) // first part of p1.board
         List mb1 = p1.board.getAt(c1 .. c2) // middle part of p1.board
         List mb2 = p2.board.getAt(c1 .. c2) // middle part of p2.board
         List eb1 = p1.board.getAt(c2+1 .. N)//end part of p1.board
@@ -169,7 +169,7 @@ class QueensClient extends Worker {
             int c2 = rng.nextInt(N-1) + 1   // c2 in range 1 .. N-1
             // ensure c1 and c2 are different
             while (Math.abs(c1 - c2) <= 2) c2 = rng.nextInt(N-1) + 1
-            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)            
+            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
                 // do the mutate operation

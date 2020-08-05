@@ -1,29 +1,23 @@
 package gppDemos.empty
-
 import gppDemos.EAClasses.Worker
-import gppLibrary.DataClass
-
 
 class emptyWorker extends Worker {
 
-
-    //int n = 0
-
     @Override
     int createFunction() {
-        println "Worker - Creating solutions. Solutions per client = $n"
+        println "Worker - Creating function"
         return completedOK
     }
 
     @Override
     double doFitness(List board) {
-        //println "Worker - Doing fitness on board(from Manager)"
+        println "Worker - Doing fitness on board"
         return 1
     }
 
     @Override
     boolean evolve(List parameters) {
-        //println "Worker - Evolving from 2 parents(from Manager)"
+        println "Worker - Evolving from 2 parents(from Manager)"
         return true
     }
 }

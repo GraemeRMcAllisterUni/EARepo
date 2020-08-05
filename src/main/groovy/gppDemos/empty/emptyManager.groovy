@@ -10,7 +10,7 @@ import gppDemos.UniversalResponse
 class emptyManager extends Manager{
 
     int counter = 1
-    int iterations = 10
+    int iterations = 9
 
     int initialise (List d) {
         println "Creating Manager Class Object"
@@ -25,47 +25,32 @@ class emptyManager extends Manager{
         return s
     }
 
-
     UniversalResponse selectParents(int parents) {
-        //requestedParents = requeiredarents + parents // for analysis
-        println tabber() + "Manager - Selecting Parents(Randomly, from local list of workers). Requested Parents = $requestedParents"
+        println tabber() + "Selecting Parents(Randomly, from local list of workers)"
         def response = new UniversalResponse()
         return response
     }
 
     int addChildren(List <Worker> children) {
-        println tabber() + "Manager - adding evolved children from workers"
-        editPopulation()
+        println tabber() + "Adding evolved children from workers"
+        determineBestWorst()
         return completedOK
     }
-
-
-    void editPopulation(){
-
-        println tabber() +  "Manager - Shuffling board"
-        determineBestWorst()
-    }
-
 
     void determineBestWorst(){
-        println tabber() + "Manager - Saving array location of Best and Worst Worker"
+        println tabber() + "Saving array location of Best and Worst Worker"
     }
 
-
     int addIndividuals(List <Worker> individuals) { //add the new individuals to the population
-
-        println tabber() +  "Manager - adding new clidren from workers"
+        println tabber() +  "Adding new children from workers"
         determineBestWorst()
         return completedOK
     }
-
-
 
     boolean carryOn() { // returns true if the server should continue
         counter++
-        println tabber() + "Manager - Checking if we should carry on. Counter = $counter"
+        println tabber() + "Checking if we should carry on. Counter = $counter"
         return(counter<=iterations)
-
     }
 
     int finalise(List d) {

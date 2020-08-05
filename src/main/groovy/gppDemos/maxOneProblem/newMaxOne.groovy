@@ -9,53 +9,57 @@ import java.util.concurrent.ThreadLocalRandom
 Random random = new Random();
 
 
-List ClientList = [1, 2, 3, 4, 6, 12]
 
-
-//Collections.shuffle(ClientList)
 
 int N = 1000//rng.nextInt(5000)+1
 int clients
-int totalPop = 12
+
 int initialPopulation//possPops[ rng.nextInt(possPops.size()) ]
 int crossoverProb = 100//random.nextInt(101)
-int mutateProb = 100//random.nextInt(101)
+//int mutateProb = 90//random.nextInt(31) + 70
 
-int loops = 3
 
-long seed = 1234567L
+class MaxRandom extends Random {
+    public long seedUniquifierGetter(){
+        return seedUniquifier();
+    }
+}
 
-Random rng = new Random()
-rng.setSeed(seed)
+int itercounter = 1;
 
-int loopsonloops = 50
-
+int noOfLoops = 2
+int clientLoops = 100
 long startrunTime = System.currentTimeSeconds()
-println(startrunTime)
-File log = new File("clients2.csv");
+File log = new File("PushItToTheLimitSlightChange.csv");
 log.createNewFile()
-for (int l = 1; l < loopsonloops; l++) {
+
+List ClientList = [1,2,3, 4, 5, 6, 7, 8, 12, 24, 48]
+int totalPop = 240
+int mutateProb = 90
+
+for (int l = 1; l < noOfLoops; l++) {
     Collections.shuffle(ClientList)
-    seed = 1234567L
+    //mutateProb = random.nextInt(91) + 10
     for (int i = 0; i < ClientList.size(); i++) {
-        loops.times {
+        clientLoops.times {
+            MaxRandom rng = new MaxRandom()
+            long seed = rng.seedUniquifierGetter() * System.nanoTime()
+            rng.setSeed(seed)
             System.gc()
             int j = random.nextInt(ClientList.size())
             clients = ClientList[i]
             initialPopulation = (int) (totalPop / clients)
             RunEA EA = new RunEA()
-
             EA.worker = new MaxOneIndividual()
             EA.manager = new MaxOneManager()
-            EA.N = N //rng.nextInt(5000)+1
+            EA.n = N
             EA.clients = clients
             EA.initialPopulation = initialPopulation
             EA.crossoverProb = crossoverProb //rng.nextInt(99)+1
             EA.mutateProb = mutateProb
-            EA.seed = seed
 
-            List runConfig = [seed, N, clients, initialPopulation, crossoverProb, mutateProb]
-            FileWriter fr = new FileWriter("clients2.csv", true)
+            List runConfig = [clients, initialPopulation, mutateProb]
+            FileWriter fr = new FileWriter("PushItToTheLimitSlightChange.csv", true)
             println("loop number: " + ((int) it + 1))
             for (r in 0..runConfig.size() - 1)
                 fr.write(runConfig[r] + ",")
@@ -65,80 +69,40 @@ for (int l = 1; l < loopsonloops; l++) {
             EA.run()
             long endTime = System.currentTimeMillis()
             println("finished loop: " + ((int) it + 1))
-            FileWriter frr = new FileWriter("clients2.csv", true)
+            FileWriter frr = new FileWriter("PushItToTheLimitSlightChange.csv", true)
             frr.write(endTime + "\n")
             frr.close()
-            seed++
+            println "Iter at " + itercounter
+            itercounter++
         }
     }
 
 }
-
 
 long endrunTime = System.currentTimeSeconds()
 println endrunTime - startrunTime
 
 class MaxOneManager extends Manager {
 
-
+    @Override
     int finalise(List d) {
-//        StringBuilder s = new StringBuilder();
-//        for( int i = 0; i < population[bestLocation].N;  i++ )
-//        {
-//            s.append(population[bestLocation].board.get( i ) == true ? 1: 0 );
-//        }
-//        System.out.println( s );
-//        println "Fitness: ${((MaxOneIndividual)population[bestLocation]).board.cardinality()} / ${((MaxOneIndividual)population[bestLocation]).board.length()} - 1 = ${population[bestLocation].fitness}"
-        //println "$requestedParents parents requested; creating $improvements improvements"
-        //print "$requestedParents, $improvements\n"
         writeFile()
         return completedOK
     }
 
     static void writeFile() {
-        FileWriter fr = new FileWriter("clients2.csv", true)
+        FileWriter fr = new FileWriter("PushItToTheLimitSlightChange.csv", true)
         fr.write("$requestedParents,$improvements,")
         fr.close()
     }
-//    UniversalResponse selectParents(int parents) {
-//        requestedParents = requestedParents + parents // for analysis
-//        def response = new UniversalResponse()
-//        response.payload[0] = population[bestLocation]
-//        response.payload[1] = population[secondBestLocation]
-//        return response
-//    }
-
 
     @Override
     int addIndividuals(List<Worker> individuals) { //add the new individuals to the population
-        for (i in 0..<individuals.size()) {
-            population.add(individuals[i])
-        }
-        if (population.size() >= 48) {
-            FileWriter fr = new FileWriter("clients2.csv", true)
+        if (population.size()+individuals.size() >= 238) {
+            FileWriter fr = new FileWriter("PushItToTheLimitSlightChange.csv", true)
             fr.write(System.currentTimeMillis() + ",")
             fr.close()
         }
-        determineBestWorst()
-        return completedOK
-    }
-
-
-    @Override
-    void determineBestWorst() {
-        bestFitness = 1000
-        worstFitness = 0
-        for (i in 0..<population.size()) {
-            if (population[i].fitness < bestFitness) {
-                // update max fitness data
-                bestFitness = population[i].fitness
-                bestLocation = i
-            }
-            if (population[i].fitness > worstFitness) {
-                // update min fitness data
-                worstFitness = population[i].fitness
-                worstLocation = i
-            }
-        }
+        return super.addIndividuals(individuals)
     }
 }

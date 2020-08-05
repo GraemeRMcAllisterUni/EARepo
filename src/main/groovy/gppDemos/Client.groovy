@@ -45,7 +45,6 @@ class Client extends DataClass implements CSProcess {
                 initialise.individuals << worker   // add 'initialPopulation' of solutions created initially by this client
         }
 
-
         send.write(initialise) // send created individuals to server
 
         inputObject = receive.read() // read signal from server to indicate all clients have sent their individuals

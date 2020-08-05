@@ -1,33 +1,20 @@
 package gppDemos.maxOneProblem
 
+import jcsp.lang.*
+import groovyJCSP.*
 
-import gppDemos.maxOneProblem.MaxOneServer as moServer
-import gppDemos.maxOneProblem.MaxOneIndividual as moIndividual
-import gppDemos.ParallelClientServerEngine
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
+import gppLibrary.functionals.evolutionary.ParallelClientServerEngine
+import gppDemos.maxOneProblem.MaxOneServer as moServer
+import gppDemos.maxOneProblem.MaxOneIndividual as moIndividual
 
 
-//usage runDemo maxOneProblem TestMaxOne resultsFile N clients initialPopulation
+//usage runDemo maxOneProblem\TestMaxOne resultsFile N clients initialPopulation
  
-int N
-int clients
-int initialPopulation
- 
-if (args.size() == 0) {
-// assumed to be running form within Intellij
-N = 400
-clients = 8
-initialPopulation = 1
-}
-else {
-// assumed to be running via runDemo
-//    String folder = args[0] not required
-N = Integer.parseInt(args[1])
-clients = Integer.parseInt(args[2])
-initialPopulation = Integer.parseInt(args[3])
- 
-}
+int N = 400
+int clients = 3
+int initialPopulation = 480
  
 if (args.size() != 0){
 clients = Integer.parseInt(args[1])
@@ -66,7 +53,7 @@ lInitData:[N, crossoverProb, mutateProb, clientSeeds[c]])
 //Required Parents: $requiredParents, Resultant Children: $resultantChildren,
 //Crossover%: $crossoverProb, Mutate%: $mutateProb"""
  
-print "Max One, $N, $clients, $initialPopulation, "
+print """Max One, $N, $clients, $initialPopulation, """
 System.gc()
  
 long startTime = System.currentTimeMillis()
@@ -98,4 +85,3 @@ eaCSprocess .run()
  
 long endTime = System.currentTimeMillis()
 println "${endTime - startTime} "
- 

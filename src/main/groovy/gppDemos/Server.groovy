@@ -47,7 +47,7 @@ class Server extends DataClass implements CSProcess {
 
         def manager = managerClass.newInstance()         //initialise the server class
 
-        callUserMethod(manager, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
+        //callUserMethod(manager, serverDetails.lInitMethod, serverDetails.lInitData, 29) // now read all the initialised individuals into server
 
         for (c in 0..<clients) {
             def initialPopulation = (UniversalRequest) ((ChannelInput) request[c]).read() // now add the enclosed individuals to the population
@@ -71,8 +71,6 @@ class Server extends DataClass implements CSProcess {
 
         while (running) { // running loop
 
-
-
             index = (clients == 1) ? 0 : alt.fairSelect() // if (clients == 1) then index = 0  else index = alt.fairselect()
 
             def input = (UniversalRequest) ((ChannelInput) request[index]).read() //input is either a UniversalRequest or UniversalResponse
@@ -81,7 +79,7 @@ class Server extends DataClass implements CSProcess {
 
                 UniversalResponse respond = manager.&"$selectParentsFunction"(input.count)
 
-                // respond is - a universal response, which consists, of a payload, containing,
+                // respond is - a universal response, which consists, of a payload, containing, 2 parents for evolution
 
                 assert (respond != null):
                         "Client-Server: Server Process $selectParentsFunction returned null"
@@ -95,12 +93,13 @@ class Server extends DataClass implements CSProcess {
                         "Client-Server: Server Process expecting request to write evolved children into population"
                 //input.individuals.each{println "$it"}
                 callUserMethod(manager, incorporateChildrenMethod, input.individuals, 31) // addChildren
-            }
 
+            }
 
             running = manager.&"$carryOnFunction"()  // returns false when loop should terminate
             assert (running != null):
                     "Client-Server: Server Process $carryOnFunction returned null"
+
         } // see if we are terminating
 
 
