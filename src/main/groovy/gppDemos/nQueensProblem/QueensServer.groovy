@@ -1,11 +1,12 @@
 package gppDemos.nQueensProblem
 
+import gppDemos.EAClasses.Manager
 import gppLibrary.DataClass
 import gppDemos.UniversalResponse
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class QueensServer extends DataClass{
+class QueensServer extends Manager {
     List <QueensClient> population = []
     Double requiredFitness = 0.0D
     Double worstFitness = 0.0D
@@ -27,10 +28,10 @@ class QueensServer extends DataClass{
     static String finaliseMethod = "finalise"
 
     int initialise (List d) {
-        seed = d[0]
-        N = d[1]
-        editProportion = d[2]
-        rng.setSeed(seed)
+        //seed = d[0]
+        N = d[0]
+        editProportion = d[1]
+        rng.setSeed(System.currentTimeMillis())
         return completedOK
     }
 
@@ -50,7 +51,7 @@ class QueensServer extends DataClass{
     int addChildren(List <QueensClient> children) {
         boolean childAdded = false
         for ( c in 0 ..< children.size()) {
-            QueensClient child = children[c]    
+            QueensClient child = children[c]
             // only add child if it is better than the worst child in the population
             if (child.fitness < worstFitness) {
                 childAdded = true
@@ -79,9 +80,9 @@ class QueensServer extends DataClass{
         } // end for loop
         if (childAdded) {
             if (bestFitness == worstFitness)
-                editPopulation()            
-        }        
-        return completedOK        
+                editPopulation()
+        }
+        return completedOK
     }
     
     void editPopulation(){
@@ -129,7 +130,14 @@ class QueensServer extends DataClass{
     }
 
     boolean carryOn() { // returns true if the server should continue
-        return ( bestFitness != requiredFitness)
+        println(bestFitness + " " + requiredFitness)
+        if ( bestFitness != requiredFitness)
+            return true
+        else {
+
+            println(population[bestLocation].toString())
+            return false
+        }
     }
 
     int finalise(List d) {

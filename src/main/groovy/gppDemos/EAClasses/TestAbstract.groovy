@@ -1,37 +1,29 @@
-package gppDemos.nQueensProblem
-
-import jcsp.lang.*
-import groovyJCSP.*
+package gppDemos.workingToAbstraction
 
 import gppLibrary.GroupDetails
 import gppLibrary.LocalDetails
 import gppDemos.ParallelClientServerEngine
-import gppDemos.nQueensProblem.QueensServer as qs
-import gppDemos.nQueensProblem.QueensClient as qc
 
 
+import gppDemos.EAClasses.Manager as emptyS
+import gppDemos.EAClasses.Worker as emptyC
 
-//usage runDemo nQueensProblem TestQueens resultsFile N clients
 
-int clients
-int N
-int initialPopulation
+int clients = 1
+int N = 1
+int initialPopulation = 1
 
-if (args.size() == 0){
-// assumed to be running form within Intellij
-    clients = 1     // max 16
-    N = 8
-    initialPopulation = 1
-}
-else {
+println("int clients = " + clients)
+println("int N = " + N)
+println("int initialPopulation = " + initialPopulation)
+
+if (args.size() == 3){
 // assumed to be running via runDemo
 // assumed working directory folder = args[0]
     N = Integer.parseInt(args[1])
     clients = Integer.parseInt(args[2])
     initialPopulation = Integer.parseInt(args[3])
 }
-
-//initialPopulation = (N / clients) + clients
 
 int crossoverProb = 95
 int mutateProb = 5
@@ -45,10 +37,10 @@ List clientSeeds = [23456789101112131L, 34567891011121314L, 45678910111213141L, 
 float editProportion = 0.1F
 
 LocalDetails serverDetails = new LocalDetails(
-        lName: qs.getName(),
-        lInitMethod: qs.initMethod,
+        lName: emptyS.getName(),
+        lInitMethod: emptyS.initMethod,
         lInitData: [serverSeed, N, editProportion],
-        lFinaliseMethod: qs.finaliseMethod )
+        lFinaliseMethod: emptyS.finaliseMethod )
 
 
 def clientDetails = new GroupDetails(
@@ -57,24 +49,13 @@ def clientDetails = new GroupDetails(
 
 for (c in 0 ..< clients) {
     clientDetails.groupDetails[c] = new LocalDetails(
-            lName: qc.getName(),
-            lInitMethod: qc.initialiseMethod,
+            lName: emptyC.getName(),
+            lInitMethod: emptyC.initialiseMethod,
             lInitData:[N, crossoverProb, mutateProb, clientSeeds[c]])
 }
 
-//println """Queens: using any channels
-//clients: $clients, N: $N, Individuals per Client: $initialPopulation,
-//Required Parents: $requiredParents, Resultant Children: $resultantChildren,
-//Crossover%: $crossoverProb, Mutate%: $mutateProb"""
-
 System.gc()
 
-print """Queens, $clients, $N, $initialPopulation,  """
-
-
-//NETWORK
-
-long startTime = System.currentTimeMillis()
 def eaCSprocess = new ParallelClientServerEngine(
         clientDetails: clientDetails,
         serverDetails: serverDetails,
@@ -82,20 +63,11 @@ def eaCSprocess = new ParallelClientServerEngine(
         initialPopulation: initialPopulation,
         requiredParents: requiredParents,
         resultantChildren: resultantChildren,
-        evolveFunction: qc.evolveFunction,
-        createIndividualFunction: qc.createFunction,
-        addIndividualsMethod: qs.addIndividualsMethod,
-        selectParentsFunction: qs.selectParentsFunction,
-        incorporateChildrenMethod: qs.incorporateChildrenMethod,
-        carryOnFunction: qs.carryOnFunction
+        evolveFunction: emptyC.evolveFunction,
+        createIndividualFunction: emptyC.createFunction,
+        addIndividualsMethod: emptyS.addIndividualsMethod,
+        selectParentsFunction: emptyS.selectParentsFunction,
+        incorporateChildrenMethod: emptyS.incorporateChildrenMethod,
+        carryOnFunction: emptyS.carryOnFunction
 )
 eaCSprocess .run()
-long endTime = System.currentTimeMillis()
-println " ${endTime - startTime}"
-//END
-
- 
- 
- 
-
- 

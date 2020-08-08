@@ -1,14 +1,15 @@
 package gppDemos.nQueensProblem
 
+import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
 // based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.720&rep=rep1&type=pdf
 
 @CompileStatic
-class QueensClient extends DataClass {
+class QueensClient extends Worker {
     static int N = 0   // number of Queens to be placed
-    List <Integer> board = null
+    static List <Integer> board = null
     Double fitness = 0.0D   // can be negative 0.0 => solution found
     
     static int initialPopulationSize =-1
@@ -16,25 +17,27 @@ class QueensClient extends DataClass {
     static int mutateProb = -1
 
     static String initialiseMethod = "init"
-    static String createFunction = "createFunction"
-//    static String evolveFunction = "evolveTwoPoint"
-    static String evolveFunction = "evolveOnePoint"
-    
+    //static String createFunction = "createFunction"
+   static String evolveFunction = "evolveOnePoint"
+    static String evolve = "evolve"
+
+    @Override
+    boolean evolve(List parameters) {
+        return evolveOnePoint(parameters);
+    }
 
     static Random rng = new Random()
 
-    int individuals = 0
 
     int init(List d) {
 //        println "QC-init: $d"
         N = d[0]
         crossoverProb = d[1]
         mutateProb = d[2]
-        if (d[3] != null) rng.setSeed((long)d[3])   
+        if (d[3] != null) rng.setSeed((long)d[3])
         return completedOK
     }
-    
-    int instance = 0
+
 
     int createFunction() {
         permute()
@@ -49,12 +52,13 @@ class QueensClient extends DataClass {
 //        println "QC-permute: Client: $clientId board = $board"
         for (int i in 1 .. N) {
 //            println "QC-permute: Client: $clientId i: $i"
+            rng.setSeed(System.currentTimeMillis())
             int j = rng.nextInt(N) + 1  //range is 1..N
             board.swap(i,j)
         }
     }
     
-    double doFitness(List <Integer> board) {
+    double doFitness(List  board) {
         List <Integer> leftDiagonal = new ArrayList(2*N)
         List <Integer> rightDiagonal = new ArrayList(2*N)
         double sum = 0.0D
@@ -64,8 +68,8 @@ class QueensClient extends DataClass {
             rightDiagonal[i] = 0
         }
         for ( int i in 1 .. N) {
-            leftDiagonal[i+board[i]-1]++
-            int idx = N-i+board[i]
+            leftDiagonal[i+(int)board[i]-1]++
+            int idx = N-i+(int)board[i]
             rightDiagonal[idx]++
 //            rightDiagonal[N-i+board[i]]++
         }
@@ -93,7 +97,7 @@ class QueensClient extends DataClass {
         // evolute c1..c2 = p2 c1..<c2
         // evolute c2+1..N = p1 c2..N
         // then have to ensure that no value is repeated to maintain board consistency
-        List sb1 = p1.board.getAt(1 ..< c1) // first part of p1.board
+        List sb1 = p1.board.getAt(1 .. c1) // first part of p1.board
         List mb1 = p1.board.getAt(c1 .. c2) // middle part of p1.board
         List mb2 = p2.board.getAt(c1 .. c2) // middle part of p2.board
         List eb1 = p1.board.getAt(c2+1 .. N)//end part of p1.board
@@ -153,10 +157,10 @@ class QueensClient extends DataClass {
         evolute.board = [null] + sb1 + mb2 + eb1    // zeroth element is always null        
     }
     
-    boolean evolveTwoPoint ( List parameters) {
-        QueensClient p1 = parameters[0]
-        QueensClient p2 = parameters[1]
-        QueensClient evolute = parameters[2]
+    boolean evolveTwoPoint (List parameters) {
+        QueensClient p1 = (QueensClient) parameters[0]
+        QueensClient p2 = (QueensClient) parameters[1]
+        QueensClient evolute = (QueensClient) parameters[2]
         int probability = rng.nextInt(101)
         if (probability < crossoverProb) {
             // do the crossover operation
@@ -165,7 +169,7 @@ class QueensClient extends DataClass {
             int c2 = rng.nextInt(N-1) + 1   // c2 in range 1 .. N-1
             // ensure c1 and c2 are different
             while (Math.abs(c1 - c2) <= 2) c2 = rng.nextInt(N-1) + 1
-            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)            
+            doCrossoverTwoPoint(p1, p2, evolute, c1, c2)
             probability = rng.nextInt(101)
             if (probability < mutateProb) {
                 // do the mutate operation
@@ -177,7 +181,11 @@ class QueensClient extends DataClass {
                 evolute.board.swap(mutate1, mutate2)
             }            
              
-            evolute.fitness = doFitness(evolute.board)    
+            evolute.fitness = doFitness(evolute.board)
+
+            println("Parent 1 fitness" + p1.fitness)
+            println("Parent 2 fitness" + p2.fitness)
+            println("evolute fitness" + evolute.fitness)
             return true            
         }
         else
@@ -187,7 +195,7 @@ class QueensClient extends DataClass {
     void doCrossoverOnePoint (QueensClient p1, QueensClient p2, QueensClient child1, QueensClient child2, int cPoint) {
         // zeroth element is null
 //        println "P1: $p1 P2: $p2 xOver: $cPoint"
-        List p1a = p1.board.getAt(1 .. cPoint)                         
+        List p1a = p1.board.getAt(1 .. cPoint)
         List p2a = p2.board.getAt(1 .. cPoint)   
         List p1b = p1.board.getAt(cPoint+1 .. N)                      
         List p2b = p2.board.getAt(cPoint+1 .. N) 
@@ -223,12 +231,13 @@ class QueensClient extends DataClass {
                 child2.board << p1aRem[p1P]
                 p1P += 1
             }
-            else 
+            else
                 child2.board << v2
-        } 
+        }
     }
-    
-    boolean evolveOnePoint ( List parameters) {
+
+    boolean evolveOnePoint (List <QueensClient> parameters) {
+
         QueensClient p1 = parameters[0]
         QueensClient p2 = parameters[1]
         QueensClient child1 = parameters[2]
@@ -252,8 +261,13 @@ class QueensClient extends DataClass {
                 child2.board.swap(mutate1, mutate2)
             }
 
-            child1.fitness = doFitness(child1.board)    
-            child2.fitness = doFitness(child2.board)    
+            child1.fitness = doFitness(child1.board)
+            println("Parent 1 fitness" + p1.fitness)
+            println("Child 1 fitness" + child1.fitness)
+
+            child2.fitness = doFitness(child2.board)
+            println("Parent 2 fitness" + p2.fitness)
+            println("Child 2 fitness" + child2.fitness)
 //            println "C1: $child1 C2: $child2"
             
             return true            
@@ -280,7 +294,7 @@ class QueensClient extends DataClass {
     }
 
 
-    
+
     
     String toString(){
         String s = ""

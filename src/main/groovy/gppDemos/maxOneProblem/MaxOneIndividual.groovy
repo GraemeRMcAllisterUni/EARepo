@@ -1,81 +1,92 @@
 package gppDemos.maxOneProblem
 
+import gppDemos.EAClasses.Worker
 import gppLibrary.DataClass
 import groovy.transform.CompileStatic
 
+import java.util.concurrent.SynchronousQueue
+
 @CompileStatic
-class MaxOneIndividual extends DataClass{
-    static int bitsPerGene = 16
-    BitSet gene = new BitSet()
-    Double fitness = 1.0D
-
-    static int crossoverProb = -1
-    static int mutateProb = -1
-
-    static String initialiseMethod = "init"
-    static String createFunction = "createFunction"
-    static String evolveFunction = "evolve"
-    
-
-    static Random rng = new Random()
-
-    int init(List d) {
-        bitsPerGene = d[0]
-        crossoverProb = d[1]
-        mutateProb = d[2]
-        if (d[3] != null) rng.setSeed((long)d[3])   
+class MaxOneIndividual extends Worker {
+    BitSet board = new BitSet()
+    int createFunction() {
+        board = new BitSet(N)
+        for (i in 0..<N) {
+            if (rng.nextInt(3) == 1) board.set(i)
+        }
+        fitness = doFitness(board)
         return completedOK
     }
-    
-    int createFunction() {
-        gene = new BitSet(bitsPerGene)
-        for ( b in 0 ..< bitsPerGene) {
-            if (rng.nextInt(2)  == 1) gene.set(b)
-        }
-        fitness = doFitness(gene)
-        return completedOK
-    } 
-    
+
+    @Override
+    double doFitness(List board) {
+        return 0
+    }
+
     double doFitness(BitSet gene) {
-        return 1.0D - (gene.cardinality()/ bitsPerGene)
-    }  
-    
-    boolean evolve(List <MaxOneIndividual> parameters) {
-        // expecting two parents and returning two children
-        MaxOneIndividual p1 = parameters[0]
-        MaxOneIndividual p2 = parameters[1]
-        MaxOneIndividual c1 = parameters[2]
-        MaxOneIndividual c2 = parameters[3]
-        if (rng.nextInt(101) < crossoverProb) {
-            // do the crossover
-            int xOver = rng.nextInt(bitsPerGene)
-            c1.gene = new BitSet(bitsPerGene)
-            c2.gene = new BitSet(bitsPerGene)
-            for ( b in 0 .. xOver) {
-                if (p1.gene[b]) c1.gene.set(b)
-                if (p2.gene[b]) c2.gene.set(b)
-            }
-            for ( b in xOver+1 .. bitsPerGene) {
-                if (p2.gene[b]) c1.gene.set(b)
-                if (p1.gene[b]) c2.gene.set(b)
-            }
-            if (rng.nextInt(101) < mutateProb) {
-                // do mutate operation
-                int m1 = rng.nextInt(bitsPerGene)
-                int m2 = rng.nextInt(bitsPerGene)
-                c1.gene.flip(m1)
-                c2.gene.flip(m2)
-            }
-            c1.fitness = doFitness(c1.gene)
-            c2.fitness = doFitness(c2.gene)
-            return true
+        return N - gene.cardinality()
+    }
+
+    void mutate(Worker child) {
+        child = (MaxOneIndividual) child
+        int point = rng.nextInt(N)
+        child.board.flip(point)
+    }
+
+    void crossover(Worker parent0, Worker parent1, Worker child, int k){
+        def points = []
+        int modifier
+        List<MaxOneIndividual> parents = [(MaxOneIndividual)parent0,(MaxOneIndividual)parent1]
+        for(int i in 0..k-1)
+            points[i] = rng.nextInt(N-1)+1
+        points = points.sort()
+        int slice = 0
+        for(int i=0; i<k; i++)
+        {
+            modifier = ((i % 2 == 0) ? 0 : 1)
+            for(int j in slice..(int)points[i])
+                if (parents[modifier].board[j]) ((MaxOneIndividual)child).board.set(j)
+
+            slice += (int)points[i] + 1
+        }
+        modifier = ((k % 2 == 0) ? 0 : 1)
+        for(int j in slice..N)
+            if (parents[modifier].board[j]) ((MaxOneIndividual)child).board.set(j)
+
+    }
+
+ boolean evolve(List parameters) {
+     List<MaxOneIndividual> parents = [(MaxOneIndividual)parameters[0],(MaxOneIndividual)parameters[1]]
+     List<MaxOneIndividual> children = []
+     for(i in 2..parameters.size()-1)
+     children[i-2] = (MaxOneIndividual) parameters[i]
+     if (rng.nextInt(101) < crossoverProb) {
+         int xOver = rng.nextInt(N)
+         for (c in children) {
+             c.board = new BitSet(N)
+             crossover(parents[0],parents[1],c, 1)
+             parents.reverse()
+             if (rng.nextInt(101) < mutateProb) {
+                 mutate(c)
+             }
+             c.fitness = doFitness(c.board)
+         }
+         return true
+     } else
+         return false
+ } // evolve
+
+    String toString() {
+        return "$fitness $board"
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        if(obj instanceof MaxOneIndividual) {
+            return obj.board.equals(this.board)
         }
         else
             return false
-    } // evolve
-    
-    String toString() {
-        return "Gene Fitness: $fitness"
     }
-    
+
 }
